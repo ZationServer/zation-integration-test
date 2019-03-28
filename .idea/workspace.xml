@@ -2,21 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="aae8c079-a06a-4a20-8812-a8ce110147d0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/controllers/anyOfValidation.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controllers/arrayValidation.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controllers/objectValidation.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controllers/secretForUser.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controllers/stringValidation.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/tests/validation-test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.cache-require-paths.json" beforeDir="false" afterPath="$PROJECT_DIR$/.cache-require-paths.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/configs/app.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/configs/app.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controllers/auth/logIn.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/auth/logIn.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/index.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/test/index.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/tests/auth-test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/test/tests/auth-test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/tests/pub-test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/test/tests/pub-test.ts" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -29,11 +16,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/tests/validation-test.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="257">
-              <caret line="109" column="21" selection-start-line="109" selection-start-column="21" selection-end-line="109" selection-end-column="21" />
+            <state relative-caret-position="355">
+              <caret line="117" column="20" selection-start-line="117" selection-start-column="20" selection-end-line="117" selection-end-column="20" />
               <folding>
                 <element signature="e#0#66#0" expanded="true" />
               </folding>
@@ -41,11 +28,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="367">
-              <caret line="39" column="28" selection-start-line="39" selection-start-column="28" selection-end-line="39" selection-end-column="28" />
+            <state relative-caret-position="438">
+              <caret line="34" column="4" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -161,9 +148,9 @@
         <option value="$PROJECT_DIR$/src/controllers/objectValidation.ts" />
         <option value="$PROJECT_DIR$/src/controllers/arrayValidation.ts" />
         <option value="$PROJECT_DIR$/src/configs/app.config.ts" />
-        <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/test/tests/auth-test.ts" />
         <option value="$PROJECT_DIR$/test/tests/validation-test.ts" />
+        <option value="$PROJECT_DIR$/package.json" />
       </list>
     </option>
   </component>
@@ -267,18 +254,18 @@
       <updated>1553780310109</updated>
       <workItem from="1553780311288" duration="341000" />
       <workItem from="1553780688799" duration="2358000" />
-      <workItem from="1553784467353" duration="4655000" />
+      <workItem from="1553784467353" duration="5245000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7354000" />
+    <option name="totallyTimeSpent" value="7944000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24954791" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24954791" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -292,7 +279,7 @@
       <window_info anchor="bottom" id="SonarLint" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Statistic" order="10" />
-      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.45204082" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.45204082" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" />
       <window_info anchor="bottom" id="TypeScript" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -429,13 +416,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
-          <caret line="39" column="28" selection-start-line="39" selection-start-column="28" selection-end-line="39" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/tests/auth-test.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="141">
@@ -455,11 +435,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/tests/validation-test.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="257">
-          <caret line="109" column="21" selection-start-line="109" selection-start-column="21" selection-end-line="109" selection-end-column="21" />
+        <state relative-caret-position="355">
+          <caret line="117" column="20" selection-start-line="117" selection-start-column="20" selection-end-line="117" selection-end-column="20" />
           <folding>
             <element signature="e#0#66#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="438">
+          <caret line="34" column="4" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="4" />
         </state>
       </provider>
     </entry>
