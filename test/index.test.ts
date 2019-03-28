@@ -4,13 +4,10 @@ import StarterConfig                                      from './../src/configs
 
 const TEST_PORT = 3000;
 
-const clientConfig : ClientOptions = {
+export const clientConfig : ClientOptions = {
     port : TEST_PORT,
     multiplex : false
 };
-
-export const testClient  = create(clientConfig);
-export const testClient2 = create(clientConfig);
 
 before(async () => {
     await start(Config.merge(Config.starterConfig({
@@ -21,8 +18,5 @@ before(async () => {
         brokers : 1,
         debug : false
     }),StarterConfig),StartMode.TEST);
-
-    await testClient.connect();
-    await testClient2.connect();
 });
 

@@ -1,29 +1,55 @@
-import {describe, when} from "zation-assured";
-import {testClient}     from "../index.test";
+import {describe, when,before,after,create} from "zation-assured";
+import {clientConfig}                       from "../index.test";
 
-describe('LogInController Test',async () => {
+const testClient  = create(clientConfig);
 
-    when(testClient,'Test Authenticated')
-        .authRequest({email : 'mytest@gmail.de',password : 'secret'})
+describe('Authentication Tests',async () => {
+
+    before(async () => {
+        await testClient.connect();
+    });
+
+    after(async () => {
+       await testClient.disconnect();
+    });
+
+    when(testClient,'Test access to user controller with guest')
+        .request('secretForUser')
         .assertThat()
-        .isSuccessful()
-        .client(testClient)
-        .isAuthenticated()
-        .hasAuthUserGroup('user')
-        .end()
+            .isNotSuccessful()
+            .buildHasError()
+                .presets()
+                .noAccessToController()
+            .end()
         .test();
 
-    when(testClient,'Test Not Valid Input')
-        .authRequest({email : 'notvalid.de'})
+    when(testClient,'Authenticate as user with token variables')
+        .authRequest({email : 'mytest@gmail.de',password : 'secret'})
+            .assertThat()
+            .isSuccessful()
+            .client(testClient)
+                .isAuthenticated()
+                .hasAuthUserGroup('user')
+                .hasUserId(10)
+                .assertTokenVariables()
+                    .ownInclude({email : 'mytest@gmail.de'})
+                    .end()
+                .end()
+        .test();
+
+    when(testClient,'Test access to user controller with user')
+        .request('secretForUser')
+            .assertThat()
+            .isSuccessful()
+            .assertResult()
+                .strictEqual(0)
+                .end()
+        .test();
+
+    when(testClient,'Http authentication test to user controller')
+        .request('secretForUser')
+        .isHttp()
         .assertThat()
-        .buildHasError()
-        .presets()
-        .inputIsNotTypeEmail()
-        .end()
-        .buildHasError()
-        .presets()
-        .inputPropertyIsMissing()
-        .infoHas({propertyName  : 'password'})
-        .end()
+        .isSuccessful()
         .test();
 });

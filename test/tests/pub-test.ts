@@ -1,17 +1,21 @@
-import {describe, when, before} from "zation-assured";
-import {testClient, testClient2} from "../index.test";
+import {describe, when,before,after,create} from "zation-assured";
+import {clientConfig}                       from "../index.test";
+
+const testClient1  = create(clientConfig);
+const testClient2  = create(clientConfig);
 
 describe('Pub/Sub Tests',async () => {
 
     before(async () => {
-        await Promise.all([testClient.subAllCh(),testClient2.subAllCh()]);
-
-        testClient2.channelReact().onPubAllCh(null,() => {
-           console.log('pub all')
-        });
+        await Promise.all([testClient1.connect(),testClient2.connect()]);
+        await Promise.all([testClient1.subAllCh(),testClient2.subAllCh()]);
     });
 
-    when(testClient,'All channel pub')
+    after(async () => {
+        await Promise.all([testClient1.disconnect(),testClient2.disconnect()]);
+    });
+
+    when(testClient1,'All channel pub')
         .request('sendMsgToAll')
         .data({msg : 'hello'})
         .assertThat()
@@ -24,6 +28,20 @@ describe('Pub/Sub Tests',async () => {
                     .deepEqual({msg : 'hello'})
                     .end()
                 .end()
+            .end()
+        .end()
+        .test();
+
+    when(testClient1,'All channel unsub pub')
+        .do(async () => {testClient2.unsubAllCh();})
+        .request('sendMsgToAll')
+        .data({msg : 'hello'})
+        .assertThat()
+        .isSuccessful()
+            .client(testClient2)
+            .getPubAllCh()
+            .not()
+            .timeout(200)
             .end()
         .end()
         .test();
