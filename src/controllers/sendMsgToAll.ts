@@ -1,4 +1,6 @@
-import {Controller,ControllerConfig,Result,TaskError,TaskErrorBag,Bag,SmallBag} from 'zation-server';
+import {Controller, ControllerConfig, Result, Bag, SmallBag, Register} from 'zation-server';
+
+@Register('sendMsgToAll')
 export class SendMsgToAllController extends Controller
 {
     static config : ControllerConfig = {

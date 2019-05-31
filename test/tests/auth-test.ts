@@ -19,7 +19,7 @@ describe('Authentication Tests',async () => {
             .isNotSuccessful()
             .buildHasError()
                 .presets()
-                .noAccessToController()
+                .noAccessWithAuth()
             .end()
         .test();
 

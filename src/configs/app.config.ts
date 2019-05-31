@@ -1,11 +1,11 @@
 import {Config}          from 'zation-server';
-import {LogInController} from "../controllers/auth/logIn";
-import {SendMsgToAllController} from "../controllers/sendMsgToAll";
-import {SecretForUserController} from "../controllers/secretForUser";
-import {StringValidationController} from "../controllers/stringValidation";
-import {AnyOfValidationController} from "../controllers/anyOfValidation";
-import {ObjectValidationController} from "../controllers/objectValidation";
-import {ArrayValidationController} from "../controllers/arrayValidation";
+import "../controllers/auth/logIn";
+import "../controllers/sendMsgToAll";
+import "../controllers/secretForUser";
+import "../controllers/stringValidation";
+import "../controllers/anyOfValidation";
+import "../controllers/objectValidation";
+import "../controllers/arrayValidation";
 
 module.exports = Config.appConfig(
     {
@@ -28,15 +28,4 @@ module.exports = Config.appConfig(
             },
 
         authController : 'logIn',
-
-        controllers :
-            {
-                logIn : LogInController,
-                sendMsgToAll : SendMsgToAllController,
-                secretForUser : SecretForUserController,
-                stringValidation : StringValidationController,
-                anyOfValidation : AnyOfValidationController,
-                objectValidation : ObjectValidationController,
-                arrayValidation : ArrayValidationController
-            }
     });
