@@ -3,8 +3,8 @@ import {Bag, Config, Controller, ControllerConfig, Register, ValidationTypes} fr
 Config.defineModel('SomeObj',{
     properties : {
     },
-    construct: function (s) {
-        s.getEnd = () => {
+    construct: function () {
+        this.getEnd = () => {
             return ' END'
         }
     }
@@ -33,9 +33,9 @@ export class ObjModelExtraController extends Controller
             prototype : {
                 greeting : 'Hello '
             },
-            construct : function (s) {
-                s.getFullName = () => {
-                    return s.greeting + s.firstName + s.split + s.lastName + s.getEnd();
+            construct : function () {
+                this.getFullName = () => {
+                    return this.greeting + this.firstName + this.split + this.lastName + this.getEnd();
                 }
             },
             extends : 'SomeObj'

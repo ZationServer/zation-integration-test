@@ -54,7 +54,8 @@ export class ComplexValidationController extends Controller
                        }
                    }
                },
-               persons : ['person',{minLength : 2,maxLength : 10}]
+               persons : ['person',{minLength : 2,maxLength : 10}],
+               properties : {isOptional : true}
             }
     };
 }
