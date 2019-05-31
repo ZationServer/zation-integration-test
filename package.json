@@ -31,13 +31,13 @@
     "dist/**/*"
   ],
   "dependencies": {
-    "zation-server": "0.9.8"
+    "zation-server": "1.0.0"
   },
   "devDependencies": {
     "gulp": "4.0.0",
     "gulp-typescript": "5.0.0",
     "typescript": "3.3.3",
-    "zation-assured": "0.2.2",
+    "zation-assured": "0.2.3",
     "mocha": "^6.0.2",
     "ts-node": "^8.0.3"
   }

@@ -6,7 +6,9 @@ const TEST_PORT = 3000;
 
 export const clientConfig : ClientOptions = {
     port : TEST_PORT,
-    multiplex : false
+    multiplex : false,
+    system : 'T',
+    version : 4.5
 };
 
 before(async () => {

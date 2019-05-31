@@ -118,4 +118,36 @@ describe('Validation Tests',async () => {
             .test();
     });
 
+    describe('Single Input Validation', () => {
+
+        when(testClient,'Correct single input')
+            .request('singleInputValidation')
+            .data({name : 'Luca',age : 50})
+            .assertThat()
+            .isSuccessful()
+            .test();
+
+        when(testClient,'Wrong single input')
+            .request('singleInputValidation')
+            .data({name : 'Luca',age : 200})
+            .assertThat()
+            .isNotSuccessful()
+            .buildHasError()
+            .presets()
+            .inputNotMatchWithMaxValue()
+            .end()
+            .test();
+
+        when(testClient,'Wrong single input type')
+            .request('singleInputValidation')
+            .data([])
+            .assertThat()
+            .isNotSuccessful()
+            .buildHasError()
+            .presets()
+            .objectWasExpected()
+            .end()
+            .test();
+    });
+
 });

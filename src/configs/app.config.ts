@@ -6,6 +6,8 @@ import "../controllers/stringValidation";
 import "../controllers/anyOfValidation";
 import "../controllers/objectValidation";
 import "../controllers/arrayValidation";
+import "../controllers/singleInputValidation";
+import "../controllers/versionSystemAccess";
 
 module.exports = Config.appConfig(
     {

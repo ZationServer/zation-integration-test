@@ -1,4 +1,4 @@
-import {describe, when,before,after,create} from "zation-assured";
+import {describe, when,before,after,create,client} from "zation-assured";
 import {clientConfig}                       from "../index.test";
 
 const testClient1  = create(clientConfig);
@@ -44,5 +44,15 @@ describe('Pub/Sub Tests',async () => {
             .timeout(200)
             .end()
         .end()
+        .test();
+
+    client(testClient1,'Publish in AllWorker channel')
+        .doShouldThrow(async () => {
+            await new Promise((resolve, reject) => {
+                testClient1.getSocket().publish('Z_AW',{},(err) => {
+                    err ? reject(err) : resolve();
+                })
+            });
+        },'Should not able to publish in all worker channel')
         .test();
 });
