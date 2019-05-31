@@ -19,16 +19,4 @@ export class SingleInputValidationController extends Controller
             }
         })
     };
-
-    async handle(bag : Bag,{msg}) {
-
-    }
-
-    async initialize(smallBag : SmallBag) {
-
-    }
-
-    async wrongInput(bag : Bag,input) {
-
-    }
 }

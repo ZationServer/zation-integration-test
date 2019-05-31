@@ -1,4 +1,4 @@
-import {describe, when,before,after,create} from "zation-assured";
+import {describe, when, before, after, create, forEachClient} from "zation-assured";
 import {clientConfig}                       from "../index.test";
 
 const testClient1  = create(Object.assign({version : 4.0,system : 'T'},clientConfig));
@@ -7,13 +7,15 @@ const testClient2  = create(Object.assign({version : 1.0,system : 'A'},clientCon
 describe('Version System Access Tests',async () => {
 
     before(async () => {
-        await testClient1.connect();
-        await testClient2.connect();
+        await forEachClient(async (c) => {
+            await c.connect();
+        },testClient1,testClient2);
     });
 
     after(async () => {
-        await testClient1.disconnect();
-        await testClient2.disconnect();
+        await forEachClient(async (c) => {
+            await c.disconnect();
+        },testClient1,testClient2);
     });
 
     describe('Version Min Access', () => {

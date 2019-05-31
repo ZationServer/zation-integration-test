@@ -22,14 +22,4 @@ export class LogInController extends Controller
     async handle(bag : Bag,{email,password}) {
         await bag.authenticate('user',10,{email : email});
     }
-
-    async initialize(smallBag : SmallBag)
-    {
-
-    }
-
-    async wrongInput(bag : Bag,input)
-    {
-
-    }
 }

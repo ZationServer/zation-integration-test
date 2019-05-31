@@ -17,14 +17,4 @@ export class SendMsgToAllController extends Controller
     async handle(bag : Bag,{msg}) {
         await bag.publishInAllCh('msg',{msg : msg});
     }
-
-    async initialize(smallBag : SmallBag)
-    {
-
-    }
-
-    async wrongInput(bag : Bag,input)
-    {
-
-    }
 }

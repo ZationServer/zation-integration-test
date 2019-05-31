@@ -1,13 +1,18 @@
 import {Config}          from 'zation-server';
+
 import "../controllers/auth/logIn";
-import "../controllers/sendMsgToAll";
-import "../controllers/secretForUser";
-import "../controllers/stringValidation";
-import "../controllers/anyOfValidation";
-import "../controllers/objectValidation";
-import "../controllers/arrayValidation";
-import "../controllers/singleInputValidation";
-import "../controllers/versionSystemAccess";
+import "../controllers/pubSub/sendMsgToAll";
+import "../controllers/auth/secret";
+import "../controllers/validation/stringValidation";
+import "../controllers/validation/anyOfValidation";
+import "../controllers/validation/objectValidation";
+import "../controllers/validation/arrayValidation";
+import "../controllers/validation/singleInputValidation";
+import "../controllers/versionSystemAccess/versionSystemAccess";
+import "../controllers/apiLevel/apiLevel";
+import "../controllers/timeout/timeout";
+import "../controllers/validation/complexValidation";
+import "../controllers/result/result";
 
 module.exports = Config.appConfig(
     {
