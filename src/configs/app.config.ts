@@ -13,6 +13,7 @@ import "../controllers/apiLevel/apiLevel";
 import "../controllers/timeout/timeout";
 import "../controllers/validation/complexValidation";
 import "../controllers/result/result";
+import "../controllers/modelExtra/modelExtra";
 
 module.exports = Config.appConfig(
     {

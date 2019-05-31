@@ -1,11 +1,15 @@
 import {Config, Controller, ControllerConfig, Register, ValidationTypes} from 'zation-server';
 
+Config.defineModel('MinString',{
+    type : ValidationTypes.STRING,
+    minLength : 2,
+});
+
 Config.defineModel('animal',{
    properties : {
        name : {
-           type : ValidationTypes.STRING,
+           extends : 'MinString',
            maxLength : 10,
-           minLength : 2,
            startsWith : 'T'
        }
    }

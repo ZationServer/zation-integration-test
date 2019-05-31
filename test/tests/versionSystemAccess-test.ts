@@ -1,8 +1,8 @@
 import {describe, when, before, after, create, forEachClient} from "zation-assured";
 import {clientConfig}                       from "../index.test";
 
-const testClient1  = create(Object.assign({version : 4.0,system : 'T'},clientConfig));
-const testClient2  = create(Object.assign({version : 1.0,system : 'A'},clientConfig));
+const testClient1  = create(Object.assign({},clientConfig,{version : 4.0,system : 'T'}));
+const testClient2  = create(Object.assign({},clientConfig,{version : 1.0,system : 'A'}));
 
 describe('Version System Access Tests',async () => {
 
