@@ -469,4 +469,40 @@ describe('Validation Tests',async () => {
 
     });
 
+    describe('Param based with array data', () => {
+
+        when(testClient,'Correct data')
+            .request('stringValidation')
+            .data(['aaaaaa'])
+            .assertThat()
+            .isSuccessful()
+            .test();
+
+        when(testClient,'Wrong data')
+            .request('stringValidation')
+            .data(['thisIsATestString'])
+            .assertThat()
+            .isNotSuccessful()
+            .buildHasError()
+            .presets()
+            .inputNotMatchWithMaxLength()
+            .end()
+            .buildHasError()
+            .presets()
+            .inputIsNotEndsWith()
+            .end()
+            .test();
+
+        when(testClient,'To much data')
+            .request('stringValidation')
+            .data(['thisI','someString'])
+            .assertThat()
+            .isNotSuccessful()
+            .buildHasError()
+            .presets()
+            .inputParamNotAssignable()
+            .end()
+            .test();
+    });
+
 });

@@ -18,7 +18,8 @@ before(async () => {
         origins : '*:*',
         workers : 1,
         brokers : 1,
-        debug : false
+        debug : false,
+        showPrecompiledConfigs : true
     }),StarterConfig),StartMode.TEST);
 });
 
