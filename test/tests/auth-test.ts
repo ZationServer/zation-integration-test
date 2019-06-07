@@ -19,7 +19,7 @@ describe('Authentication Tests',async () => {
         .isNotSuccessful()
         .buildHasError()
         .presets()
-        .noAccessWithAuth()
+        .noAccessWithTokenState()
         .end()
         .test();
 
@@ -29,7 +29,7 @@ describe('Authentication Tests',async () => {
         .isNotSuccessful()
         .buildHasError()
         .presets()
-        .noAccessWithAuth()
+        .noAccessWithTokenState()
         .end()
         .test();
 
@@ -39,7 +39,7 @@ describe('Authentication Tests',async () => {
         .isNotSuccessful()
         .buildHasError()
         .presets()
-        .noAccessWithAuth()
+        .noAccessWithTokenState()
         .end()
         .test();
 
@@ -49,7 +49,7 @@ describe('Authentication Tests',async () => {
         .isNotSuccessful()
         .buildHasError()
         .presets()
-        .noAccessWithAuth()
+        .noAccessWithTokenState()
         .end()
         .test();
 
@@ -59,7 +59,7 @@ describe('Authentication Tests',async () => {
         .isNotSuccessful()
         .buildHasError()
         .presets()
-        .noAccessWithAuth()
+        .noAccessWithTokenState()
         .end()
         .test();
 

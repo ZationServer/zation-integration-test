@@ -1,5 +1,5 @@
-import {describe, when,before,after,create,client} from "zation-assured";
-import {clientConfig}                       from "../index.test";
+import {after, before, client, create, describe, ErrorName, SubscribeFailedError} from "zation-assured";
+import {clientConfig} from "../index.test";
 
 const testClient  = create(clientConfig);
 
@@ -36,7 +36,7 @@ describe('Sub Tests',async () => {
 
         client(testClient,'Sub auth test2')
             .doShouldThrow(async () => {
-                await testClient.subCustomCh('authTest2')
+                await testClient.subCustomCh('authTest2');
             },'Should not able to sub auth custom channel.')
             .test();
     });
