@@ -47,7 +47,7 @@ describe('Sub Tests',async () => {
         },'Should not able to sub unknown custom channel.')
         .test();
 
-    describe('Sub custom id with id check', () => {
+    describe('Sub custom id ch with id check', () => {
         client(testClient,'Not valid id')
             .doShouldThrow(async () => {
                 await testClient.subCustomIdCh('idCheck','342')
@@ -57,6 +57,40 @@ describe('Sub Tests',async () => {
         client(testClient,'Valid id')
             .do(async () => {
                 await testClient.subCustomIdCh('idCheck','m2');
+            })
+            .test();
+    });
+
+    describe('Sub custom ch with system check', () => {
+        client(testClient,'Not valid system')
+            .doShouldThrow(async () => {
+                await testClient.subCustomCh('syAccessW',)
+            },'Should not able to sub custom channel with not valid system.')
+            .test();
+
+        client(testClient,'Valid system')
+            .do(async () => {
+                await testClient.subCustomCh('syAccessWT');
+            })
+            .test();
+    });
+
+    describe('Sub custom ch with version check', () => {
+        client(testClient,'Not valid version')
+            .doShouldThrow(async () => {
+                await testClient.subCustomCh('vAccessNotValid',)
+            },'Should not able to sub custom channel with not valid version.')
+            .test();
+
+        client(testClient,'Valid version 1')
+            .do(async () => {
+                await testClient.subCustomCh('vAccessValid1');
+            })
+            .test();
+
+        client(testClient,'Valid version 2')
+            .do(async () => {
+                await testClient.subCustomCh('vAccessValid2');
             })
             .test();
     });
