@@ -6,6 +6,7 @@ import "../controllers/auth/secret";
 import "../controllers/validation/stringValidation";
 import "../controllers/validation/anyOfValidation";
 import "../controllers/validation/objectValidation";
+import "../controllers/validation/objectClassValidation";
 import "../controllers/validation/arrayValidation";
 import "../controllers/validation/singleInputValidation";
 import "../controllers/validation/allAllow";

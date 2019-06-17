@@ -86,6 +86,34 @@ describe('Validation Tests',async () => {
             .test();
     });
 
+    describe('Object Class Validation', () => {
+
+        when(testClient,'Correct object')
+            .request('objectClassValidation')
+            .data({deviceId : 10,producer : 'Samsung',screenSize : 5.2})
+            .assertThat()
+            .isSuccessful()
+            .assertResult()
+            .equal('Samsung-10')
+            .end()
+            .test();
+
+        when(testClient,'Not valid object')
+            .request('objectClassValidation')
+            .data({deviceId : 10.14,producer : 'Samsung',screenSize : 12.2})
+            .assertThat()
+            .isNotSuccessful()
+            .buildHasError()
+            .presets()
+            .inputNotMatchWithMaxValue('screenSize')
+            .end()
+            .buildHasError()
+            .presets()
+            .inputIsNotTypeInt('deviceId')
+            .end()
+            .test();
+    });
+
     describe('Array Validation', () => {
 
         when(testClient,'Correct array')
@@ -121,14 +149,14 @@ describe('Validation Tests',async () => {
     describe('Single Input Validation', () => {
 
         when(testClient,'Correct single input')
-            .request('singleInputValidation')
+            .request('singleInputValidationObj')
             .data({name : 'Luca',age : 50})
             .assertThat()
             .isSuccessful()
             .test();
 
         when(testClient,'Wrong single input')
-            .request('singleInputValidation')
+            .request('singleInputValidationObj')
             .data({name : 'Luca',age : 200})
             .assertThat()
             .isNotSuccessful()
@@ -139,7 +167,7 @@ describe('Validation Tests',async () => {
             .test();
 
         when(testClient,'Wrong single input type')
-            .request('singleInputValidation')
+            .request('singleInputValidationObj')
             .data([])
             .assertThat()
             .isNotSuccessful()
@@ -389,81 +417,127 @@ describe('Validation Tests',async () => {
 
         describe('Single input',() => {
 
-            describe('Full',() => {
+            describe('Object model', () => {
+                describe('Full',() => {
+                    when(testClient,'Correct input')
+                        .validationRequest('singleInputValidationObj')
+                        .check('',{name : 'Luca',age : 20})
+                        .assertThat()
+                        .isSuccessful()
+                        .test();
+
+                    when(testClient,'Wrong input')
+                        .validationRequest('singleInputValidationObj')
+                        .check('',{name : 'Luca',age : 200})
+                        .assertThat()
+                        .isNotSuccessful()
+                        .buildHasError()
+                        .presets()
+                        .inputNotMatchWithMaxValue()
+                        .end()
+                        .test();
+                });
+
+                describe('Multi Check Full',() => {
+                    when(testClient,'Correct input')
+                        .validationRequest('singleInputValidationObj')
+                        .check('',{name : 'Luca',age : 20})
+                        .check('',{name : 'Leonie',age : 50})
+                        .assertThat()
+                        .isSuccessful()
+                        .test();
+
+                    when(testClient,'Wrong input')
+                        .validationRequest('singleInputValidationObj')
+                        .check('',{name : 'Luca',age : 20})
+                        .check('',{name : 'Tim',age : 18})
+                        .check('',{name : 'Tom',age : 200})
+                        .assertThat()
+                        .isNotSuccessful()
+                        .buildHasError()
+                        .presets()
+                        .inputNotMatchWithMaxValue()
+                        .end()
+                        .test();
+                });
+
+                describe('Single value model',() => {
+                    when(testClient,'Correct input')
+                        .validationRequest('singleInputValidationObj')
+                        .check('name','Luca')
+                        .assertThat()
+                        .isSuccessful()
+                        .test();
+
+                    when(testClient,'Wrong input')
+                        .validationRequest('singleInputValidationObj')
+                        .check('name',0)
+                        .assertThat()
+                        .isNotSuccessful()
+                        .buildHasError()
+                        .presets()
+                        .inputIsNotTypeString()
+                        .end()
+                        .test();
+                });
+
+                describe('Wrong path',() => {
+
+                    when(testClient,'Path can not resolved')
+                        .validationRequest('singleInputValidationObj')
+                        .check('lastName','LastName')
+                        .assertThat()
+                        .isNotSuccessful()
+                        .buildHasError()
+                        .presets()
+                        .inputPathNotResolvable()
+                        .end()
+                        .test();
+                });
+            });
+
+            describe('Array Model',() => {
+
                 when(testClient,'Correct input')
-                    .validationRequest('singleInputValidation')
-                    .check('',{name : 'Luca',age : 20})
+                    .request('singleInputValidationArray')
+                    .data(['Luca','Gagan','Tom'])
                     .assertThat()
                     .isSuccessful()
                     .test();
 
                 when(testClient,'Wrong input')
-                    .validationRequest('singleInputValidation')
-                    .check('',{name : 'Luca',age : 200})
+                    .request('singleInputValidationArray')
+                    .data(['Luca',10])
                     .assertThat()
                     .isNotSuccessful()
                     .buildHasError()
                     .presets()
-                    .inputNotMatchWithMaxValue()
+                    .inputIsNotTypeString('1')
                     .end()
                     .test();
+
             });
 
-            describe('Multi Check Full',() => {
+            describe('AnyOf Model',() => {
+
                 when(testClient,'Correct input')
-                    .validationRequest('singleInputValidation')
-                    .check('',{name : 'Luca',age : 20})
-                    .check('',{name : 'Leonie',age : 50})
+                    .request('singleInputValidationAnyOf')
+                    .data('Luca')
                     .assertThat()
                     .isSuccessful()
                     .test();
 
                 when(testClient,'Wrong input')
-                    .validationRequest('singleInputValidation')
-                    .check('',{name : 'Luca',age : 20})
-                    .check('',{name : 'Tim',age : 18})
-                    .check('',{name : 'Tom',age : 200})
+                    .request('singleInputValidationAnyOf')
+                    .data('LucaLucaLucaLuca')
                     .assertThat()
                     .isNotSuccessful()
                     .buildHasError()
                     .presets()
-                    .inputNotMatchWithMaxValue()
+                    .inputNotMatchWithMaxLength('name')
                     .end()
                     .test();
-            });
 
-            describe('Single value model',() => {
-                when(testClient,'Correct input')
-                    .validationRequest('singleInputValidation')
-                    .check('name','Luca')
-                    .assertThat()
-                    .isSuccessful()
-                    .test();
-
-                when(testClient,'Wrong input')
-                    .validationRequest('singleInputValidation')
-                    .check('name',0)
-                    .assertThat()
-                    .isNotSuccessful()
-                    .buildHasError()
-                    .presets()
-                    .inputIsNotTypeString()
-                    .end()
-                    .test();
-            });
-
-            describe('Wrong path',() => {
-
-                when(testClient,'Path can not resolved')
-                    .validationRequest('singleInputValidation')
-                    .check('lastName','LastName')
-                    .assertThat()
-                    .isNotSuccessful()
-                    .buildHasError()
-                    .presets()
-                    .inputPathNotResolvable()
-                    .end()
-                    .test();
             });
         });
 
