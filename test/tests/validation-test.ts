@@ -505,4 +505,17 @@ describe('Validation Tests',async () => {
             .test();
     });
 
+    describe('All allow input', () => {
+
+        when(testClient,'Check with some input')
+            .request('allAllow')
+            .data('This is a string')
+            .assertThat()
+            .isSuccessful()
+            .assertResult()
+            .equal('This is a string')
+            .end()
+            .test();
+    });
+
 });

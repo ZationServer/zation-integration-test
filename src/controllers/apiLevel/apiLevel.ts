@@ -1,4 +1,14 @@
-import {Controller, ControllerConfig, Result, Bag, SmallBag, Register} from 'zation-server';
+import {
+    Controller,
+    ControllerConfig,
+    Result,
+    Bag,
+    SmallBag,
+    Register,
+    ObjectModel,
+    Model,
+    Extends, Config
+} from 'zation-server';
 
 @Register('apiLevel',5)
 export class ApiLevel5Controller extends Controller

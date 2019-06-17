@@ -7,7 +7,7 @@ Config.defineModel('SomeObj',{
         this.getEnd = () => {
             return ' END'
         }
-    }
+    },
 });
 
 @Register('modelExtra')

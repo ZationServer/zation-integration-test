@@ -19,7 +19,7 @@ before(async () => {
         workers : 1,
         brokers : 1,
         debug : false,
-        showPrecompiledConfigs : true
+        showPrecompiledConfigs : false
     }),StarterConfig),StartMode.TEST);
 });
 

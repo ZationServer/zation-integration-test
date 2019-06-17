@@ -8,6 +8,7 @@ import "../controllers/validation/anyOfValidation";
 import "../controllers/validation/objectValidation";
 import "../controllers/validation/arrayValidation";
 import "../controllers/validation/singleInputValidation";
+import "../controllers/validation/allAllow";
 import "../controllers/versionSystemAccess/versionSystemAccess";
 import "../controllers/apiLevel/apiLevel";
 import "../controllers/timeout/timeout";
