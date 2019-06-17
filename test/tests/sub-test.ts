@@ -46,4 +46,18 @@ describe('Sub Tests',async () => {
             await testClient.subCustomCh('unknownChannel')
         },'Should not able to sub unknown custom channel.')
         .test();
+
+    describe('Sub custom id with id check', () => {
+        client(testClient,'Not valid id')
+            .doShouldThrow(async () => {
+                await testClient.subCustomIdCh('idCheck','342')
+            },'Should not able to sub custom id channel with not valid id.')
+            .test();
+
+        client(testClient,'Valid id')
+            .do(async () => {
+                await testClient.subCustomIdCh('idCheck','m2');
+            })
+            .test();
+    });
 });

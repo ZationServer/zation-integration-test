@@ -34,5 +34,10 @@ module.exports = Config.channelConfig(
                         clientPublishAccess : false,
                         subscribeAccess : true,
                     },
+                idCheck : {
+                        idCheck : (id) => {
+                            return id === 'm2';
+                        }
+                }
             },
     });
