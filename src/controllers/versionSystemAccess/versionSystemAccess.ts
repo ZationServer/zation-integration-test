@@ -1,4 +1,4 @@
-import {Controller, ControllerConfig, Result, Bag, SmallBag, Register} from 'zation-server';
+import {Controller, ControllerConfig, Result, RequestBag, Register} from 'zation-server';
 
 @Register('versionAccessMin')
 export class VersionAccessMinController extends Controller

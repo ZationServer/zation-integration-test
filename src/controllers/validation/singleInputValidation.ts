@@ -1,4 +1,4 @@
-import {Bag, Config, Controller, ControllerConfig, Register, SmallBag, ValidationTypes} from 'zation-server';
+import {RequestBag, Config, Controller, ControllerConfig, Register, ValidationTypes} from 'zation-server';
 
 @Register('singleInputValidationObj')
 export class SingleInputValidationObjController extends Controller

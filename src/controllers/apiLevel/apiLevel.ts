@@ -2,8 +2,7 @@ import {
     Controller,
     ControllerConfig,
     Result,
-    Bag,
-    SmallBag,
+    RequestBag,
     Register,
     ObjectModel,
     Model,
@@ -17,7 +16,7 @@ export class ApiLevel5Controller extends Controller
         access : 'all',
     };
 
-    async handle(bag : Bag,{msg}) {
+    async handle(bag : RequestBag,{msg}) {
         return 5;
     }
 }
@@ -29,7 +28,7 @@ export class ApiLevel2Controller extends Controller
         access : 'all',
     };
 
-    async handle(bag : Bag,{msg}) {
+    async handle(bag : RequestBag,{msg}) {
         return 2;
     }
 }

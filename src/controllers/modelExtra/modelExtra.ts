@@ -1,4 +1,4 @@
-import {Bag, Config, Controller, ControllerConfig, Register, ValidationTypes} from 'zation-server';
+import {RequestBag, Config, Controller, ControllerConfig, Register, ValidationTypes} from 'zation-server';
 
 Config.defineModel('SomeObj',{
     properties : {
@@ -42,7 +42,7 @@ export class ObjModelExtraController extends Controller
         })
     };
 
-    async handle(bag : Bag,obj) {
+    async handle(bag : RequestBag,obj) {
         return obj.getFullName();
     }
 }

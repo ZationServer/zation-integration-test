@@ -1,4 +1,4 @@
-import {Controller, ControllerConfig, Result, Bag, SmallBag, Register} from 'zation-server';
+import {Controller, ControllerConfig, Result, RequestBag, Register} from 'zation-server';
 
 @Register('sendMsgToAll')
 export class SendMsgToAllController extends Controller
@@ -14,7 +14,7 @@ export class SendMsgToAllController extends Controller
             }
     };
 
-    async handle(bag : Bag,{msg}) {
+    async handle(bag : RequestBag,{msg}) {
         await bag.publishInAllCh('msg',{msg : msg});
     }
 }

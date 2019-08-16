@@ -8,6 +8,7 @@ module.exports = Config.eventConfig(
             {
                 res.send('Application Server');
             });
-        }
+        },
+
 
     });

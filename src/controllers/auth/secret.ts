@@ -1,4 +1,4 @@
-import {Controller, ControllerConfig, Result, Bag, SmallBag, Register} from 'zation-server';
+import {Controller, ControllerConfig, Result, RequestBag, Register} from 'zation-server';
 
 @Register('secretForUser')
 export class SecretForUserController extends Controller
@@ -8,7 +8,7 @@ export class SecretForUserController extends Controller
         input : {}
     };
 
-    async handle(bag : Bag,{msg}) {
+    async handle(bag : RequestBag,{msg}) {
        return 0;
     }
 }
@@ -21,7 +21,7 @@ export class SecretForId10Controller extends Controller
         input : {}
     };
 
-    async handle(bag : Bag,{msg}) {
+    async handle(bag : RequestBag,{msg}) {
         return 0;
     }
 }
@@ -34,7 +34,7 @@ export class SecretForAdminOrUserController extends Controller
         input : {}
     };
 
-    async handle(bag : Bag,{msg}) {
+    async handle(bag : RequestBag,{msg}) {
         return 0;
     }
 }
@@ -49,7 +49,7 @@ export class SecretForAuthController extends Controller
         input : {}
     };
 
-    async handle(bag : Bag,{msg}) {
+    async handle(bag : RequestBag,{msg}) {
         return 0;
     }
 }
@@ -67,7 +67,7 @@ export class SecretForEmailController extends Controller
         input : {}
     };
 
-    async handle(bag : Bag,{msg}) {
+    async handle(bag : RequestBag,{msg}) {
         return 0;
     }
 }

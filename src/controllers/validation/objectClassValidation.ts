@@ -2,8 +2,7 @@ import {
     Controller,
     ControllerConfig,
     Result,
-    Bag,
-    SmallBag,
+    RequestBag,
     Register,
     ObjectModel,
     Extends,
@@ -45,7 +44,7 @@ export class ObjectValidationController extends Controller
         input : Phone
     };
 
-    async handle(bag: Bag, phone: Phone): Promise<any> {
+    async handle(bag: RequestBag, phone: Phone): Promise<any> {
         console.log((phone as any).__proto__);
         console.log(typeof  phone.getDeviceCode);
         return phone.getDeviceCode();

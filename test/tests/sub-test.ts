@@ -50,13 +50,13 @@ describe('Sub Tests',async () => {
     describe('Sub custom id ch with id check', () => {
         client(testClient,'Not valid id')
             .doShouldThrow(async () => {
-                await testClient.subCustomIdCh('idCheck','342')
+                await testClient.subCustomCh('idCheck','342')
             },'Should not able to sub custom id channel with not valid id.')
             .test();
 
         client(testClient,'Valid id')
             .do(async () => {
-                await testClient.subCustomIdCh('idCheck','m2');
+                await testClient.subCustomCh('idCheck','m2');
             })
             .test();
     });

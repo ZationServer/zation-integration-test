@@ -6,5 +6,5 @@ module.exports = Config.mainConfig(
         appName : 'zation-integration-test',
         usePanel : true,
         panelUser : {username: 'admin', password: '1234'},
-        defaultClientApiLevel : 3
+        defaultClientApiLevel : 3,
     });

@@ -1,4 +1,4 @@
-import {Bag, Config, Controller, ControllerConfig, Register, Result, ValidationTypes} from 'zation-server';
+import {RequestBag, Config, Controller, ControllerConfig, Register, Result, ValidationTypes} from 'zation-server';
 
 @Register('result')
 export class ComplexValidationController extends Controller
@@ -12,7 +12,7 @@ export class ComplexValidationController extends Controller
             }
     };
 
-    async handle(bag: Bag, {statusCode,result}): Promise<any> {
+    async handle(bag: RequestBag, {statusCode,result}): Promise<any> {
         return new Result(result,statusCode);
     }
 }

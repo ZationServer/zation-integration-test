@@ -1,4 +1,4 @@
-import {Controller, ControllerConfig, Result, Bag, SmallBag, Register} from 'zation-server';
+import {Controller, ControllerConfig, Result, RequestBag, Register} from 'zation-server';
 
 @Register('logIn')
 export class LogInController extends Controller
@@ -19,7 +19,7 @@ export class LogInController extends Controller
             }
     };
 
-    async handle(bag : Bag,{email,password}) {
+    async handle(bag : RequestBag,{email,password}) {
         await bag.authenticate('user',10,{email : email});
     }
 }
