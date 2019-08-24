@@ -1,4 +1,4 @@
-import {RequestBag, Config, Controller, ControllerConfig, Register, ValidationTypes} from 'zation-server';
+import {RequestBag, Config, Controller, ControllerConfig, Register, ValidationType} from 'zation-server';
 
 @Register('singleInputValidationObj')
 export class SingleInputValidationObjController extends Controller
@@ -12,7 +12,7 @@ export class SingleInputValidationObjController extends Controller
                     maxLength : 20
                 },
                 age : {
-                    type : ValidationTypes.NUMBER,
+                    type : ValidationType.NUMBER,
                     maxValue : 100,
                     minValue : 10
                 }

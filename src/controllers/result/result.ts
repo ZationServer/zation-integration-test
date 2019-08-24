@@ -1,4 +1,4 @@
-import {RequestBag, Config, Controller, ControllerConfig, Register, Result, ValidationTypes} from 'zation-server';
+import {RequestBag, Config, Controller, ControllerConfig, Register, Result} from 'zation-server';
 
 @Register('result')
 export class ComplexValidationController extends Controller

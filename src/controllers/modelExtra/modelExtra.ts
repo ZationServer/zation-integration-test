@@ -1,4 +1,4 @@
-import {RequestBag, Config, Controller, ControllerConfig, Register, ValidationTypes} from 'zation-server';
+import {RequestBag, Config, Controller, ControllerConfig, Register, ValidationType} from 'zation-server';
 
 Config.defineModel('SomeObj',{
     properties : {
@@ -18,14 +18,14 @@ export class ObjModelExtraController extends Controller
         input : Config.single({
             properties : {
                 firstName : {
-                    type : ValidationTypes.STRING,
+                    type : ValidationType.STRING,
                     convert : (v : string) => v.toUpperCase()
                 },
                 lastName : {
-                    type : ValidationTypes.STRING
+                    type : ValidationType.STRING
                 },
                 split : {
-                    type : ValidationTypes.STRING,
+                    type : ValidationType.STRING,
                     isOptional : true,
                     default : '.'
                 }

@@ -1,7 +1,7 @@
-import {Config, Controller, ControllerConfig, Register, ValidationTypes} from 'zation-server';
+import {Config, Controller, ControllerConfig, Register, ValidationType} from 'zation-server';
 
 Config.defineModel('MinString',{
-    type : ValidationTypes.STRING,
+    type : ValidationType.STRING,
     minLength : 2,
 });
 
@@ -23,7 +23,7 @@ Config.defineModel('person',{
             type : 'string'
         },
         age : {
-            type :ValidationTypes.NUMBER,
+            type :ValidationType.NUMBER,
             maxValue : 100,
             minValue : 10
         }
@@ -42,7 +42,7 @@ export class ComplexValidationController extends Controller
                        dog : {
                            properties : {
                                likeToBark : {
-                                   type : ValidationTypes.BOOLEAN
+                                   type : ValidationType.BOOLEAN
                                }
                            },
                            extends : 'animal'
