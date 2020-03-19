@@ -29,7 +29,7 @@ describe('ApiLevel Tests',async () => {
             .isNotSuccessful()
             .buildHasError()
             .presets()
-            .apiLevelNotCompatible()
+            .apiLevelIncompatible()
             .end()
             .test();
 
@@ -62,7 +62,7 @@ describe('ApiLevel Tests',async () => {
             .isNotSuccessful()
             .buildHasError()
             .presets()
-            .apiLevelNotCompatible()
+            .apiLevelIncompatible()
             .end()
             .test();
 

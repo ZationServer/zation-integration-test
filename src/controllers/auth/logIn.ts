@@ -1,6 +1,6 @@
 import {Controller, ControllerConfig, Result, RequestBag, Register} from 'zation-server';
 
-@Register('logIn')
+@Register().asAuthController()
 export class LogInController extends Controller
 {
     static config : ControllerConfig = {

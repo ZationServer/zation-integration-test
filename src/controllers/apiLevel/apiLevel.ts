@@ -6,10 +6,10 @@ import {
     Register,
     ObjectModel,
     Model,
-    Extends, Config
+    Config
 } from 'zation-server';
 
-@Register('apiLevel',5)
+@Register('apiLevel').withApiLevel(5)
 export class ApiLevel5Controller extends Controller
 {
     static config : ControllerConfig = {
@@ -21,7 +21,7 @@ export class ApiLevel5Controller extends Controller
     }
 }
 
-@Register('apiLevel',2)
+@Register('apiLevel').withApiLevel(2)
 export class ApiLevel2Controller extends Controller
 {
     static config : ControllerConfig = {

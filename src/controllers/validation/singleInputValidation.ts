@@ -1,18 +1,18 @@
-import {RequestBag, Config, Controller, ControllerConfig, Register, ValidationType} from 'zation-server';
+import {RequestBag, Config, Controller, ControllerConfig, Register,$single} from 'zation-server';
 
 @Register('singleInputValidationObj')
 export class SingleInputValidationObjController extends Controller
 {
     static config : ControllerConfig = {
         access : 'all',
-        input : Config.single({
+        input : $single({
             properties : {
                 name : {
                     type : 'string',
                     maxLength : 20
                 },
                 age : {
-                    type : ValidationType.NUMBER,
+                    type : 'number',
                     maxValue : 100,
                     minValue : 10
                 }
@@ -26,7 +26,7 @@ export class SingleInputValidationArrayController extends Controller
 {
     static config : ControllerConfig = {
         access : 'all',
-        input : Config.single([{
+        input : $single([{
             type : 'string'
         }])
     };
@@ -37,7 +37,7 @@ export class SingleInputValidationAnyOfController extends Controller
 {
     static config : ControllerConfig = {
         access : 'all',
-        input : Config.single({
+        input : $single({
             anyOf : {
                 name : {
                     type : 'string',

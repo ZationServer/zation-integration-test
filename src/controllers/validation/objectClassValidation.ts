@@ -5,24 +5,21 @@ import {
     RequestBag,
     Register,
     ObjectModel,
-    Extends,
     Model
 } from 'zation-server';
 
 @ObjectModel()
-@Extends({
-    properties : {
-        deviceId : {
-            type : 'int'
-        }
-    },
+class Device {
 
-})
-class Phone {
+    @Model({type : 'int'})
+    deviceId : number
+}
 
-    constructor()
-    {
-        console.log('test');
+@ObjectModel()
+class Phone extends Device {
+
+    constructor() {
+        super();
     }
 
     @Model({type : 'number',minValue : 3,maxValue : 10})
@@ -45,8 +42,6 @@ export class ObjectValidationController extends Controller
     };
 
     async handle(bag: RequestBag, phone: Phone): Promise<any> {
-        console.log((phone as any).__proto__);
-        console.log(typeof  phone.getDeviceCode);
         return phone.getDeviceCode();
     }
 }

@@ -15,7 +15,7 @@ export class ObjectValidationController extends Controller
                         },
                         colour : {
                             type : 'string',
-                            enum : ['red','black','yellow']
+                            in : ['red','black','yellow']
                         },
                         age : {
                             type : 'int',

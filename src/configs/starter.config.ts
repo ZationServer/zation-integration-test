@@ -4,5 +4,5 @@ export default Config.starterConfig(
     {
         //options
         debug : true,
-        startDebug : false,
+        startDebug : false
     });

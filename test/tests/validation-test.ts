@@ -22,8 +22,8 @@ describe('Validation Tests',async () => {
             .isNotSuccessful()
             .buildHasError()
                 .presets()
-                .inputIsNotTypeString()
-                .infoHas({inputPath : 'string'})
+                .valueIsNotTypeString()
+                .infoHas({path : 'string'})
                 .end()
             .test();
 
@@ -34,11 +34,11 @@ describe('Validation Tests',async () => {
             .isNotSuccessful()
             .buildHasError()
                 .presets()
-                .inputNotMatchWithMaxLength()
+                .valueNotMatchesWithMaxLength()
                 .end()
             .buildHasError()
                 .presets()
-                .inputIsNotEndsWith()
+                .valueNotMatchesWithEndsWith()
                 .end()
             .test();
     });
@@ -80,8 +80,8 @@ describe('Validation Tests',async () => {
             .isNotSuccessful()
             .buildHasError()
                 .presets()
-                .inputIsNotMatchWithEnum()
-                .infoHas({inputPath : 'dog.colour'})
+                .valueNotMatchesWithIn()
+                .infoHas({path : 'dog.colour'})
                 .end()
             .test();
     });
@@ -105,11 +105,11 @@ describe('Validation Tests',async () => {
             .isNotSuccessful()
             .buildHasError()
             .presets()
-            .inputNotMatchWithMaxValue('screenSize')
+            .valueNotMatchesWithMaxValue('screenSize')
             .end()
             .buildHasError()
             .presets()
-            .inputIsNotTypeInt('deviceId')
+            .valueIsNotTypeInt('deviceId')
             .end()
             .test();
     });
@@ -130,7 +130,7 @@ describe('Validation Tests',async () => {
             .isNotSuccessful()
             .buildHasError()
                 .presets()
-                .inputArrayNotMatchWithMaxLength()
+                .arrayNotMatchesWithMaxLength()
                 .end()
             .test();
 
@@ -162,7 +162,7 @@ describe('Validation Tests',async () => {
             .isNotSuccessful()
             .buildHasError()
             .presets()
-            .inputNotMatchWithMaxValue()
+            .valueNotMatchesWithMaxValue()
             .end()
             .test();
 
@@ -202,7 +202,75 @@ describe('Validation Tests',async () => {
             .isNotSuccessful()
             .buildHasError()
             .presets()
-            .inputArrayNotMatchWithMinLength()
+            .arrayNotMatchesWithMinLength()
+            .end()
+            .test();
+    });
+
+    describe('Extend Value Model Optional Single', () => {
+
+        when(testClient,'Correct input - string')
+            .request('ExtendValueModelSingle')
+            .data('Hello')
+            .assertThat()
+            .isSuccessful()
+            .assertResult()
+            .strictEqual('Hello')
+            .end()
+            .test();
+
+        when(testClient,'Correct input - undefined')
+            .request('ExtendValueModelSingle')
+            .data(undefined)
+            .assertThat()
+            .isSuccessful()
+            .assertResult()
+            .strictEqual(undefined)
+            .end()
+            .test();
+
+        when(testClient,'Wrong input')
+            .request('ExtendValueModelSingle')
+            .data('hi')
+            .assertThat()
+            .isNotSuccessful()
+            .buildHasError()
+            .presets()
+            .valueNotMatchesWithMinLength()
+            .end()
+            .test();
+    });
+
+    describe('Extend Value Model Optional Param', () => {
+
+        when(testClient,'Correct input - string')
+            .request('ExtendValueModelParam')
+            .data({data:'Hello'})
+            .assertThat()
+            .isSuccessful()
+            .assertResult()
+            .strictEqual('Hello')
+            .end()
+            .test();
+
+        when(testClient,'Correct input - undefined')
+            .request('ExtendValueModelParam')
+            .data({data:undefined})
+            .assertThat()
+            .isSuccessful()
+            .assertResult()
+            .strictEqual(undefined)
+            .end()
+            .test();
+
+        when(testClient,'Wrong input')
+            .request('ExtendValueModelParam')
+            .data({data:'hi'})
+            .assertThat()
+            .isNotSuccessful()
+            .buildHasError()
+            .presets()
+            .valueNotMatchesWithMinLength()
             .end()
             .test();
     });
@@ -232,7 +300,7 @@ describe('Validation Tests',async () => {
                     .isNotSuccessful()
                     .buildHasError()
                     .presets()
-                    .inputArrayNotMatchWithMinLength()
+                    .arrayNotMatchesWithMinLength()
                     .end()
                     .test();
             });
@@ -260,7 +328,7 @@ describe('Validation Tests',async () => {
                     .isNotSuccessful()
                     .buildHasError()
                     .presets()
-                    .inputArrayNotMatchWithMinLength()
+                    .arrayNotMatchesWithMinLength()
                     .end()
                     .test();
             });
@@ -287,7 +355,7 @@ describe('Validation Tests',async () => {
                     .isNotSuccessful()
                     .buildHasError()
                     .presets()
-                    .inputNotMatchWithMinLength()
+                    .valueNotMatchesWithMinLength()
                     .end()
                     .test();
             });
@@ -314,7 +382,7 @@ describe('Validation Tests',async () => {
                     .isNotSuccessful()
                     .buildHasError()
                     .presets()
-                    .inputNotMatchWithMinLength()
+                    .valueNotMatchesWithMinLength()
                     .end()
                     .test();
 
@@ -325,7 +393,7 @@ describe('Validation Tests',async () => {
                     .isNotSuccessful()
                     .buildHasError()
                     .presets()
-                    .inputNotMatchWithMinLength()
+                    .valueNotMatchesWithMinLength()
                     .end()
                     .test();
             });
@@ -333,14 +401,14 @@ describe('Validation Tests',async () => {
             describe('Array model',() => {
                 when(testClient,'Correct input (array item)')
                     .validationRequest('complexValidation')
-                    .check('persons.array',{name : 'Tim',age : 20})
+                    .check('persons.type',{name : 'Tim',age : 20})
                     .assertThat()
                     .isSuccessful()
                     .test();
 
                 when(testClient,'Wrong input (array item)')
                     .validationRequest('complexValidation')
-                    .check('persons.array',{name : 'Tim'})
+                    .check('persons.type',{name : 'Tim'})
                     .assertThat()
                     .isNotSuccessful()
                     .buildHasError()
@@ -351,19 +419,19 @@ describe('Validation Tests',async () => {
 
                 when(testClient,'Correct input (array item inner properties)')
                     .validationRequest('complexValidation')
-                    .check('persons.array.name','Tim')
+                    .check('persons.type.name','Tim')
                     .assertThat()
                     .isSuccessful()
                     .test();
 
                 when(testClient,'Wrong input (array item inner properties)')
                     .validationRequest('complexValidation')
-                    .check('persons.array.name',{name : 0})
+                    .check('persons.type.name',{name : 0})
                     .assertThat()
                     .isNotSuccessful()
                     .buildHasError()
                     .presets()
-                    .inputIsNotTypeString()
+                    .valueIsNotTypeString()
                     .end()
                     .test();
 
@@ -381,7 +449,7 @@ describe('Validation Tests',async () => {
                     .isNotSuccessful()
                     .buildHasError()
                     .presets()
-                    .inputArrayNotMatchWithMinLength()
+                    .arrayNotMatchesWithMinLength()
                     .end()
                     .test();
 
@@ -392,8 +460,8 @@ describe('Validation Tests',async () => {
                     .isNotSuccessful()
                     .buildHasError()
                     .presets()
-                    .inputNotMatchWithMaxValue()
-                    .infoHas({inputPath : 'persons.1.age'})
+                    .valueNotMatchesWithMaxValue()
+                    .infoHas({path : 'persons.1.age'})
                     .end()
                     .test();
             });
@@ -407,7 +475,7 @@ describe('Validation Tests',async () => {
                     .isNotSuccessful()
                     .buildHasError()
                     .presets()
-                    .inputPathNotResolvable()
+                    .pathNotResolvable()
                     .end()
                     .test();
             });
@@ -433,7 +501,7 @@ describe('Validation Tests',async () => {
                         .isNotSuccessful()
                         .buildHasError()
                         .presets()
-                        .inputNotMatchWithMaxValue()
+                        .valueNotMatchesWithMaxValue()
                         .end()
                         .test();
                 });
@@ -456,7 +524,7 @@ describe('Validation Tests',async () => {
                         .isNotSuccessful()
                         .buildHasError()
                         .presets()
-                        .inputNotMatchWithMaxValue()
+                        .valueNotMatchesWithMaxValue()
                         .end()
                         .test();
                 });
@@ -476,7 +544,7 @@ describe('Validation Tests',async () => {
                         .isNotSuccessful()
                         .buildHasError()
                         .presets()
-                        .inputIsNotTypeString()
+                        .valueIsNotTypeString()
                         .end()
                         .test();
                 });
@@ -490,7 +558,7 @@ describe('Validation Tests',async () => {
                         .isNotSuccessful()
                         .buildHasError()
                         .presets()
-                        .inputPathNotResolvable()
+                        .pathNotResolvable()
                         .end()
                         .test();
                 });
@@ -512,7 +580,7 @@ describe('Validation Tests',async () => {
                     .isNotSuccessful()
                     .buildHasError()
                     .presets()
-                    .inputIsNotTypeString('1')
+                    .valueIsNotTypeString('1')
                     .end()
                     .test();
 
@@ -534,7 +602,7 @@ describe('Validation Tests',async () => {
                     .isNotSuccessful()
                     .buildHasError()
                     .presets()
-                    .inputNotMatchWithMaxLength('name')
+                    .valueNotMatchesWithMaxLength('name')
                     .end()
                     .test();
 
@@ -559,11 +627,11 @@ describe('Validation Tests',async () => {
             .isNotSuccessful()
             .buildHasError()
             .presets()
-            .inputNotMatchWithMaxLength()
+            .valueNotMatchesWithMaxLength()
             .end()
             .buildHasError()
             .presets()
-            .inputIsNotEndsWith()
+            .valueNotMatchesWithEndsWith()
             .end()
             .test();
 

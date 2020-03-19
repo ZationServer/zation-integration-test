@@ -1,21 +1,28 @@
-import {Config, Controller, ControllerConfig, Register, ValidationType} from 'zation-server';
+import {
+    $extends,
+    $model,
+    $optional,
+    Config,
+    Controller,
+    ControllerConfig,
+    Register
+} from 'zation-server';
 
-Config.defineModel('MinString',{
-    type : ValidationType.STRING,
+const minString = $model({
+    type : 'string',
     minLength : 2,
 });
 
-Config.defineModel('animal',{
+const animal = $model({
    properties : {
-       name : {
-           extends : 'MinString',
+       name : $extends({
            maxLength : 10,
            startsWith : 'T'
-       }
+       },minString)
    }
 });
 
-Config.defineModel('person',{
+const person = $model({
     properties : {
         name : {
             maxLength : 20,
@@ -23,7 +30,7 @@ Config.defineModel('person',{
             type : 'string'
         },
         age : {
-            type :ValidationType.NUMBER,
+            type : 'number',
             maxValue : 100,
             minValue : 10
         }
@@ -39,23 +46,21 @@ export class ComplexValidationController extends Controller
             {
                animal : {
                    anyOf : {
-                       dog : {
+                       dog : $extends({
                            properties : {
                                likeToBark : {
-                                   type : ValidationType.BOOLEAN
+                                   type : 'boolean'
                                }
-                           },
-                           extends : 'animal'
-                       },
-                       cat : {
+                           }
+                       },animal),
+                       cat : $extends({
                            properties : {
-                           },
-                           extends : 'animal'
-                       }
+                           }
+                       },animal)
                    }
                },
-               persons : ['person',{minLength : 2,maxLength : 10}],
-               properties : {isOptional : true}
+               persons : [person,{minLength : 2,maxLength : 10}],
+               properties : $optional({})
             }
     };
 }

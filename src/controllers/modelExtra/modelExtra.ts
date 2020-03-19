@@ -1,6 +1,14 @@
-import {RequestBag, Config, Controller, ControllerConfig, Register, ValidationType} from 'zation-server';
+import {
+    RequestBag,
+    Config,
+    Controller,
+    ControllerConfig,
+    Register,
+    $model,
+    $single, $extends, $optional
+} from 'zation-server';
 
-Config.defineModel('SomeObj',{
+const someObj = $model({
     properties : {
     },
     construct: function () {
@@ -15,20 +23,18 @@ export class ObjModelExtraController extends Controller
 {
     static config : ControllerConfig = {
         access : 'all',
-        input : Config.single({
+        input : $single($extends({
             properties : {
                 firstName : {
-                    type : ValidationType.STRING,
+                    type : 'string',
                     convert : (v : string) => v.toUpperCase()
                 },
                 lastName : {
-                    type : ValidationType.STRING
+                    type : 'string'
                 },
-                split : {
-                    type : ValidationType.STRING,
-                    isOptional : true,
-                    default : '.'
-                }
+                split : $optional({
+                    type : 'string'
+                },'.')
             },
             prototype : {
                 greeting : 'Hello '
@@ -37,9 +43,8 @@ export class ObjModelExtraController extends Controller
                 this.getFullName = () => {
                     return this.greeting + this.firstName + this.split + this.lastName + this.getEnd();
                 }
-            },
-            extends : 'SomeObj'
-        })
+            }
+        },someObj))
     };
 
     async handle(bag : RequestBag,obj) {

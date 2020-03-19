@@ -14,10 +14,11 @@ import "../controllers/versionSystemAccess/versionSystemAccess";
 import "../controllers/apiLevel/apiLevel";
 import "../controllers/timeout/timeout";
 import "../controllers/validation/complexValidation";
+import "../controllers/validation/extendValueModel";
 import "../controllers/result/result";
 import "../controllers/modelExtra/modelExtra";
 
-module.exports = Config.appConfig(
+export default Config.appConfig(
     {
         userGroups :
             {
@@ -36,9 +37,6 @@ module.exports = Config.appConfig(
                 httpGetAllowed : true,
                 access : 'all',
             },
-
-        authController : 'logIn',
-
 
         customChannelDefaults : {
             clientPublishAccess : false,

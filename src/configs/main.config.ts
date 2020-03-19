@@ -1,6 +1,6 @@
 import {Config} from 'zation-server';
 
-module.exports = Config.mainConfig(
+export default Config.mainConfig(
     {
         port: 3000,
         appName : 'zation-integration-test',
