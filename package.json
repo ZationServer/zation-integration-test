@@ -31,7 +31,7 @@
     "dist/**/*"
   ],
   "dependencies": {
-    "zation-server": "1.5.2"
+    "zation-server": "1.5.3"
   },
   "devDependencies": {
     "gulp": "4.0.0",
