@@ -1,6 +1,6 @@
-import {Controller, ControllerConfig, Result, RequestBag, Register} from 'zation-server';
+import {Controller, ControllerConfig, Register} from 'zation-server';
 
-@Register('versionAccessMin')
+@Register()
 export class VersionAccessMinController extends Controller
 {
     static config : ControllerConfig = {
@@ -13,7 +13,7 @@ export class VersionAccessMinController extends Controller
     };
 }
 
-@Register('versionAccessExact')
+@Register()
 export class VersionAccessExactController extends Controller
 {
     static config : ControllerConfig = {
@@ -26,7 +26,7 @@ export class VersionAccessExactController extends Controller
     };
 }
 
-@Register('systemAccess')
+@Register()
 export class SystemAccessController extends Controller
 {
     static config : ControllerConfig = {

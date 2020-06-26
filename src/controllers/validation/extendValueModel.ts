@@ -1,8 +1,6 @@
 import {
     Controller,
     ControllerConfig,
-    Result,
-    RequestBag,
     Register,
     $single,
     $extends,
@@ -23,7 +21,7 @@ export class ExtendValueModelSingleController extends Controller
         input: $single($optional(name))
     };
 
-    async handle(bag: RequestBag, input: any): Promise<any> {
+    async handle(_, input: any): Promise<any> {
         return input;
     }
 }
@@ -38,7 +36,7 @@ export class ExtendValueModelParamController extends Controller
         }
     };
 
-    async handle(bag: RequestBag, input: any): Promise<any> {
+    async handle(_, input: any): Promise<any> {
         return input.data;
     }
 }

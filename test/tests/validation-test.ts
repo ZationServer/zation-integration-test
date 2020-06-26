@@ -210,7 +210,7 @@ describe('Validation Tests',async () => {
     describe('Extend Value Model Optional Single', () => {
 
         when(testClient,'Correct input - string')
-            .request('ExtendValueModelSingle')
+            .request('extendValueModelSingle')
             .data('Hello')
             .assertThat()
             .isSuccessful()
@@ -220,7 +220,7 @@ describe('Validation Tests',async () => {
             .test();
 
         when(testClient,'Correct input - undefined')
-            .request('ExtendValueModelSingle')
+            .request('extendValueModelSingle')
             .data(undefined)
             .assertThat()
             .isSuccessful()
@@ -230,7 +230,7 @@ describe('Validation Tests',async () => {
             .test();
 
         when(testClient,'Wrong input')
-            .request('ExtendValueModelSingle')
+            .request('extendValueModelSingle')
             .data('hi')
             .assertThat()
             .isNotSuccessful()
@@ -244,7 +244,7 @@ describe('Validation Tests',async () => {
     describe('Extend Value Model Optional Param', () => {
 
         when(testClient,'Correct input - string')
-            .request('ExtendValueModelParam')
+            .request('extendValueModelParam')
             .data({data:'Hello'})
             .assertThat()
             .isSuccessful()
@@ -254,7 +254,7 @@ describe('Validation Tests',async () => {
             .test();
 
         when(testClient,'Correct input - undefined')
-            .request('ExtendValueModelParam')
+            .request('extendValueModelParam')
             .data({data:undefined})
             .assertThat()
             .isSuccessful()
@@ -264,7 +264,7 @@ describe('Validation Tests',async () => {
             .test();
 
         when(testClient,'Wrong input')
-            .request('ExtendValueModelParam')
+            .request('extendValueModelParam')
             .data({data:'hi'})
             .assertThat()
             .isNotSuccessful()
@@ -292,34 +292,6 @@ describe('Validation Tests',async () => {
 
                 when(testClient,'Wrong input')
                     .validationRequest('complexValidation')
-                    .check([],{
-                        animal : {name : 'Tara',likeToBark: true},
-                        persons : [{name : 'Max',age : 25}]
-                    })
-                    .assertThat()
-                    .isNotSuccessful()
-                    .buildHasError()
-                    .presets()
-                    .arrayNotMatchesWithMinLength()
-                    .end()
-                    .test();
-            });
-
-            describe('Full with Http',() => {
-                when(testClient,'Correct input')
-                    .validationRequest('complexValidation')
-                    .isHttp()
-                    .check([],{
-                        animal : {name : 'Tara',likeToBark: true},
-                        persons : [{name : 'Max',age : 25},{name : 'Tim',age : 20}]
-                    })
-                    .assertThat()
-                    .isSuccessful()
-                    .test();
-
-                when(testClient,'Wrong input')
-                    .validationRequest('complexValidation')
-                    .isHttp()
                     .check([],{
                         animal : {name : 'Tara',likeToBark: true},
                         persons : [{name : 'Max',age : 25}]

@@ -1,13 +1,13 @@
-import {Controller, ControllerConfig, Result, RequestBag, Register} from 'zation-server';
+import {Controller, ControllerConfig, Register} from 'zation-server';
 
-@Register('timeout2')
+@Register()
 export class Timeout2Controller extends Controller
 {
     static config : ControllerConfig = {
         access : 'all',
     };
 
-    async handle(bag : RequestBag,{msg}) {
+    async handle(_,{msg}) {
         await new Promise(r => setTimeout(r,2000));
     }
 }

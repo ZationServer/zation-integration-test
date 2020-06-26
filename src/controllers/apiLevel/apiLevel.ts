@@ -1,34 +1,32 @@
 import {
     Controller,
     ControllerConfig,
-    Result,
-    RequestBag,
     Register,
     ObjectModel,
     Model,
     Config
 } from 'zation-server';
 
-@Register('apiLevel').withApiLevel(5)
-export class ApiLevel5Controller extends Controller
+@Register()
+export class ApiLevelController_5 extends Controller
 {
     static config : ControllerConfig = {
         access : 'all',
     };
 
-    async handle(bag : RequestBag,{msg}) {
+    async handle(_) {
         return 5;
     }
 }
 
-@Register('apiLevel').withApiLevel(2)
-export class ApiLevel2Controller extends Controller
+@Register()
+export class ApiLevelController_2 extends Controller
 {
     static config : ControllerConfig = {
         access : 'all',
     };
 
-    async handle(bag : RequestBag,{msg}) {
+    async handle() {
         return 2;
     }
 }

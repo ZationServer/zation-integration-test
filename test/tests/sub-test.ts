@@ -1,8 +1,9 @@
-import {after, before, client, create, describe, ErrorName, SubscribeFailedError} from "zation-assured";
+import {after, before, client, create, describe, ErrorName} from "zation-assured";
 import {clientConfig} from "../index.test";
 
 const testClient  = create(clientConfig);
 
+/*
 describe('Sub Tests',async () => {
 
     before(async () => {
@@ -95,3 +96,4 @@ describe('Sub Tests',async () => {
             .test();
     });
 });
+*/

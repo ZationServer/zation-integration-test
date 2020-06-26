@@ -4,6 +4,7 @@ import {clientConfig}                       from "../index.test";
 const testClient1  = create(clientConfig);
 const testClient2  = create(clientConfig);
 
+/*
 describe('Pub/Sub Tests',async () => {
 
     before(async () => {
@@ -56,3 +57,4 @@ describe('Pub/Sub Tests',async () => {
         },'Should not able to publish in all worker channel')
         .test();
 });
+*/

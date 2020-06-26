@@ -1,6 +1,6 @@
-import {Controller, ControllerConfig, Result, RequestBag, Register} from 'zation-server';
+import {Controller, ControllerConfig, Register} from 'zation-server';
 
-@Register('arrayValidation')
+@Register()
 export class ArrayValidationController extends Controller
 {
     static config : ControllerConfig = {

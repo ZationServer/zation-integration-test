@@ -1,4 +1,4 @@
-import {Controller, ControllerConfig, Result, RequestBag, Register, $userId, $not} from 'zation-server';
+import {Controller, ControllerConfig, Register, $userId, $not, $tokenPayloadIncludes} from 'zation-server';
 
 @Register()
 export class SecretForUserController extends Controller
@@ -8,7 +8,7 @@ export class SecretForUserController extends Controller
         input : {}
     };
 
-    async handle(bag : RequestBag,{msg}) {
+    async handle(_,{msg}) {
        return 0;
     }
 }
@@ -21,7 +21,7 @@ export class SecretForId10Controller extends Controller
         input : {}
     };
 
-    async handle(bag : RequestBag,{msg}) {
+    async handle(_,{msg}) {
         return 0;
     }
 }
@@ -35,7 +35,7 @@ export class SecretForAdminOrId10Controller extends Controller
         input : {}
     };
 
-    async handle(bag : RequestBag,{msg}) {
+    async handle(_,{msg}) {
         return 0;
     }
 }
@@ -48,7 +48,7 @@ export class SecretForAdminOrId11Controller extends Controller
         input : {}
     };
 
-    async handle(bag : RequestBag,{msg}) {
+    async handle(_,{msg}) {
         return 0;
     }
 }
@@ -61,7 +61,7 @@ export class SecretForUserAndId10Controller extends Controller
         input : {}
     };
 
-    async handle(bag : RequestBag,{msg}) {
+    async handle(_,{msg}) {
         return 0;
     }
 }
@@ -74,7 +74,7 @@ export class SecretForUserAndId11Controller extends Controller
         input : {}
     };
 
-    async handle(bag : RequestBag,{msg}) {
+    async handle(_,{msg}) {
         return 0;
     }
 }
@@ -87,7 +87,7 @@ export class SecretForAdminOrUserController extends Controller
         input : {}
     };
 
-    async handle(bag : RequestBag,{msg}) {
+    async handle(_,{msg}) {
         return 0;
     }
 }
@@ -100,7 +100,7 @@ export class SecretForAllExceptAdminOrUserController extends Controller
         input : {}
     };
 
-    async handle(bag : RequestBag,{msg}) {
+    async handle(_,{msg}) {
         return 0;
     }
 }
@@ -109,13 +109,13 @@ export class SecretForAllExceptAdminOrUserController extends Controller
 export class SecretForAuthController extends Controller
 {
     static config : ControllerConfig = {
-        access : (smallBag, token) => {
+        access : (token) => {
             return token !== null;
         },
         input : {}
     };
 
-    async handle(bag : RequestBag,{msg}) {
+    async handle(_,{msg}) {
         return 0;
     }
 }
@@ -124,16 +124,11 @@ export class SecretForAuthController extends Controller
 export class SecretForEmailController extends Controller
 {
     static config : ControllerConfig = {
-        access : (smallBag, token) => {
-            if(token !== null){
-                return token.getTokenVariable('email') === 'mytest@gmail.de';
-            }
-            return false;
-        },
+        access : $tokenPayloadIncludes({email: 'mytest@gmail.de'}),
         input : {}
     };
 
-    async handle(bag : RequestBag,{msg}) {
+    async handle(_g,{msg}) {
         return 0;
     }
 }

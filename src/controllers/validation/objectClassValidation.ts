@@ -1,8 +1,6 @@
 import {
     Controller,
     ControllerConfig,
-    Result,
-    RequestBag,
     Register,
     ObjectModel,
     Model
@@ -33,15 +31,15 @@ class Phone extends Device {
     }
 }
 
-@Register('objectClassValidation')
-export class ObjectValidationController extends Controller
+@Register()
+export class ObjectClassValidationController extends Controller
 {
     static config : ControllerConfig = {
         access : 'all',
         input : Phone
     };
 
-    async handle(bag: RequestBag, phone: Phone): Promise<any> {
+    async handle(_, phone: Phone): Promise<any> {
         return phone.getDeviceCode();
     }
 }

@@ -1,6 +1,6 @@
-import {RequestBag, Config, Controller, ControllerConfig, Register,$single} from 'zation-server';
+import {Config, Controller, ControllerConfig, Register,$single} from 'zation-server';
 
-@Register('singleInputValidationObj')
+@Register()
 export class SingleInputValidationObjController extends Controller
 {
     static config : ControllerConfig = {
@@ -21,7 +21,7 @@ export class SingleInputValidationObjController extends Controller
     };
 }
 
-@Register('singleInputValidationArray')
+@Register()
 export class SingleInputValidationArrayController extends Controller
 {
     static config : ControllerConfig = {
@@ -32,7 +32,7 @@ export class SingleInputValidationArrayController extends Controller
     };
 }
 
-@Register('singleInputValidationAnyOf')
+@Register()
 export class SingleInputValidationAnyOfController extends Controller
 {
     static config : ControllerConfig = {

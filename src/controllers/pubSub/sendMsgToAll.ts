@@ -1,5 +1,6 @@
-import {Controller, ControllerConfig, Result, RequestBag, Register} from 'zation-server';
+import {Controller, ControllerConfig, Register} from 'zation-server';
 
+/*
 @Register('sendMsgToAll')
 export class SendMsgToAllController extends Controller
 {
@@ -18,3 +19,4 @@ export class SendMsgToAllController extends Controller
         await bag.publishInAllCh('msg',{msg : msg});
     }
 }
+*/

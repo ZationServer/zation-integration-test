@@ -37,7 +37,7 @@ const person = $model({
     }
 });
 
-@Register('complexValidation')
+@Register()
 export class ComplexValidationController extends Controller
 {
     static config : ControllerConfig = {

@@ -6,7 +6,6 @@ const TEST_PORT = 3001;
 
 export const clientConfig : ClientOptions = {
     port : TEST_PORT,
-    multiplex : false,
     system : 'T',
     version : 4.5
 };

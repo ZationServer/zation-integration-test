@@ -13,41 +13,18 @@ describe('Timeout Tests',async () => {
         await testClient.disconnect();
     });
 
-    describe('Ws Timeout', () => {
+    when(testClient,'Timeout reached')
+        .request('timeout2')
+        .responseTimeout(1000)
+        .assertThat()
+        .throwsTimeoutError()
+        .test();
 
-        when(testClient,'Timeout reached')
-            .request('timeout2')
-            .timeout(1000)
-            .assertThat()
-            .throwsTimeoutError()
-            .test();
-
-        when(testClient,'Timeout not reached')
-            .request('timeout2')
-            .timeout(5000)
-            .assertThat()
-            .throwsTimeoutError(false)
-            .isSuccessful()
-            .test();
-    });
-
-    describe('Http Timeout', () => {
-
-        when(testClient,'Timeout reached')
-            .request('timeout2')
-            .isHttp()
-            .timeout(1000)
-            .assertThat()
-            .throwsTimeoutError()
-            .test();
-
-        when(testClient,'Timeout not reached')
-            .request('timeout2')
-            .isHttp()
-            .timeout(5000)
-            .assertThat()
-            .throwsTimeoutError(false)
-            .isSuccessful()
-            .test();
-    });
+    when(testClient,'Timeout not reached')
+        .request('timeout2')
+        .responseTimeout(5000)
+        .assertThat()
+        .throwsTimeoutError(false)
+        .isSuccessful()
+        .test();
 });

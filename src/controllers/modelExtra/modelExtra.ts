@@ -1,5 +1,4 @@
 import {
-    RequestBag,
     Config,
     Controller,
     ControllerConfig,
@@ -18,7 +17,7 @@ const someObj = $model({
     },
 });
 
-@Register('modelExtra')
+@Register({name: 'modelExtra'})
 export class ObjModelExtraController extends Controller
 {
     static config : ControllerConfig = {
@@ -47,7 +46,7 @@ export class ObjModelExtraController extends Controller
         },someObj))
     };
 
-    async handle(bag : RequestBag,obj) {
+    async handle(_,obj) {
         return obj.getFullName();
     }
 }

@@ -1,6 +1,6 @@
-import {Controller, ControllerConfig, Result, RequestBag, Register} from 'zation-server';
+import {Controller, ControllerConfig, Register} from 'zation-server';
 
-@Register('allAllow')
+@Register()
 export class AllAllowController extends Controller
 {
     static config : ControllerConfig = {
@@ -8,7 +8,7 @@ export class AllAllowController extends Controller
         allowAnyInput : true
     };
 
-    async handle(bag: RequestBag, input: any): Promise<any> {
+    async handle(_, input: any): Promise<any> {
         return input;
     }
 }

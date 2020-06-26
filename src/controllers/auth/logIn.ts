@@ -1,7 +1,7 @@
-import {Controller, ControllerConfig, Result, RequestBag, Register} from 'zation-server';
+import {Controller, ControllerConfig, Register, AuthController} from 'zation-server';
 
-@Register().asAuthController()
-export class LogInController extends Controller
+@Register()
+export class LogInController extends AuthController
 {
     static config : ControllerConfig = {
         access : 'all',
@@ -19,7 +19,7 @@ export class LogInController extends Controller
             }
     };
 
-    async handle(bag : RequestBag,{email,password}) {
-        await bag.authenticate('user',10,{email : email});
+    async handle(socket,{email,password}) {
+        await socket.authenticate('user',10,{email : email});
     }
 }

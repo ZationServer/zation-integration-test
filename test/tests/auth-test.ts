@@ -14,7 +14,7 @@ describe('Authentication Tests',async () => {
     });
 
     when(testClient,'Test fail to access user controller with guest')
-        .request('SecretForUser')
+        .request('secretForUser')
         .assertThat()
         .isNotSuccessful()
         .buildHasError()
@@ -24,7 +24,7 @@ describe('Authentication Tests',async () => {
         .test();
 
     when(testClient,'Test fail to access user id 10 controller with guest')
-        .request('SecretForId10')
+        .request('secretForId10')
         .assertThat()
         .isNotSuccessful()
         .buildHasError()
@@ -34,7 +34,7 @@ describe('Authentication Tests',async () => {
         .test();
 
     when(testClient,'Test fail to access user id 10 and user controller with guest')
-        .request('SecretForUserAndId10')
+        .request('secretForUserAndId10')
         .assertThat()
         .isNotSuccessful()
         .buildHasError()
@@ -44,7 +44,7 @@ describe('Authentication Tests',async () => {
         .test();
 
     when(testClient,'Test fail to access user/admin controller with guest')
-        .request('SecretForAdminOrUser')
+        .request('secretForAdminOrUser')
         .assertThat()
         .isNotSuccessful()
         .buildHasError()
@@ -54,7 +54,7 @@ describe('Authentication Tests',async () => {
         .test();
 
     when(testClient,'Test fail to access auth controller with guest')
-        .request('SecretForAuth')
+        .request('secretForAuth')
         .assertThat()
         .isNotSuccessful()
         .buildHasError()
@@ -64,7 +64,7 @@ describe('Authentication Tests',async () => {
         .test();
 
     when(testClient,'Test fail to access email token controller with guest')
-        .request('SecretForEmail')
+        .request('secretForEmail')
         .assertThat()
         .isNotSuccessful()
         .buildHasError()
@@ -81,14 +81,14 @@ describe('Authentication Tests',async () => {
         .isAuthenticated()
         .hasAuthUserGroup('user')
         .hasUserId(10)
-        .assertTokenVariables()
+        .assertTokenPayload()
         .ownInclude({email : 'mytest@gmail.de'})
         .end()
         .end()
         .test();
 
     when(testClient,'Test access to user controller with user')
-        .request('SecretForUser')
+        .request('secretForUser')
         .assertThat()
         .isSuccessful()
         .assertResult()
@@ -97,7 +97,7 @@ describe('Authentication Tests',async () => {
         .test();
 
     when(testClient,'Test access to user and userId 10 controller')
-        .request('SecretForUserAndId10')
+        .request('secretForUserAndId10')
         .assertThat()
         .isSuccessful()
         .assertResult()
@@ -106,7 +106,7 @@ describe('Authentication Tests',async () => {
         .test();
 
     when(testClient,'Test fail to access all (except: user,admin) controller with user')
-        .request('SecretForAllExceptAdminOrUser')
+        .request('secretForAllExceptAdminOrUser')
         .assertThat()
         .isNotSuccessful()
         .buildHasError()
@@ -116,7 +116,7 @@ describe('Authentication Tests',async () => {
         .test();
 
     when(testClient,'Test access to user id 10 controller with user id 10')
-        .request('SecretForId10')
+        .request('secretForId10')
         .assertThat()
         .isSuccessful()
         .assertResult()
@@ -125,7 +125,7 @@ describe('Authentication Tests',async () => {
         .test();
 
     when(testClient,'Test fail to access controller with user id 11 and group user with user id 10')
-        .request('SecretForUserAndId11')
+        .request('secretForUserAndId11')
         .assertThat()
         .isNotSuccessful()
         .buildHasError()
@@ -135,7 +135,7 @@ describe('Authentication Tests',async () => {
         .test();
 
     when(testClient,'Test fail to access controller with user id 11 or group admin with user and id 10')
-        .request('SecretForAdminOrId11')
+        .request('secretForAdminOrId11')
         .assertThat()
         .isNotSuccessful()
         .buildHasError()
@@ -145,7 +145,7 @@ describe('Authentication Tests',async () => {
         .test();
 
     when(testClient,'Test access to user id 10 or admin controller with user and id 10')
-        .request('SecretForAdminOrId10')
+        .request('secretForAdminOrId10')
         .assertThat()
         .isSuccessful()
         .assertResult()
@@ -154,7 +154,7 @@ describe('Authentication Tests',async () => {
         .test();
 
     when(testClient,'Test access to admin/user controller with user')
-        .request('SecretForAdminOrUser')
+        .request('secretForAdminOrUser')
         .assertThat()
         .isSuccessful()
         .assertResult()
@@ -163,7 +163,7 @@ describe('Authentication Tests',async () => {
         .test();
 
     when(testClient,'Test access to auth controller with user')
-        .request('SecretForAuth')
+        .request('secretForAuth')
         .assertThat()
         .isSuccessful()
         .assertResult()
@@ -172,18 +172,11 @@ describe('Authentication Tests',async () => {
         .test();
 
     when(testClient,'Test access to email controller with user')
-        .request('SecretForEmail')
+        .request('secretForEmail')
         .assertThat()
         .isSuccessful()
         .assertResult()
         .strictEqual(0)
         .end()
-        .test();
-
-    when(testClient,'Http authentication test to user controller')
-        .request('SecretForUser')
-        .isHttp()
-        .assertThat()
-        .isSuccessful()
         .test();
 });
