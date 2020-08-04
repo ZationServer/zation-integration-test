@@ -2,10 +2,10 @@ import {Controller, Register} from 'zation-server';
 
 @Controller.Config({
     access : 'all',
-    input: 'any'
+    input: 'nothing'
 })
 @Register()
-export class AllAllowController extends Controller
+export class NothingAllowController extends Controller
 {
     async handle(_, input: any): Promise<any> {
         return input;

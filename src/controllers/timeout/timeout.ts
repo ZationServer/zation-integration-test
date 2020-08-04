@@ -7,7 +7,7 @@ export class Timeout2Controller extends Controller
         access : 'all',
     };
 
-    async handle(_,{msg}) {
+    async handle() {
         await new Promise(r => setTimeout(r,2000));
     }
 }

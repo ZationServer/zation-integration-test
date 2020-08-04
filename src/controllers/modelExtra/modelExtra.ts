@@ -1,10 +1,8 @@
 import {
-    Config,
     Controller,
-    ControllerConfig,
     Register,
     $model,
-    $single, $extends, $optional
+    $extends, $optional
 } from 'zation-server';
 
 const someObj = $model({
@@ -17,35 +15,34 @@ const someObj = $model({
     },
 });
 
-@Register({name: 'modelExtra'})
+@Controller.Config({
+    access : 'all',
+    input : $extends({
+        properties : {
+            firstName : {
+                type : 'string',
+                convert : (v : string) => v.toUpperCase()
+            },
+            lastName : {
+                type : 'string'
+            },
+            split : $optional({
+                type : 'string'
+            },'.')
+        },
+        prototype : {
+            greeting : 'Hello '
+        },
+        construct : function () {
+            this.getFullName = () => {
+                return this.greeting + this.firstName + this.split + this.lastName + this.getEnd();
+            }
+        }
+    },someObj)
+})
+@Register()
 export class ObjModelExtraController extends Controller
 {
-    static config : ControllerConfig = {
-        access : 'all',
-        input : $single($extends({
-            properties : {
-                firstName : {
-                    type : 'string',
-                    convert : (v : string) => v.toUpperCase()
-                },
-                lastName : {
-                    type : 'string'
-                },
-                split : $optional({
-                    type : 'string'
-                },'.')
-            },
-            prototype : {
-                greeting : 'Hello '
-            },
-            construct : function () {
-                this.getFullName = () => {
-                    return this.greeting + this.firstName + this.split + this.lastName + this.getEnd();
-                }
-            }
-        },someObj))
-    };
-
     async handle(_,obj) {
         return obj.getFullName();
     }

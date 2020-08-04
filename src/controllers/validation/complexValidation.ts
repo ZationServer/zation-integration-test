@@ -2,9 +2,7 @@ import {
     $extends,
     $model,
     $optional,
-    Config,
     Controller,
-    ControllerConfig,
     Register
 } from 'zation-server';
 
@@ -37,30 +35,29 @@ const person = $model({
     }
 });
 
+@Controller.Config({
+    access : 'all',
+    input : {
+        properties: {
+            animal : {
+                anyOf : {
+                    dog : $extends({
+                        properties : {
+                            likeToBark : {
+                                type : 'boolean'
+                            }
+                        }
+                    },animal),
+                    cat : $extends({
+                        properties : {
+                        }
+                    },animal)
+                }
+            },
+            persons : [person,{minLength : 2,maxLength : 10}],
+            properties : $optional({})
+        }
+    }
+})
 @Register()
-export class ComplexValidationController extends Controller
-{
-    static config : ControllerConfig = {
-        access : 'all',
-        input :
-            {
-               animal : {
-                   anyOf : {
-                       dog : $extends({
-                           properties : {
-                               likeToBark : {
-                                   type : 'boolean'
-                               }
-                           }
-                       },animal),
-                       cat : $extends({
-                           properties : {
-                           }
-                       },animal)
-                   }
-               },
-               persons : [person,{minLength : 2,maxLength : 10}],
-               properties : $optional({})
-            }
-    };
-}
+export class ComplexValidationController extends Controller {}

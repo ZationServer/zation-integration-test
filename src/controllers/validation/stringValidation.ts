@@ -1,19 +1,13 @@
-import {Controller, ControllerConfig, Register} from 'zation-server';
+import {Controller, Register} from 'zation-server';
 
+@Controller.Config({
+    access: 'all',
+    input: {
+        type : 'string',
+        minLength : 5,
+        maxLength : 8,
+        endsWith : 'a'
+    }
+})
 @Register()
-export class StringValidationController extends Controller
-{
-    static config : ControllerConfig = {
-        access : 'all',
-        input :
-            {
-                string :
-                    {
-                        type : 'string',
-                        minLength : 5,
-                        maxLength : 8,
-                        endsWith : 'a'
-                    }
-            }
-    };
-}
+export class StringValidationController extends Controller {}

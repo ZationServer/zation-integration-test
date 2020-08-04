@@ -32,7 +32,7 @@ describe('Version System Access Tests',async () => {
             .isNotSuccessful()
             .buildHasError()
             .presets()
-            .noAccessWithVersion()
+            .accessDenied()
             .end()
             .test();
     });
@@ -51,7 +51,7 @@ describe('Version System Access Tests',async () => {
             .isNotSuccessful()
             .buildHasError()
             .presets()
-            .noAccessWithVersion()
+            .accessDenied()
             .end()
             .test();
     });
@@ -70,7 +70,7 @@ describe('Version System Access Tests',async () => {
             .isNotSuccessful()
             .buildHasError()
             .presets()
-            .noAccessWithSystem()
+            .accessDenied()
             .end()
             .test();
     });

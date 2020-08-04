@@ -2,7 +2,7 @@ import {start,StartMode,Config}                           from 'zation-server';
 import {when,describe,create,before,after,ClientOptions}  from 'zation-assured';
 import StarterConfig                                      from './../src/configs/starter.config';
 
-const TEST_PORT = 3001;
+const TEST_PORT = 3008;
 
 export const clientConfig : ClientOptions = {
     port : TEST_PORT,

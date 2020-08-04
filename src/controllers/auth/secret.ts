@@ -4,11 +4,10 @@ import {Controller, ControllerConfig, Register, $userId, $not, $tokenPayloadIncl
 export class SecretForUserController extends Controller
 {
     static config : ControllerConfig = {
-        access : 'user',
-        input : {}
+        access : 'user'
     };
 
-    async handle(_,{msg}) {
+    async handle() {
        return 0;
     }
 }
@@ -17,11 +16,10 @@ export class SecretForUserController extends Controller
 export class SecretForId10Controller extends Controller
 {
     static config : ControllerConfig = {
-        access : $userId(10),
-        input : {}
+        access : $userId(10)
     };
 
-    async handle(_,{msg}) {
+    async handle() {
         return 0;
     }
 }
@@ -31,11 +29,10 @@ export class SecretForId10Controller extends Controller
 export class SecretForAdminOrId10Controller extends Controller
 {
     static config : ControllerConfig = {
-        access : ['admin',$userId(10)],
-        input : {}
+        access : ['admin',$userId(10)]
     };
 
-    async handle(_,{msg}) {
+    async handle() {
         return 0;
     }
 }
@@ -44,11 +41,10 @@ export class SecretForAdminOrId10Controller extends Controller
 export class SecretForAdminOrId11Controller extends Controller
 {
     static config : ControllerConfig = {
-        access : ['admin',$userId(11)],
-        input : {}
+        access : ['admin',$userId(11)]
     };
 
-    async handle(_,{msg}) {
+    async handle() {
         return 0;
     }
 }
@@ -57,11 +53,10 @@ export class SecretForAdminOrId11Controller extends Controller
 export class SecretForUserAndId10Controller extends Controller
 {
     static config : ControllerConfig = {
-        access : [['user',$userId(10)]],
-        input : {}
+        access : [['user',$userId(10)]]
     };
 
-    async handle(_,{msg}) {
+    async handle() {
         return 0;
     }
 }
@@ -70,11 +65,10 @@ export class SecretForUserAndId10Controller extends Controller
 export class SecretForUserAndId11Controller extends Controller
 {
     static config : ControllerConfig = {
-        access : [['user',$userId(11)]],
-        input : {}
+        access : [['user',$userId(11)]]
     };
 
-    async handle(_,{msg}) {
+    async handle() {
         return 0;
     }
 }
@@ -83,11 +77,10 @@ export class SecretForUserAndId11Controller extends Controller
 export class SecretForAdminOrUserController extends Controller
 {
     static config : ControllerConfig = {
-        access : ['admin','user'],
-        input : {}
+        access : ['admin','user']
     };
 
-    async handle(_,{msg}) {
+    async handle() {
         return 0;
     }
 }
@@ -96,11 +89,10 @@ export class SecretForAdminOrUserController extends Controller
 export class SecretForAllExceptAdminOrUserController extends Controller
 {
     static config : ControllerConfig = {
-        access : $not(['admin','user']),
-        input : {}
+        access : $not(['admin','user'])
     };
 
-    async handle(_,{msg}) {
+    async handle() {
         return 0;
     }
 }
@@ -111,11 +103,10 @@ export class SecretForAuthController extends Controller
     static config : ControllerConfig = {
         access : (token) => {
             return token !== null;
-        },
-        input : {}
+        }
     };
 
-    async handle(_,{msg}) {
+    async handle() {
         return 0;
     }
 }
@@ -124,11 +115,10 @@ export class SecretForAuthController extends Controller
 export class SecretForEmailController extends Controller
 {
     static config : ControllerConfig = {
-        access : $tokenPayloadIncludes({email: 'mytest@gmail.de'}),
-        input : {}
+        access : $tokenPayloadIncludes({email: 'mytest@gmail.de'})
     };
 
-    async handle(_g,{msg}) {
+    async handle() {
         return 0;
     }
 }

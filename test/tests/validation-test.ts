@@ -17,19 +17,19 @@ describe('Validation Tests',async () => {
 
         when(testClient,'Wrong type')
             .request('stringValidation')
-            .data({string : 10})
+            .data(10)
             .assertThat()
             .isNotSuccessful()
             .buildHasError()
                 .presets()
-                .valueIsNotTypeString()
-                .infoHas({path : 'string'})
+                .valueNotMatchesWithType()
+                .infoHas({path : ''})
                 .end()
             .test();
 
         when(testClient,'Wrong string')
             .request('stringValidation')
-            .data({string : 'thisIsATestString'})
+            .data('thisIsATestString')
             .assertThat()
             .isNotSuccessful()
             .buildHasError()
@@ -47,7 +47,7 @@ describe('Validation Tests',async () => {
 
         when(testClient,'Not matching type')
             .request('anyOfValidation')
-            .data({id : 'luca'})
+            .data('luca')
             .assertThat()
             .isNotSuccessful()
             .buildHasError()
@@ -58,7 +58,7 @@ describe('Validation Tests',async () => {
 
         when(testClient,'Matching email')
             .request('anyOfValidation')
-            .data({id : 'luca@test.de'})
+            .data('luca@test.de')
             .assertThat()
             .isSuccessful()
             .test();
@@ -68,20 +68,20 @@ describe('Validation Tests',async () => {
 
         when(testClient,'Correct object')
             .request('objectValidation')
-            .data({dog : {name : 'Tara',colour : 'black',age : 10}})
+            .data({name : 'Tara',colour : 'black',age : 10})
             .assertThat()
             .isSuccessful()
             .test();
 
         when(testClient,'Not valid object')
             .request('objectValidation')
-            .data({dog : {name : 'Tara',colour : 'cool',age : 10}})
+            .data({name : 'Tara',colour : 'cool',age : 10})
             .assertThat()
             .isNotSuccessful()
             .buildHasError()
                 .presets()
                 .valueNotMatchesWithIn()
-                .infoHas({path : 'dog.colour'})
+                .infoHas({path : 'colour'})
                 .end()
             .test();
     });
@@ -109,7 +109,7 @@ describe('Validation Tests',async () => {
             .end()
             .buildHasError()
             .presets()
-            .valueIsNotTypeInt('deviceId')
+            .valueNotMatchesWithType('deviceId')
             .end()
             .test();
     });
@@ -118,14 +118,14 @@ describe('Validation Tests',async () => {
 
         when(testClient,'Correct array')
             .request('arrayValidation')
-            .data({names : ['luca','tara','fabio']})
+            .data(['luca','tara','fabio'])
             .assertThat()
             .isSuccessful()
             .test();
 
         when(testClient,'To long array')
             .request('arrayValidation')
-            .data({names : ['luca','tara','fabio','peter','gagan']})
+            .data(['luca','tara','fabio','peter','gagan'])
             .assertThat()
             .isNotSuccessful()
             .buildHasError()
@@ -136,45 +136,13 @@ describe('Validation Tests',async () => {
 
         when(testClient,'Not type array')
             .request('arrayValidation')
-            .data({names : {}})
+            .data({})
             .assertThat()
             .isNotSuccessful()
             .buildHasError()
                 .presets()
-                .arrayWasExpected()
+                .invalidType()
                 .end()
-            .test();
-    });
-
-    describe('Single Input Validation', () => {
-
-        when(testClient,'Correct single input')
-            .request('singleInputValidationObj')
-            .data({name : 'Luca',age : 50})
-            .assertThat()
-            .isSuccessful()
-            .test();
-
-        when(testClient,'Wrong single input')
-            .request('singleInputValidationObj')
-            .data({name : 'Luca',age : 200})
-            .assertThat()
-            .isNotSuccessful()
-            .buildHasError()
-            .presets()
-            .valueNotMatchesWithMaxValue()
-            .end()
-            .test();
-
-        when(testClient,'Wrong single input type')
-            .request('singleInputValidationObj')
-            .data([])
-            .assertThat()
-            .isNotSuccessful()
-            .buildHasError()
-            .presets()
-            .objectWasExpected()
-            .end()
             .test();
     });
 
@@ -207,10 +175,10 @@ describe('Validation Tests',async () => {
             .test();
     });
 
-    describe('Extend Value Model Optional Single', () => {
+    describe('Extend Value Model Optional', () => {
 
         when(testClient,'Correct input - string')
-            .request('extendValueModelSingle')
+            .request('extendValueModel')
             .data('Hello')
             .assertThat()
             .isSuccessful()
@@ -220,7 +188,7 @@ describe('Validation Tests',async () => {
             .test();
 
         when(testClient,'Correct input - undefined')
-            .request('extendValueModelSingle')
+            .request('extendValueModel')
             .data(undefined)
             .assertThat()
             .isSuccessful()
@@ -230,42 +198,8 @@ describe('Validation Tests',async () => {
             .test();
 
         when(testClient,'Wrong input')
-            .request('extendValueModelSingle')
+            .request('extendValueModel')
             .data('hi')
-            .assertThat()
-            .isNotSuccessful()
-            .buildHasError()
-            .presets()
-            .valueNotMatchesWithMinLength()
-            .end()
-            .test();
-    });
-
-    describe('Extend Value Model Optional Param', () => {
-
-        when(testClient,'Correct input - string')
-            .request('extendValueModelParam')
-            .data({data:'Hello'})
-            .assertThat()
-            .isSuccessful()
-            .assertResult()
-            .strictEqual('Hello')
-            .end()
-            .test();
-
-        when(testClient,'Correct input - undefined')
-            .request('extendValueModelParam')
-            .data({data:undefined})
-            .assertThat()
-            .isSuccessful()
-            .assertResult()
-            .strictEqual(undefined)
-            .end()
-            .test();
-
-        when(testClient,'Wrong input')
-            .request('extendValueModelParam')
-            .data({data:'hi'})
             .assertThat()
             .isNotSuccessful()
             .buildHasError()
@@ -277,346 +211,327 @@ describe('Validation Tests',async () => {
 
     describe('Validation Check Request', () => {
 
-        describe('Param based',() => {
+        describe('Full', () => {
+            when(testClient, 'Correct input')
+                .validationRequest('complexValidation')
+                .check([], {
+                    animal: {name: 'Tara', likeToBark: true},
+                    persons: [{name: 'Max', age: 25}, {name: 'Tim', age: 20}]
+                })
+                .assertThat()
+                .isSuccessful()
+                .test();
 
-            describe('Full',() => {
-                when(testClient,'Correct input')
-                    .validationRequest('complexValidation')
-                    .check([],{
-                        animal : {name : 'Tara',likeToBark: true},
-                        persons : [{name : 'Max',age : 25},{name : 'Tim',age : 20}]
-                    })
-                    .assertThat()
-                    .isSuccessful()
-                    .test();
-
-                when(testClient,'Wrong input')
-                    .validationRequest('complexValidation')
-                    .check([],{
-                        animal : {name : 'Tara',likeToBark: true},
-                        persons : [{name : 'Max',age : 25}]
-                    })
-                    .assertThat()
-                    .isNotSuccessful()
-                    .buildHasError()
-                    .presets()
-                    .arrayNotMatchesWithMinLength()
-                    .end()
-                    .test();
-            });
-
-            describe('One model',() => {
-                when(testClient,'Correct input (AnyOf)')
-                    .validationRequest('complexValidation')
-                    .check(['animal'],{name : 'Tara',likeToBark: true})
-                    .assertThat()
-                    .isSuccessful()
-                    .test();
-
-                when(testClient,'Correct input (AnyOf)')
-                    .validationRequest('complexValidation')
-                    .check(['animal'],{name : 'Tara'})
-                    .assertThat()
-                    .isSuccessful()
-                    .test();
-
-                when(testClient,'Wrong input')
-                    .validationRequest('complexValidation')
-                    .check(['animal'],{name : 'T'})
-                    .assertThat()
-                    .isNotSuccessful()
-                    .buildHasError()
-                    .presets()
-                    .valueNotMatchesWithMinLength()
-                    .end()
-                    .test();
-            });
-
-            describe('Inner value model',() => {
-                when(testClient,'Correct input (with string path)')
-                    .validationRequest('complexValidation')
-                    .check('animal.dog.name','Tara')
-                    .assertThat()
-                    .isSuccessful()
-                    .test();
-
-                when(testClient,'Correct input (with array path)')
-                    .validationRequest('complexValidation')
-                    .check(['animal','dog','name'],'Tara')
-                    .assertThat()
-                    .isSuccessful()
-                    .test();
-
-                when(testClient,'Wrong input (with string path)')
-                    .validationRequest('complexValidation')
-                    .check('animal.dog.name','T')
-                    .assertThat()
-                    .isNotSuccessful()
-                    .buildHasError()
-                    .presets()
-                    .valueNotMatchesWithMinLength()
-                    .end()
-                    .test();
-
-                when(testClient,'Wrong input (with array path)')
-                    .validationRequest('complexValidation')
-                    .check(['animal','dog','name'],'T')
-                    .assertThat()
-                    .isNotSuccessful()
-                    .buildHasError()
-                    .presets()
-                    .valueNotMatchesWithMinLength()
-                    .end()
-                    .test();
-            });
-
-            describe('Array model',() => {
-                when(testClient,'Correct input (array item)')
-                    .validationRequest('complexValidation')
-                    .check('persons.type',{name : 'Tim',age : 20})
-                    .assertThat()
-                    .isSuccessful()
-                    .test();
-
-                when(testClient,'Wrong input (array item)')
-                    .validationRequest('complexValidation')
-                    .check('persons.type',{name : 'Tim'})
-                    .assertThat()
-                    .isNotSuccessful()
-                    .buildHasError()
-                    .presets()
-                    .objectPropertyIsMissing()
-                    .end()
-                    .test();
-
-                when(testClient,'Correct input (array item inner properties)')
-                    .validationRequest('complexValidation')
-                    .check('persons.type.name','Tim')
-                    .assertThat()
-                    .isSuccessful()
-                    .test();
-
-                when(testClient,'Wrong input (array item inner properties)')
-                    .validationRequest('complexValidation')
-                    .check('persons.type.name',{name : 0})
-                    .assertThat()
-                    .isNotSuccessful()
-                    .buildHasError()
-                    .presets()
-                    .valueIsNotTypeString()
-                    .end()
-                    .test();
-
-                when(testClient,'Correct input (array model)')
-                    .validationRequest('complexValidation')
-                    .check('persons',[{name : 'Max',age : 25},{name : 'Tim',age : 20}])
-                    .assertThat()
-                    .isSuccessful()
-                    .test();
-
-                when(testClient,'Wrong input (min length) (array model)')
-                    .validationRequest('complexValidation')
-                    .check('persons',[{name : 'Max',age : 25}])
-                    .assertThat()
-                    .isNotSuccessful()
-                    .buildHasError()
-                    .presets()
-                    .arrayNotMatchesWithMinLength()
-                    .end()
-                    .test();
-
-                when(testClient,'Wrong input (item wrong) (array model)')
-                    .validationRequest('complexValidation')
-                    .check('persons',[{name : 'Max',age : 25},{name : 'Tim',age : 200}])
-                    .assertThat()
-                    .isNotSuccessful()
-                    .buildHasError()
-                    .presets()
-                    .valueNotMatchesWithMaxValue()
-                    .infoHas({path : 'persons.1.age'})
-                    .end()
-                    .test();
-            });
-
-            describe('Wrong path',() => {
-
-                when(testClient,'Path can not resolved')
-                    .validationRequest('complexValidation')
-                    .check('persons.array.lastName','LastName')
-                    .assertThat()
-                    .isNotSuccessful()
-                    .buildHasError()
-                    .presets()
-                    .pathNotResolvable()
-                    .end()
-                    .test();
-            });
+            when(testClient, 'Wrong input')
+                .validationRequest('complexValidation')
+                .check([], {
+                    animal: {name: 'Tara', likeToBark: true},
+                    persons: [{name: 'Max', age: 25}]
+                })
+                .assertThat()
+                .isNotSuccessful()
+                .buildHasError()
+                .presets()
+                .arrayNotMatchesWithMinLength()
+                .end()
+                .test();
         });
 
+        describe('One model', () => {
+            when(testClient, 'Correct input (AnyOf)')
+                .validationRequest('complexValidation')
+                .check(['animal'], {name: 'Tara', likeToBark: true})
+                .assertThat()
+                .isSuccessful()
+                .test();
 
+            when(testClient, 'Correct input (AnyOf)')
+                .validationRequest('complexValidation')
+                .check(['animal'], {name: 'Tara'})
+                .assertThat()
+                .isSuccessful()
+                .test();
 
-        describe('Single input',() => {
+            when(testClient, 'Wrong input')
+                .validationRequest('complexValidation')
+                .check(['animal'], {name: 'T'})
+                .assertThat()
+                .isNotSuccessful()
+                .buildHasError()
+                .presets()
+                .valueNotMatchesWithMinLength()
+                .end()
+                .test();
+        });
 
-            describe('Object model', () => {
-                describe('Full',() => {
-                    when(testClient,'Correct input')
-                        .validationRequest('singleInputValidationObj')
-                        .check('',{name : 'Luca',age : 20})
-                        .assertThat()
-                        .isSuccessful()
-                        .test();
+        describe('Inner value model', () => {
+            when(testClient, 'Correct input (with string path)')
+                .validationRequest('complexValidation')
+                .check('animal.dog.name', 'Tara')
+                .assertThat()
+                .isSuccessful()
+                .test();
 
-                    when(testClient,'Wrong input')
-                        .validationRequest('singleInputValidationObj')
-                        .check('',{name : 'Luca',age : 200})
-                        .assertThat()
-                        .isNotSuccessful()
-                        .buildHasError()
-                        .presets()
-                        .valueNotMatchesWithMaxValue()
-                        .end()
-                        .test();
-                });
+            when(testClient, 'Correct input (with array path)')
+                .validationRequest('complexValidation')
+                .check(['animal', 'dog', 'name'], 'Tara')
+                .assertThat()
+                .isSuccessful()
+                .test();
 
-                describe('Multi Check Full',() => {
-                    when(testClient,'Correct input')
-                        .validationRequest('singleInputValidationObj')
-                        .check('',{name : 'Luca',age : 20})
-                        .check('',{name : 'Leonie',age : 50})
-                        .assertThat()
-                        .isSuccessful()
-                        .test();
+            when(testClient, 'Wrong input (with string path)')
+                .validationRequest('complexValidation')
+                .check('animal.dog.name', 'T')
+                .assertThat()
+                .isNotSuccessful()
+                .buildHasError()
+                .presets()
+                .valueNotMatchesWithMinLength()
+                .end()
+                .test();
 
-                    when(testClient,'Wrong input')
-                        .validationRequest('singleInputValidationObj')
-                        .check('',{name : 'Luca',age : 20})
-                        .check('',{name : 'Tim',age : 18})
-                        .check('',{name : 'Tom',age : 200})
-                        .assertThat()
-                        .isNotSuccessful()
-                        .buildHasError()
-                        .presets()
-                        .valueNotMatchesWithMaxValue()
-                        .end()
-                        .test();
-                });
+            when(testClient, 'Wrong input (with array path)')
+                .validationRequest('complexValidation')
+                .check(['animal', 'dog', 'name'], 'T')
+                .assertThat()
+                .isNotSuccessful()
+                .buildHasError()
+                .presets()
+                .valueNotMatchesWithMinLength()
+                .end()
+                .test();
+        });
 
-                describe('Single value model',() => {
-                    when(testClient,'Correct input')
-                        .validationRequest('singleInputValidationObj')
-                        .check('name','Luca')
-                        .assertThat()
-                        .isSuccessful()
-                        .test();
+        describe('Array model', () => {
+            when(testClient, 'Correct input (array item)')
+                .validationRequest('complexValidation')
+                .check('persons.type', {name: 'Tim', age: 20})
+                .assertThat()
+                .isSuccessful()
+                .test();
 
-                    when(testClient,'Wrong input')
-                        .validationRequest('singleInputValidationObj')
-                        .check('name',0)
-                        .assertThat()
-                        .isNotSuccessful()
-                        .buildHasError()
-                        .presets()
-                        .valueIsNotTypeString()
-                        .end()
-                        .test();
-                });
+            when(testClient, 'Wrong input (array item)')
+                .validationRequest('complexValidation')
+                .check('persons.type', {name: 'Tim'})
+                .assertThat()
+                .isNotSuccessful()
+                .buildHasError()
+                .presets()
+                .missingObjectProperty()
+                .end()
+                .test();
 
-                describe('Wrong path',() => {
+            when(testClient, 'Correct input (array item inner properties)')
+                .validationRequest('complexValidation')
+                .check('persons.type.name', 'Tim')
+                .assertThat()
+                .isSuccessful()
+                .test();
 
-                    when(testClient,'Path can not resolved')
-                        .validationRequest('singleInputValidationObj')
-                        .check('lastName','LastName')
-                        .assertThat()
-                        .isNotSuccessful()
-                        .buildHasError()
-                        .presets()
-                        .pathNotResolvable()
-                        .end()
-                        .test();
-                });
-            });
+            when(testClient, 'Wrong input (array item inner properties)')
+                .validationRequest('complexValidation')
+                .check('persons.type.name', {name: 0})
+                .assertThat()
+                .isNotSuccessful()
+                .buildHasError()
+                .presets()
+                .valueNotMatchesWithType()
+                .end()
+                .test();
 
-            describe('Array Model',() => {
+            when(testClient, 'Correct input (array model)')
+                .validationRequest('complexValidation')
+                .check('persons', [{name: 'Max', age: 25}, {name: 'Tim', age: 20}])
+                .assertThat()
+                .isSuccessful()
+                .test();
 
-                when(testClient,'Correct input')
-                    .request('singleInputValidationArray')
-                    .data(['Luca','Gagan','Tom'])
-                    .assertThat()
-                    .isSuccessful()
-                    .test();
+            when(testClient, 'Wrong input (min length) (array model)')
+                .validationRequest('complexValidation')
+                .check('persons', [{name: 'Max', age: 25}])
+                .assertThat()
+                .isNotSuccessful()
+                .buildHasError()
+                .presets()
+                .arrayNotMatchesWithMinLength()
+                .end()
+                .test();
 
-                when(testClient,'Wrong input')
-                    .request('singleInputValidationArray')
-                    .data(['Luca',10])
-                    .assertThat()
-                    .isNotSuccessful()
-                    .buildHasError()
-                    .presets()
-                    .valueIsNotTypeString('1')
-                    .end()
-                    .test();
+            when(testClient, 'Wrong input (item wrong) (array model)')
+                .validationRequest('complexValidation')
+                .check('persons', [{name: 'Max', age: 25}, {name: 'Tim', age: 200}])
+                .assertThat()
+                .isNotSuccessful()
+                .buildHasError()
+                .presets()
+                .valueNotMatchesWithMaxValue()
+                .infoHas({path: 'persons.1.age'})
+                .end()
+                .test();
+        });
 
-            });
+        describe('Wrong path', () => {
 
-            describe('AnyOf Model',() => {
-
-                when(testClient,'Correct input')
-                    .request('singleInputValidationAnyOf')
-                    .data('Luca')
-                    .assertThat()
-                    .isSuccessful()
-                    .test();
-
-                when(testClient,'Wrong input')
-                    .request('singleInputValidationAnyOf')
-                    .data('LucaLucaLucaLuca')
-                    .assertThat()
-                    .isNotSuccessful()
-                    .buildHasError()
-                    .presets()
-                    .valueNotMatchesWithMaxLength('name')
-                    .end()
-                    .test();
-
-            });
+            when(testClient, 'Path can not resolved')
+                .validationRequest('complexValidation')
+                .check('persons.array.lastName', 'LastName')
+                .assertThat()
+                .isNotSuccessful()
+                .buildHasError()
+                .presets()
+                .pathNotResolvable()
+                .end()
+                .test();
         });
 
     });
 
-    describe('Param based with array data', () => {
+    describe('Can (Not) Be Null', () => {
 
-        when(testClient,'Correct data')
-            .request('stringValidation')
-            .data(['aaaaaa'])
-            .assertThat()
-            .isSuccessful()
-            .test();
+        describe('ValueModel', () => {
+            describe('CanBeNull', () => {
+                when(testClient,'With Null')
+                    .request('valueCanBeNull')
+                    .data(null)
+                    .assertThat()
+                    .isSuccessful()
+                    .test();
 
-        when(testClient,'Wrong data')
-            .request('stringValidation')
-            .data(['thisIsATestString'])
-            .assertThat()
-            .isNotSuccessful()
-            .buildHasError()
-            .presets()
-            .valueNotMatchesWithMaxLength()
-            .end()
-            .buildHasError()
-            .presets()
-            .valueNotMatchesWithEndsWith()
-            .end()
-            .test();
+                when(testClient,'With Value')
+                    .request('valueCanBeNull')
+                    .data('hello')
+                    .assertThat()
+                    .isSuccessful()
+                    .test();
+            });
+            describe('CanNotBeNull', () => {
+                when(testClient,'With Null')
+                    .request('valueCanNotBeNull')
+                    .data(null)
+                    .assertThat()
+                    .isNotSuccessful()
+                    .buildHasError()
+                    .presets()
+                    .valueNotMatchesWithType()
+                    .end()
+                    .test();
 
-        when(testClient,'To much data')
-            .request('stringValidation')
-            .data(['thisI','someString'])
-            .assertThat()
-            .isNotSuccessful()
-            .buildHasError()
-            .presets()
-            .inputParamNotAssignable()
-            .end()
-            .test();
+                when(testClient,'With Value')
+                    .request('valueCanNotBeNull')
+                    .data('hello')
+                    .assertThat()
+                    .isSuccessful()
+                    .test();
+            });
+        });
+        describe('ObjectModel', () => {
+            describe('CanBeNull', () => {
+                when(testClient,'With Null')
+                    .request('objectCanBeNull')
+                    .data(null)
+                    .assertThat()
+                    .isSuccessful()
+                    .test();
+
+                when(testClient,'With Value')
+                    .request('objectCanBeNull')
+                    .data({})
+                    .assertThat()
+                    .isSuccessful()
+                    .test();
+            });
+            describe('CanNotBeNull', () => {
+                when(testClient,'With Null')
+                    .request('objectCanNotBeNull')
+                    .data(null)
+                    .assertThat()
+                    .isNotSuccessful()
+                    .buildHasError()
+                    .presets()
+                    .invalidType('')
+                    .end()
+                    .test();
+
+                when(testClient,'With Value')
+                    .request('objectCanNotBeNull')
+                    .data({})
+                    .assertThat()
+                    .isSuccessful()
+                    .test();
+            });
+            describe('ArrayModel', () => {
+                describe('CanBeNull', () => {
+                    when(testClient,'With Null')
+                        .request('arrayCanBeNull')
+                        .data(null)
+                        .assertThat()
+                        .isSuccessful()
+                        .test();
+
+                    when(testClient,'With Value')
+                        .request('arrayCanBeNull')
+                        .data(['hello'])
+                        .assertThat()
+                        .isSuccessful()
+                        .test();
+                });
+                describe('CanNotBeNull', () => {
+                    when(testClient,'With Null')
+                        .request('arrayCanNotBeNull')
+                        .data(null)
+                        .assertThat()
+                        .isNotSuccessful()
+                        .buildHasError()
+                        .presets()
+                        .invalidType('')
+                        .end()
+                        .test();
+
+                    when(testClient,'With Value')
+                        .request('arrayCanNotBeNull')
+                        .data(['hello'])
+                        .assertThat()
+                        .isSuccessful()
+                        .test();
+                });
+            });
+            describe('AnyOfModel', () => {
+                describe('CanBeNull', () => {
+                    when(testClient,'With Null')
+                        .request('anyOfCanBeNull')
+                        .data(null)
+                        .assertThat()
+                        .isSuccessful()
+                        .test();
+
+                    when(testClient,'With Value')
+                        .request('anyOfCanBeNull')
+                        .data('hello')
+                        .assertThat()
+                        .isSuccessful()
+                        .test();
+                });
+                describe('CanNotBeNull', () => {
+                    when(testClient,'With Null')
+                        .request('anyOfCanNotBeNull')
+                        .data(null)
+                        .assertThat()
+                        .isNotSuccessful()
+                        .buildHasError()
+                        .presets()
+                        .noAnyOfMatch('')
+                        .end()
+                        .test();
+
+                    when(testClient,'With Value')
+                        .request('anyOfCanNotBeNull')
+                        .data('hello')
+                        .assertThat()
+                        .isSuccessful()
+                        .test();
+                });
+            });
+        });
     });
 
     describe('All allow input', () => {
@@ -628,6 +543,59 @@ describe('Validation Tests',async () => {
             .isSuccessful()
             .assertResult()
             .equal('This is a string')
+            .end()
+            .test();
+    });
+
+    describe('Nothing allow input', () => {
+
+        when(testClient,'Check with some input')
+            .request('nothingAllow')
+            .data('This is a string')
+            .assertThat()
+            .isNotSuccessful()
+            .buildHasError()
+            .presets()
+            .inputNotAllowed()
+            .end()
+            .test();
+    });
+
+    describe('Object model tuple', () => {
+
+        when(testClient,'Correct array value')
+            .request('tupleObjectValidation')
+            .data(['str',2,'str'])
+            .assertThat()
+            .isSuccessful()
+            .test();
+
+        when(testClient,'Correct object value')
+            .request('tupleObjectValidation')
+            .data({0: 'str', 1: 2, 2: 'str'})
+            .assertThat()
+            .isSuccessful()
+            .test();
+
+        when(testClient,'Wrong array value')
+            .request('tupleObjectValidation')
+            .data(['str','2','str'])
+            .assertThat()
+            .isNotSuccessful()
+            .buildHasError()
+            .presets()
+            .valueNotMatchesWithType('1')
+            .end()
+            .test();
+
+        when(testClient,'Wrong object value')
+            .request('tupleObjectValidation')
+            .data({})
+            .assertThat()
+            .isNotSuccessful()
+            .buildHasError()
+            .presets()
+            .missingObjectProperty()
             .end()
             .test();
     });

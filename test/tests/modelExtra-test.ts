@@ -14,7 +14,7 @@ describe('Model Extra Tests',async () => {
     });
 
     when(testClient,'Test complex construct,convert,extend and prototype')
-        .request('modelExtra')
+        .request('objModelExtra')
         .data({firstName : 'Luca',lastName : 'Code'})
         .assertThat()
         .isSuccessful()

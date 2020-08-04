@@ -1,6 +1,5 @@
 import {
     Controller,
-    ControllerConfig,
     Register,
     ObjectModel,
     Model
@@ -31,14 +30,13 @@ class Phone extends Device {
     }
 }
 
+@Controller.Config({
+    access : 'all',
+    input : Phone
+})
 @Register()
 export class ObjectClassValidationController extends Controller
 {
-    static config : ControllerConfig = {
-        access : 'all',
-        input : Phone
-    };
-
     async handle(_, phone: Phone): Promise<any> {
         return phone.getDeviceCode();
     }
