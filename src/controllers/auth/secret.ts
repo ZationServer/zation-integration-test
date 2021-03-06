@@ -1,4 +1,4 @@
-import {Controller, ControllerConfig, Register, $userId, $not, $tokenPayloadIncludes} from 'zation-server';
+import {Controller, ControllerConfig, Register, $userId, $not, $tokenPayloadMatches, $and} from 'zation-server';
 
 @Register()
 export class SecretForUserController extends Controller
@@ -65,7 +65,7 @@ export class SecretForUserAndId10Controller extends Controller
 export class SecretForUserAndId11Controller extends Controller
 {
     static config : ControllerConfig = {
-        access : [['user',$userId(11)]]
+        access : $and('user',$userId(11))
     };
 
     async handle() {
@@ -101,8 +101,8 @@ export class SecretForAllExceptAdminOrUserController extends Controller
 export class SecretForAuthController extends Controller
 {
     static config : ControllerConfig = {
-        access : (token) => {
-            return token !== null;
+        access : (socket) => {
+            return socket.isAuthenticated()
         }
     };
 
@@ -115,7 +115,7 @@ export class SecretForAuthController extends Controller
 export class SecretForEmailController extends Controller
 {
     static config : ControllerConfig = {
-        access : $tokenPayloadIncludes({email: 'mytest@gmail.de'})
+        access : $tokenPayloadMatches({email: 'mytest@gmail.de'})
     };
 
     async handle() {
