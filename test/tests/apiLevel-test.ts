@@ -1,4 +1,4 @@
-import {describe, when,before,after,create,forEachClient} from "zation-assured";
+import {describe, when,before,after,create} from "zation-assured";
 import {clientConfig}                       from "../index.test";
 
 const testClient1  = create(Object.assign({apiLevel : 8},clientConfig));
@@ -9,15 +9,15 @@ const testClient4  = create(clientConfig);
 describe('ApiLevel Tests',async () => {
 
     before(async () => {
-        await forEachClient(async (c) => {
+        await Promise.all([testClient1,testClient2,testClient3,testClient4].map(async c => {
             await c.connect();
-        },testClient1,testClient2,testClient3,testClient4);
+        }));
     });
 
     after(async () => {
-        await forEachClient(async (c) => {
+        await Promise.all([testClient1,testClient2,testClient3,testClient4].map(async c => {
             await c.disconnect();
-        },testClient1,testClient2,testClient3,testClient4);
+        }));
     });
 
     describe('Request ApiLevel', () => {
@@ -27,7 +27,7 @@ describe('ApiLevel Tests',async () => {
             .apiLevel(1)
             .assertThat()
             .isNotSuccessful()
-            .buildHasError()
+            .hasError()
             .presets()
             .apiLevelIncompatible()
             .end()
@@ -60,7 +60,7 @@ describe('ApiLevel Tests',async () => {
             .request('apiLevel')
             .assertThat()
             .isNotSuccessful()
-            .buildHasError()
+            .hasError()
             .presets()
             .apiLevelIncompatible()
             .end()

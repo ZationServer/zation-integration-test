@@ -17,7 +17,7 @@ describe('Authentication Tests',async () => {
         .request('secretForUser')
         .assertThat()
         .isNotSuccessful()
-        .buildHasError()
+        .hasError()
         .presets()
         .accessDenied()
         .end()
@@ -27,7 +27,7 @@ describe('Authentication Tests',async () => {
         .request('secretForId10')
         .assertThat()
         .isNotSuccessful()
-        .buildHasError()
+        .hasError()
         .presets()
         .accessDenied()
         .end()
@@ -37,7 +37,7 @@ describe('Authentication Tests',async () => {
         .request('secretForUserAndId10')
         .assertThat()
         .isNotSuccessful()
-        .buildHasError()
+        .hasError()
         .presets()
         .accessDenied()
         .end()
@@ -47,7 +47,7 @@ describe('Authentication Tests',async () => {
         .request('secretForAdminOrUser')
         .assertThat()
         .isNotSuccessful()
-        .buildHasError()
+        .hasError()
         .presets()
         .accessDenied()
         .end()
@@ -57,7 +57,7 @@ describe('Authentication Tests',async () => {
         .request('secretForAuth')
         .assertThat()
         .isNotSuccessful()
-        .buildHasError()
+        .hasError()
         .presets()
         .accessDenied()
         .end()
@@ -67,7 +67,7 @@ describe('Authentication Tests',async () => {
         .request('secretForEmail')
         .assertThat()
         .isNotSuccessful()
-        .buildHasError()
+        .hasError()
         .presets()
         .accessDenied()
         .end()
@@ -77,11 +77,11 @@ describe('Authentication Tests',async () => {
         .authRequest({email : 'mytest@gmail.de',password : 'secret'})
         .assertThat()
         .isSuccessful()
-        .client(testClient)
+        .client()
         .isAuthenticated()
         .hasAuthUserGroup('user')
         .hasUserId(10)
-        .assertTokenPayload()
+        .tokenPayload()
         .ownInclude({email : 'mytest@gmail.de'})
         .end()
         .end()
@@ -92,7 +92,7 @@ describe('Authentication Tests',async () => {
         .assertThat()
         .isSuccessful()
         .assertResult()
-        .strictEqual(0)
+        .equal(0)
         .end()
         .test();
 
@@ -101,7 +101,7 @@ describe('Authentication Tests',async () => {
         .assertThat()
         .isSuccessful()
         .assertResult()
-        .strictEqual(0)
+        .equal(0)
         .end()
         .test();
 
@@ -109,7 +109,7 @@ describe('Authentication Tests',async () => {
         .request('secretForAllExceptAdminOrUser')
         .assertThat()
         .isNotSuccessful()
-        .buildHasError()
+        .hasError()
         .presets()
         .accessDenied()
         .end()
@@ -120,7 +120,7 @@ describe('Authentication Tests',async () => {
         .assertThat()
         .isSuccessful()
         .assertResult()
-        .strictEqual(0)
+        .equal(0)
         .end()
         .test();
 
@@ -128,7 +128,7 @@ describe('Authentication Tests',async () => {
         .request('secretForUserAndId11')
         .assertThat()
         .isNotSuccessful()
-        .buildHasError()
+        .hasError()
         .presets()
         .accessDenied()
         .end()
@@ -138,7 +138,7 @@ describe('Authentication Tests',async () => {
         .request('secretForAdminOrId11')
         .assertThat()
         .isNotSuccessful()
-        .buildHasError()
+        .hasError()
         .presets()
         .accessDenied()
         .end()
@@ -149,7 +149,7 @@ describe('Authentication Tests',async () => {
         .assertThat()
         .isSuccessful()
         .assertResult()
-        .strictEqual(0)
+        .equal(0)
         .end()
         .test();
 
@@ -158,7 +158,7 @@ describe('Authentication Tests',async () => {
         .assertThat()
         .isSuccessful()
         .assertResult()
-        .strictEqual(0)
+        .equal(0)
         .end()
         .test();
 
@@ -167,7 +167,7 @@ describe('Authentication Tests',async () => {
         .assertThat()
         .isSuccessful()
         .assertResult()
-        .strictEqual(0)
+        .equal(0)
         .end()
         .test();
 
@@ -176,7 +176,7 @@ describe('Authentication Tests',async () => {
         .assertThat()
         .isSuccessful()
         .assertResult()
-        .strictEqual(0)
+        .equal(0)
         .end()
         .test();
 });
