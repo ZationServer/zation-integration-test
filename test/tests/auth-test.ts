@@ -18,7 +18,7 @@ describe('Authentication Tests',async () => {
         .assertThat()
         .isNotSuccessful()
         .hasError()
-        .presets()
+        .preset()
         .accessDenied()
         .end()
         .test();
@@ -28,7 +28,7 @@ describe('Authentication Tests',async () => {
         .assertThat()
         .isNotSuccessful()
         .hasError()
-        .presets()
+        .preset()
         .accessDenied()
         .end()
         .test();
@@ -38,7 +38,7 @@ describe('Authentication Tests',async () => {
         .assertThat()
         .isNotSuccessful()
         .hasError()
-        .presets()
+        .preset()
         .accessDenied()
         .end()
         .test();
@@ -48,7 +48,7 @@ describe('Authentication Tests',async () => {
         .assertThat()
         .isNotSuccessful()
         .hasError()
-        .presets()
+        .preset()
         .accessDenied()
         .end()
         .test();
@@ -58,7 +58,7 @@ describe('Authentication Tests',async () => {
         .assertThat()
         .isNotSuccessful()
         .hasError()
-        .presets()
+        .preset()
         .accessDenied()
         .end()
         .test();
@@ -68,7 +68,7 @@ describe('Authentication Tests',async () => {
         .assertThat()
         .isNotSuccessful()
         .hasError()
-        .presets()
+        .preset()
         .accessDenied()
         .end()
         .test();
@@ -91,7 +91,7 @@ describe('Authentication Tests',async () => {
         .request('secretForUser')
         .assertThat()
         .isSuccessful()
-        .assertResult()
+        .result()
         .equal(0)
         .end()
         .test();
@@ -100,7 +100,7 @@ describe('Authentication Tests',async () => {
         .request('secretForUserAndId10')
         .assertThat()
         .isSuccessful()
-        .assertResult()
+        .result()
         .equal(0)
         .end()
         .test();
@@ -110,7 +110,7 @@ describe('Authentication Tests',async () => {
         .assertThat()
         .isNotSuccessful()
         .hasError()
-        .presets()
+        .preset()
         .accessDenied()
         .end()
         .test();
@@ -119,7 +119,7 @@ describe('Authentication Tests',async () => {
         .request('secretForId10')
         .assertThat()
         .isSuccessful()
-        .assertResult()
+        .result()
         .equal(0)
         .end()
         .test();
@@ -129,7 +129,7 @@ describe('Authentication Tests',async () => {
         .assertThat()
         .isNotSuccessful()
         .hasError()
-        .presets()
+        .preset()
         .accessDenied()
         .end()
         .test();
@@ -139,7 +139,7 @@ describe('Authentication Tests',async () => {
         .assertThat()
         .isNotSuccessful()
         .hasError()
-        .presets()
+        .preset()
         .accessDenied()
         .end()
         .test();
@@ -148,7 +148,7 @@ describe('Authentication Tests',async () => {
         .request('secretForAdminOrId10')
         .assertThat()
         .isSuccessful()
-        .assertResult()
+        .result()
         .equal(0)
         .end()
         .test();
@@ -157,7 +157,7 @@ describe('Authentication Tests',async () => {
         .request('secretForAdminOrUser')
         .assertThat()
         .isSuccessful()
-        .assertResult()
+        .result()
         .equal(0)
         .end()
         .test();
@@ -166,7 +166,7 @@ describe('Authentication Tests',async () => {
         .request('secretForAuth')
         .assertThat()
         .isSuccessful()
-        .assertResult()
+        .result()
         .equal(0)
         .end()
         .test();
@@ -175,7 +175,7 @@ describe('Authentication Tests',async () => {
         .request('secretForEmail')
         .assertThat()
         .isSuccessful()
-        .assertResult()
+        .result()
         .equal(0)
         .end()
         .test();

@@ -21,9 +21,9 @@ describe('Validation Tests',async () => {
             .assertThat()
             .isNotSuccessful()
             .hasError()
-                .presets()
+                .preset()
                 .valueNotMatchesWithType()
-                .infoHas({path : ''})
+                .withInfo({path : ''})
                 .end()
             .test();
 
@@ -33,11 +33,11 @@ describe('Validation Tests',async () => {
             .assertThat()
             .isNotSuccessful()
             .hasError()
-                .presets()
+                .preset()
                 .valueNotMatchesWithMaxLength()
                 .end()
             .hasError()
-                .presets()
+                .preset()
                 .valueNotMatchesWithEndsWith()
                 .end()
             .test();
@@ -51,7 +51,7 @@ describe('Validation Tests',async () => {
             .assertThat()
             .isNotSuccessful()
             .hasError()
-                .presets()
+                .preset()
                 .noAnyOfMatch()
                 .end()
             .test();
@@ -79,9 +79,9 @@ describe('Validation Tests',async () => {
             .assertThat()
             .isNotSuccessful()
             .hasError()
-                .presets()
+                .preset()
                 .valueNotMatchesWithIn()
-                .infoHas({path : 'colour'})
+                .withInfo({path : 'colour'})
                 .end()
             .test();
     });
@@ -93,7 +93,7 @@ describe('Validation Tests',async () => {
             .data({deviceId : 10,producer : 'Samsung',screenSize : 5.2})
             .assertThat()
             .isSuccessful()
-            .assertResult()
+            .result()
             .equal('Samsung-10')
             .end()
             .test();
@@ -104,12 +104,14 @@ describe('Validation Tests',async () => {
             .assertThat()
             .isNotSuccessful()
             .hasError()
-            .presets()
-            .valueNotMatchesWithMaxValue('screenSize')
+            .preset()
+            .valueNotMatchesWithMaxValue()
+            .atPath('screenSize')
             .end()
             .hasError()
-            .presets()
-            .valueNotMatchesWithType('deviceId')
+            .preset()
+            .valueNotMatchesWithType()
+            .atPath('deviceId')
             .end()
             .test();
     });
@@ -129,7 +131,7 @@ describe('Validation Tests',async () => {
             .assertThat()
             .isNotSuccessful()
             .hasError()
-                .presets()
+                .preset()
                 .arrayNotMatchesWithMaxLength()
                 .end()
             .test();
@@ -140,7 +142,7 @@ describe('Validation Tests',async () => {
             .assertThat()
             .isNotSuccessful()
             .hasError()
-                .presets()
+                .preset()
                 .invalidType()
                 .end()
             .test();
@@ -169,7 +171,7 @@ describe('Validation Tests',async () => {
             .assertThat()
             .isNotSuccessful()
             .hasError()
-            .presets()
+            .preset()
             .arrayNotMatchesWithMinLength()
             .end()
             .test();
@@ -182,7 +184,7 @@ describe('Validation Tests',async () => {
             .data('Hello')
             .assertThat()
             .isSuccessful()
-            .assertResult()
+            .result()
             .equal('Hello')
             .end()
             .test();
@@ -192,7 +194,7 @@ describe('Validation Tests',async () => {
             .data(undefined)
             .assertThat()
             .isSuccessful()
-            .assertResult()
+            .result()
             .equal(undefined)
             .end()
             .test();
@@ -203,7 +205,7 @@ describe('Validation Tests',async () => {
             .assertThat()
             .isNotSuccessful()
             .hasError()
-            .presets()
+            .preset()
             .valueNotMatchesWithMinLength()
             .end()
             .test();
@@ -231,7 +233,7 @@ describe('Validation Tests',async () => {
                 .assertThat()
                 .isNotSuccessful()
                 .hasError()
-                .presets()
+                .preset()
                 .arrayNotMatchesWithMinLength()
                 .end()
                 .test();
@@ -258,7 +260,7 @@ describe('Validation Tests',async () => {
                 .assertThat()
                 .isNotSuccessful()
                 .hasError()
-                .presets()
+                .preset()
                 .valueNotMatchesWithMinLength()
                 .end()
                 .test();
@@ -285,7 +287,7 @@ describe('Validation Tests',async () => {
                 .assertThat()
                 .isNotSuccessful()
                 .hasError()
-                .presets()
+                .preset()
                 .valueNotMatchesWithMinLength()
                 .end()
                 .test();
@@ -296,7 +298,7 @@ describe('Validation Tests',async () => {
                 .assertThat()
                 .isNotSuccessful()
                 .hasError()
-                .presets()
+                .preset()
                 .valueNotMatchesWithMinLength()
                 .end()
                 .test();
@@ -316,7 +318,7 @@ describe('Validation Tests',async () => {
                 .assertThat()
                 .isNotSuccessful()
                 .hasError()
-                .presets()
+                .preset()
                 .missingObjectProperty()
                 .end()
                 .test();
@@ -334,7 +336,7 @@ describe('Validation Tests',async () => {
                 .assertThat()
                 .isNotSuccessful()
                 .hasError()
-                .presets()
+                .preset()
                 .valueNotMatchesWithType()
                 .end()
                 .test();
@@ -352,7 +354,7 @@ describe('Validation Tests',async () => {
                 .assertThat()
                 .isNotSuccessful()
                 .hasError()
-                .presets()
+                .preset()
                 .arrayNotMatchesWithMinLength()
                 .end()
                 .test();
@@ -363,9 +365,9 @@ describe('Validation Tests',async () => {
                 .assertThat()
                 .isNotSuccessful()
                 .hasError()
-                .presets()
+                .preset()
                 .valueNotMatchesWithMaxValue()
-                .infoHas({path: 'persons.1.age'})
+                .withInfo({path: 'persons.1.age'})
                 .end()
                 .test();
         });
@@ -378,7 +380,7 @@ describe('Validation Tests',async () => {
                 .assertThat()
                 .isNotSuccessful()
                 .hasError()
-                .presets()
+                .preset()
                 .pathNotResolvable()
                 .end()
                 .test();
@@ -411,7 +413,7 @@ describe('Validation Tests',async () => {
                     .assertThat()
                     .isNotSuccessful()
                     .hasError()
-                    .presets()
+                    .preset()
                     .valueNotMatchesWithType()
                     .end()
                     .test();
@@ -447,8 +449,9 @@ describe('Validation Tests',async () => {
                     .assertThat()
                     .isNotSuccessful()
                     .hasError()
-                    .presets()
-                    .invalidType('')
+                    .preset()
+                    .invalidType()
+                    .withInfo({path: ''})
                     .end()
                     .test();
 
@@ -482,8 +485,9 @@ describe('Validation Tests',async () => {
                         .assertThat()
                         .isNotSuccessful()
                         .hasError()
-                        .presets()
-                        .invalidType('')
+                        .preset()
+                        .invalidType()
+                        .withInfo({path: ''})
                         .end()
                         .test();
 
@@ -518,8 +522,9 @@ describe('Validation Tests',async () => {
                         .assertThat()
                         .isNotSuccessful()
                         .hasError()
-                        .presets()
-                        .noAnyOfMatch('')
+                        .preset()
+                        .noAnyOfMatch()
+                        .withInfo({path: ''})
                         .end()
                         .test();
 
@@ -541,7 +546,7 @@ describe('Validation Tests',async () => {
             .data('This is a string')
             .assertThat()
             .isSuccessful()
-            .assertResult()
+            .result()
             .equal('This is a string')
             .end()
             .test();
@@ -555,7 +560,7 @@ describe('Validation Tests',async () => {
             .assertThat()
             .isNotSuccessful()
             .hasError()
-            .presets()
+            .preset()
             .inputNotAllowed()
             .end()
             .test();
@@ -583,8 +588,9 @@ describe('Validation Tests',async () => {
             .assertThat()
             .isNotSuccessful()
             .hasError()
-            .presets()
-            .valueNotMatchesWithType('1')
+            .preset()
+            .valueNotMatchesWithType()
+            .withInfo({path: '1'})
             .end()
             .test();
 
@@ -594,7 +600,7 @@ describe('Validation Tests',async () => {
             .assertThat()
             .isNotSuccessful()
             .hasError()
-            .presets()
+            .preset()
             .missingObjectProperty()
             .end()
             .test();

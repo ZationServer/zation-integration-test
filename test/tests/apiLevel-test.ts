@@ -28,7 +28,7 @@ describe('ApiLevel Tests',async () => {
             .assertThat()
             .isNotSuccessful()
             .hasError()
-            .presets()
+            .preset()
             .apiLevelIncompatible()
             .end()
             .test();
@@ -38,7 +38,7 @@ describe('ApiLevel Tests',async () => {
             .apiLevel(2)
             .assertThat()
             .isSuccessful()
-            .assertResult()
+            .result()
             .equal(2)
             .end()
             .test();
@@ -48,7 +48,7 @@ describe('ApiLevel Tests',async () => {
             .apiLevel(10)
             .assertThat()
             .isSuccessful()
-            .assertResult()
+            .result()
             .equal(5)
             .end()
             .test();
@@ -61,7 +61,7 @@ describe('ApiLevel Tests',async () => {
             .assertThat()
             .isNotSuccessful()
             .hasError()
-            .presets()
+            .preset()
             .apiLevelIncompatible()
             .end()
             .test();
@@ -70,7 +70,7 @@ describe('ApiLevel Tests',async () => {
             .request('apiLevel')
             .assertThat()
             .isSuccessful()
-            .assertResult()
+            .result()
             .equal(2)
             .end()
             .test();
@@ -79,7 +79,7 @@ describe('ApiLevel Tests',async () => {
             .request('apiLevel')
             .assertThat()
             .isSuccessful()
-            .assertResult()
+            .result()
             .equal(5)
             .end()
             .test();
@@ -91,7 +91,7 @@ describe('ApiLevel Tests',async () => {
             .request('apiLevel')
             .assertThat()
             .isSuccessful()
-            .assertResult()
+            .result()
             .equal(2)
             .end()
             .test();

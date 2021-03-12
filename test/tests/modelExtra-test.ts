@@ -18,7 +18,7 @@ describe('Model Extra Tests',async () => {
         .data({firstName : 'Luca',lastName : 'Code'})
         .assertThat()
         .isSuccessful()
-        .assertResult()
+        .result()
         .equal('Hello LUCA.Code END')
         .end()
         .test();
