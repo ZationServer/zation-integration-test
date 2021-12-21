@@ -1,3 +1,9 @@
+/*
+Author: Ing. Luca Gian Scaringella
+GitHub: LucaCode
+Copyright(c) Ing. Luca Gian Scaringella
+ */
+
 import {start,StartMode,Config} from 'zation-server';
 import {ClientOptions}  from 'zation-assured';
 

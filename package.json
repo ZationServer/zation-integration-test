@@ -6,9 +6,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": {
-    "name": "Luca Scarignella",
-    "email": "lucacode1@gmail.com",
-    "url": "https://luca.scaringella.de"
+    "name": "Ing. Luca Gian Scaringella",
+    "email": "lucacode1@gmail.com"
   },
   "repository": {
     "type": "git",

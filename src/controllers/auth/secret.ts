@@ -1,3 +1,9 @@
+/*
+Author: Ing. Luca Gian Scaringella
+GitHub: LucaCode
+Copyright(c) Ing. Luca Gian Scaringella
+ */
+
 import {Controller, ControllerConfig, Register, $userId, $not, $tokenPayloadMatches, $and} from 'zation-server';
 
 @Register()
