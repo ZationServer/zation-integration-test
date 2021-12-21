@@ -1,26 +1,25 @@
 import {Config}          from 'zation-server';
 
-import "../controllers/auth/logIn";
-import "../controllers/pubSub/sendMsgToAll";
-import "../controllers/auth/secret";
-import "../controllers/validation/canBeNull";
-import "../controllers/validation/stringValidation";
-import "../controllers/validation/anyOfValidation";
-import "../controllers/validation/objectValidation";
-import "../controllers/validation/objectClassValidation";
-import "../controllers/validation/tupleObjectValidation";
-import "../controllers/validation/arrayValidation";
-import "../controllers/validation/allAllow";
-import "../controllers/validation/nothingAllow";
-import "../controllers/versionSystemAccess/versionSystemAccess";
-import "../controllers/apiLevel/apiLevel";
-import "../controllers/timeout/timeout";
-import "../controllers/validation/complexValidation";
-import "../controllers/validation/extendValueModel";
-import "../controllers/modelExtra/modelExtra";
+import "../controllers/auth/logIn.ts";
+import "../controllers/auth/secret.ts";
+import "../controllers/validation/canBeNull.ts";
+import "../controllers/validation/stringValidation.ts";
+import "../controllers/validation/anyOfValidation.ts";
+import "../controllers/validation/objectValidation.ts";
+import "../controllers/validation/objectClassValidation.ts";
+import "../controllers/validation/tupleObjectValidation.ts";
+import "../controllers/validation/arrayValidation.ts";
+import "../controllers/validation/allAllow.ts";
+import "../controllers/validation/nothingAllowed.ts";
+import "../controllers/apiLevel/apiLevel.ts";
+import "../controllers/timeout/timeout.ts";
+import "../controllers/validation/complexValidation.ts";
+import "../controllers/validation/extendValueModel.ts";
+import "../controllers/modelExtra/modelExtra.ts";
 
-export default Config.appConfig(
+Config.appConfig(
     {
+        appName : 'zation-integration-test',
         userGroups: {
             auth: {
                 admin: {},
@@ -32,4 +31,4 @@ export default Config.appConfig(
         controllerDefaults: {
             access: 'all',
         }
-    });
+    }).register();
