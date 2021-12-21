@@ -1,21 +1,22 @@
-import {describe, when,before,after,create} from "zation-assured";
-import {clientConfig}                       from "../index.test";
+/*
+Author: Ing. Luca Gian Scaringella
+GitHub: LucaCode
+Copyright(c) Ing. Luca Gian Scaringella
+ */
+
+import {when, create, AUTH_CONTROLLER} from "zation-assured";
+import {clientConfig} from "../index.test";
 
 const testClient  = create(clientConfig);
 
-describe('Authentication Tests',async () => {
+describe('Authentication tests',() => {
 
-    before(async () => {
-        await testClient.connect();
-    });
+    before(() => testClient.connect());
+    after(() => testClient.disconnect());
 
-    after(async () => {
-       await testClient.disconnect();
-    });
-
-    when(testClient,'Test fail to access user controller with guest')
+    when(testClient,'Should fail to access user controller with guest user')
         .request('secretForUser')
-        .assertThat()
+        .assertThat
         .isNotSuccessful()
         .hasError()
         .preset()
@@ -23,9 +24,9 @@ describe('Authentication Tests',async () => {
         .end()
         .test();
 
-    when(testClient,'Test fail to access user id 10 controller with guest')
+    when(testClient,'Should fail to access user id 10 controller with guest user.')
         .request('secretForId10')
-        .assertThat()
+        .assertThat
         .isNotSuccessful()
         .hasError()
         .preset()
@@ -33,9 +34,9 @@ describe('Authentication Tests',async () => {
         .end()
         .test();
 
-    when(testClient,'Test fail to access user id 10 and user controller with guest')
+    when(testClient,'Should fail to access user id 10 and user controller with guest user.')
         .request('secretForUserAndId10')
-        .assertThat()
+        .assertThat
         .isNotSuccessful()
         .hasError()
         .preset()
@@ -43,9 +44,9 @@ describe('Authentication Tests',async () => {
         .end()
         .test();
 
-    when(testClient,'Test fail to access user/admin controller with guest')
+    when(testClient,'Should fail to access user/admin controller with guest.')
         .request('secretForAdminOrUser')
-        .assertThat()
+        .assertThat
         .isNotSuccessful()
         .hasError()
         .preset()
@@ -53,9 +54,9 @@ describe('Authentication Tests',async () => {
         .end()
         .test();
 
-    when(testClient,'Test fail to access auth controller with guest')
+    when(testClient,'Should fail to access auth controller with guest.')
         .request('secretForAuth')
-        .assertThat()
+        .assertThat
         .isNotSuccessful()
         .hasError()
         .preset()
@@ -63,9 +64,9 @@ describe('Authentication Tests',async () => {
         .end()
         .test();
 
-    when(testClient,'Test fail to access email token controller with guest')
+    when(testClient,'Should fail to access email token controller with guest.')
         .request('secretForEmail')
-        .assertThat()
+        .assertThat
         .isNotSuccessful()
         .hasError()
         .preset()
@@ -73,9 +74,9 @@ describe('Authentication Tests',async () => {
         .end()
         .test();
 
-    when(testClient,'Authenticate as user with token variables')
-        .authRequest({email : 'mytest@gmail.de',password : 'secret'})
-        .assertThat()
+    when(testClient,'Should authenticate as user with token variables properly.')
+        .request(AUTH_CONTROLLER,{email : 'mytest@gmail.de',password : 'secret'})
+        .assertThat
         .isSuccessful()
         .client()
         .isAuthenticated()
@@ -87,27 +88,27 @@ describe('Authentication Tests',async () => {
         .end()
         .test();
 
-    when(testClient,'Test access to user controller with user')
+    when(testClient,'Should be able to access user controller with user.')
         .request('secretForUser')
-        .assertThat()
+        .assertThat
         .isSuccessful()
         .result()
         .equal(0)
         .end()
         .test();
 
-    when(testClient,'Test access to user and userId 10 controller')
+    when(testClient,'Should be able to access user and user id 10 controller.')
         .request('secretForUserAndId10')
-        .assertThat()
+        .assertThat
         .isSuccessful()
         .result()
         .equal(0)
         .end()
         .test();
 
-    when(testClient,'Test fail to access all (except: user,admin) controller with user')
+    when(testClient,'Should fail to access all (except: user,admin) controller with user.')
         .request('secretForAllExceptAdminOrUser')
-        .assertThat()
+        .assertThat
         .isNotSuccessful()
         .hasError()
         .preset()
@@ -115,18 +116,18 @@ describe('Authentication Tests',async () => {
         .end()
         .test();
 
-    when(testClient,'Test access to user id 10 controller with user id 10')
+    when(testClient,'Should be able to access user id 10 controller with user id 10.')
         .request('secretForId10')
-        .assertThat()
+        .assertThat
         .isSuccessful()
         .result()
         .equal(0)
         .end()
         .test();
 
-    when(testClient,'Test fail to access controller with user id 11 and group user with user id 10')
+    when(testClient,'Should fail to access controller with user id 11 and group user with user id 10.')
         .request('secretForUserAndId11')
-        .assertThat()
+        .assertThat
         .isNotSuccessful()
         .hasError()
         .preset()
@@ -134,9 +135,9 @@ describe('Authentication Tests',async () => {
         .end()
         .test();
 
-    when(testClient,'Test fail to access controller with user id 11 or group admin with user and id 10')
+    when(testClient,'Should fail to access controller with user id 11 or group admin with user and id 10.')
         .request('secretForAdminOrId11')
-        .assertThat()
+        .assertThat
         .isNotSuccessful()
         .hasError()
         .preset()
@@ -144,36 +145,36 @@ describe('Authentication Tests',async () => {
         .end()
         .test();
 
-    when(testClient,'Test access to user id 10 or admin controller with user and id 10')
+    when(testClient,'Should be able to access user id 10 or admin controller with user and id 10.')
         .request('secretForAdminOrId10')
-        .assertThat()
+        .assertThat
         .isSuccessful()
         .result()
         .equal(0)
         .end()
         .test();
 
-    when(testClient,'Test access to admin/user controller with user')
+    when(testClient,'Should be able to access admin or user controller with user.')
         .request('secretForAdminOrUser')
-        .assertThat()
+        .assertThat
         .isSuccessful()
         .result()
         .equal(0)
         .end()
         .test();
 
-    when(testClient,'Test access to auth controller with user')
+    when(testClient,'Should be able to access auth controller with user.')
         .request('secretForAuth')
-        .assertThat()
+        .assertThat
         .isSuccessful()
         .result()
         .equal(0)
         .end()
         .test();
 
-    when(testClient,'Test access to email controller with user')
+    when(testClient,'Should be able to access email controller with user.')
         .request('secretForEmail')
-        .assertThat()
+        .assertThat
         .isSuccessful()
         .result()
         .equal(0)
