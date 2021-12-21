@@ -1,6 +1,5 @@
-import {start}       from 'zation-server';
-import StarterConfig from './configs/starter.config';
+import "./configs/app.config";
+import "./configs/server.config";
+import {Config, start} from 'zation-server';
 
-(async () => {
-    await start(StarterConfig,process.env.START_MODE);
-})();
+start(Config.configurations);
