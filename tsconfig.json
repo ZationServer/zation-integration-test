@@ -1,20 +1,28 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "es2018",
     "module": "commonjs",
     "moduleResolution": "node",
     "strictPropertyInitialization" : false,
+    "stripInternal": true,
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": false,
     "declaration": true,
-    "outDir": "assets",
-    "strict": true
+    "outDir": "dist",
+    "strict": true,
+    "alwaysStrict" : true,
+    "noUnusedLocals": true,
+    "strictBindCallApply": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "types": ["mocha"]
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "test/**/*"
   ],
   "exclude": [
     "node_modules",
