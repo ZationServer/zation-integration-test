@@ -15,10 +15,6 @@ class Device {
 @ObjectModel()
 class Phone extends Device {
 
-    constructor() {
-        super();
-    }
-
     @Model({type : 'number',minValue : 3,maxValue : 10})
     screenSize : number;
 
@@ -31,8 +27,8 @@ class Phone extends Device {
 }
 
 @Controller.Config({
-    access : 'all',
-    input : Phone
+    access: 'all',
+    input: Phone
 })
 @Register()
 export class ObjectClassValidationController extends Controller

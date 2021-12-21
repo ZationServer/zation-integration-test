@@ -102,7 +102,7 @@ export class SecretForAuthController extends Controller
 {
     static config : ControllerConfig = {
         access : (socket) => {
-            return socket.isAuthenticated()
+            return socket.authenticated
         }
     };
 

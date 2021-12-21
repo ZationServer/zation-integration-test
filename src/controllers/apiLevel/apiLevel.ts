@@ -2,9 +2,6 @@ import {
     Controller,
     ControllerConfig,
     Register,
-    ObjectModel,
-    Model,
-    Config
 } from 'zation-server';
 
 @Register()

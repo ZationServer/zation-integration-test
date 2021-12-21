@@ -5,7 +5,7 @@ import {Controller, Register} from 'zation-server';
     input: 'nothing'
 })
 @Register()
-export class NothingAllowController extends Controller
+export class NothingAllowedController extends Controller
 {
     async handle(_, input: any): Promise<any> {
         return input;
