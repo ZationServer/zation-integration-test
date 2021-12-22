@@ -10,7 +10,7 @@ import {ClientOptions}  from 'zation-assured';
 import "../src/configs/app.config.ts";
 import "../src/configs/server.config.ts";
 
-const TEST_PORT = 3011;
+const TEST_PORT = 3002;
 
 export const clientConfig : ClientOptions = {
     port: TEST_PORT,
