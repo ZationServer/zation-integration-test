@@ -6,6 +6,6 @@ Copyright(c) Ing. Luca Gian Scaringella
 
 import "./configs/app.config";
 import "./configs/server.config";
-import {Config, start} from 'zation-server';
+import launch, {Config} from 'zation-server';
 
-start(Config.configurations);
+launch(Config.configurations);

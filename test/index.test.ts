@@ -4,11 +4,11 @@ GitHub: LucaCode
 Copyright(c) Ing. Luca Gian Scaringella
  */
 
-import {start,StartMode,Config} from 'zation-server';
+import launch, {LaunchMode,Config} from 'zation-server';
 import {ClientOptions}  from 'zation-assured';
 
-import "../src/configs/app.config.ts";
-import "../src/configs/server.config.ts";
+import "../src/configs/app.config";
+import "../src/configs/server.config";
 
 const TEST_PORT = 3002;
 
@@ -25,5 +25,5 @@ Config.serverConfig({
     debug: false,
 }).register(true);
 
-before(async () => start(Config.configurations,StartMode.Test));
+before(async () => launch(Config.configurations,LaunchMode.Test));
 
