@@ -2,7 +2,7 @@
   "name": "zation-integration-test",
   "version": "1.0.0",
   "description": "Zation server integration test",
-  "license": "MIT",
+  "license": "SEE LICENSE IN <README.md>",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": {
