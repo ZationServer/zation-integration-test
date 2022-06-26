@@ -1,4 +1,4 @@
-const gulp       = require('gulp');
+const gulp = require('gulp');
 const typescript = require('gulp-typescript');
 const tscConfig  = require('./tsconfig.json');
 

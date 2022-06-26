@@ -1,6 +1,11 @@
-import {start}       from 'zation-server';
-import StarterConfig from './configs/starter.config';
+/*
+Author: Ing. Luca Gian Scaringella
+GitHub: LucaCode
+Copyright(c) Ing. Luca Gian Scaringella
+ */
 
-(async () => {
-    await start(StarterConfig,process.env.START_MODE);
-})();
+import "./configs/app.config";
+import "./configs/server.config";
+import launch from 'zation-server';
+
+launch();

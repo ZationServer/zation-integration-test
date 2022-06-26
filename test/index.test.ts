@@ -1,23 +1,29 @@
-import {start,StartMode,Config}                           from 'zation-server';
-import {when,describe,create,before,after,ClientOptions}  from 'zation-assured';
-import StarterConfig                                      from './../src/configs/starter.config';
+/*
+Author: Ing. Luca Gian Scaringella
+GitHub: LucaCode
+Copyright(c) Ing. Luca Gian Scaringella
+ */
+
+import launch, {LaunchMode,Config} from 'zation-server';
+import {ClientOptions}  from 'zation-assured';
+
+import "../src/configs/app.config";
+import "../src/configs/server.config";
 
 const TEST_PORT = 3008;
 
 export const clientConfig : ClientOptions = {
-    port : TEST_PORT,
-    system : 'T',
-    version : 4.5
+    port: TEST_PORT,
+    system: 'T',
+    version: 4.5
 };
 
-before(async () => {
-    await start(Config.merge(Config.starterConfig({
-        port : TEST_PORT,
-        hostname : 'localhost',
-        origins : '*:*',
-        workers : 1,
-        brokers : 1,
-        debug : false,
-    }),StarterConfig),StartMode.Test);
-});
+Config.serverConfig({
+    port: TEST_PORT,
+    hostname: 'localhost',
+    origins: '*:*',
+    debug: false,
+}).register(true);
+
+before(async () => launch(Config.configurations,LaunchMode.Test));
 

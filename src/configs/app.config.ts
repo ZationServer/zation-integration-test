@@ -1,26 +1,40 @@
-import {Config}          from 'zation-server';
+/*
+Author: Ing. Luca Gian Scaringella
+GitHub: LucaCode
+Copyright(c) Ing. Luca Gian Scaringella
+ */
 
-import "../controllers/auth/logIn";
-import "../controllers/pubSub/sendMsgToAll";
-import "../controllers/auth/secret";
-import "../controllers/validation/canBeNull";
-import "../controllers/validation/stringValidation";
-import "../controllers/validation/anyOfValidation";
-import "../controllers/validation/objectValidation";
-import "../controllers/validation/objectClassValidation";
-import "../controllers/validation/tupleObjectValidation";
-import "../controllers/validation/arrayValidation";
-import "../controllers/validation/allAllow";
-import "../controllers/validation/nothingAllow";
-import "../controllers/versionSystemAccess/versionSystemAccess";
-import "../controllers/apiLevel/apiLevel";
-import "../controllers/timeout/timeout";
-import "../controllers/validation/complexValidation";
-import "../controllers/validation/extendValueModel";
-import "../controllers/modelExtra/modelExtra";
+import {Config} from 'zation-server';
 
-export default Config.appConfig(
+import "../api/controllers/auth/logIn";
+import "../api/controllers/auth/secret";
+import "../api/controllers/validation/canBeNull";
+import "../api/controllers/validation/stringValidation";
+import "../api/controllers/validation/anyOfValidation";
+import "../api/controllers/validation/objectValidation";
+import "../api/controllers/validation/objectClassValidation";
+import "../api/controllers/validation/tupleObjectValidation";
+import "../api/controllers/validation/arrayValidation";
+import "../api/controllers/validation/allAllow";
+import "../api/controllers/validation/nothingAllowed";
+import "../api/controllers/apiLevel/apiLevel";
+import "../api/controllers/timeout/timeout";
+import "../api/controllers/validation/complexValidation";
+import "../api/controllers/validation/extendValueModel";
+import "../api/controllers/modelExtra/modelExtra";
+import "../api/channels/chat";
+import "../api/channels/news";
+import "../api/receivers/publishMessage";
+import "../api/receivers/publishNews";
+import "../api/receivers/updateUserAge";
+import "../api/receivers/deleteProduct";
+import "../api/receivers/addProduct";
+import "../api/databoxes/userProfile";
+import "../api/databoxes/products";
+
+Config.appConfig(
     {
+        appName : 'zation-integration-test',
         userGroups: {
             auth: {
                 admin: {},
@@ -32,4 +46,4 @@ export default Config.appConfig(
         controllerDefaults: {
             access: 'all',
         }
-    });
+    }).register();
