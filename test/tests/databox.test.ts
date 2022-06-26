@@ -4,11 +4,11 @@ GitHub: LucaCode
 Copyright(c) Ing. Luca Gian Scaringella
  */
 
-import {when, create, assert} from "zation-assured";
+import {when, Client, assert} from "zation-assured";
 import {clientConfig} from "../index.test";
 import {PRODUCTS} from "../../src/api/databoxes/products";
 
-const testClient  = create(clientConfig);
+const testClient = Client.create(clientConfig);
 
 describe('Databox tests',() => {
 

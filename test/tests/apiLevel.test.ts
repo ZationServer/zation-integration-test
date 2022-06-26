@@ -4,13 +4,13 @@ GitHub: LucaCode
 Copyright(c) Ing. Luca Gian Scaringella
  */
 
-import {when,create} from "zation-assured";
+import {when,Client} from "zation-assured";
 import {clientConfig} from "../index.test";
 
-const testClient1  = create(Object.assign({apiLevel : 8},clientConfig));
-const testClient2  = create(Object.assign({apiLevel : 2},clientConfig));
-const testClient3  = create(Object.assign({apiLevel : 1},clientConfig));
-const testClient4  = create(clientConfig);
+const testClient1  = Client.create(Object.assign({apiLevel : 8},clientConfig));
+const testClient2  = Client.create(Object.assign({apiLevel : 2},clientConfig));
+const testClient3  = Client.create(Object.assign({apiLevel : 1},clientConfig));
+const testClient4  = Client.create(clientConfig);
 
 describe('ApiLevel tests',() => {
 

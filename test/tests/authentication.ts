@@ -4,10 +4,10 @@ GitHub: LucaCode
 Copyright(c) Ing. Luca Gian Scaringella
  */
 
-import {when, create, AUTH_CONTROLLER} from "zation-assured";
+import {when, Client, AUTH_CONTROLLER} from "zation-assured";
 import {clientConfig} from "../index.test";
 
-const testClient  = create(clientConfig);
+const testClient = Client.create(clientConfig);
 
 describe('Authentication tests',() => {
 
