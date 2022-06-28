@@ -26,7 +26,7 @@
     "!.DS_Store"
   ],
   "dependencies": {
-    "zation-server": "3.0.0-pre-alpha.4"
+    "zation-server": "3.0.0-pre-alpha.6"
   },
   "devDependencies": {
     "@types/node": "^16.4.13",
@@ -36,6 +36,6 @@
     "typescript": "^4.3.5",
     "gulp": "4.0.0",
     "gulp-typescript": "5.0.1",
-    "zation-assured": "3.0.0-pre-alpha.3"
+    "zation-assured": "3.0.0-pre-alpha.4"
   }
 }
