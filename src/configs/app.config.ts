@@ -31,6 +31,8 @@ import "../api/receivers/deleteProduct";
 import "../api/receivers/addProduct";
 import "../api/databoxes/userProfile";
 import "../api/databoxes/products";
+import "../api/controllers/streams/uploadStream";
+import "../api/controllers/streams/downloadStream";
 
 Config.appConfig(
     {

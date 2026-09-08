@@ -5,7 +5,7 @@ Copyright(c) Ing. Luca Gian Scaringella
  */
 
 import {Inject, Receiver, Register, Socket} from "zation-server";
-import {UserProfileDatabox} from "../databoxes/userProfile";
+import {UserProfileDatabox, userProfileState} from "../databoxes/userProfile";
 
 @Register()
 @Receiver.Config({
@@ -18,6 +18,7 @@ export class UpdateUserAgeReceiver extends Receiver
     private readonly userProfileDatabox: UserProfileDatabox;
 
     handle(socket: Socket, input: number) {
+        userProfileState.age = input;
         this.userProfileDatabox.content('1').age.update(input);
     }
 
