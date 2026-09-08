@@ -5,8 +5,8 @@ Integration tests for testing the server and typescript client.
 <h1 align="center">
   <!-- Logo -->
   <br/>
-  <a href="https://zation.dev">
-      <img src="https://zation.dev/img/zationWideLogoDark.svg" alt="Logo Zation" height="200"/>
+  <a href="https://github.com/ZationServer">
+      <img src="https://raw.githubusercontent.com/ZationServer/zation/master/assets/logo/zationWideLogoDark.svg" alt="Logo Zation" height="200"/>
   </a>
   <br/>
 </h1>
