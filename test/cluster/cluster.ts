@@ -31,6 +31,10 @@ export interface ServerOptions {
      */
     module?: 'zation-server' | 'zation-server-v0';
     historyLength?: number;
+    /**
+     * databoxHistoryBudget of the server.
+     */
+    historyBudget?: number;
     unregisterDelay?: number;
 }
 
@@ -143,6 +147,7 @@ export class Cluster {
             SERVER_MODULE: options.module || 'zation-server'};
         if(join) env.JOIN = join;
         if(options.historyLength !== undefined) env.HISTORY_LENGTH = String(options.historyLength);
+        if(options.historyBudget !== undefined) env.HISTORY_BUDGET = String(options.historyBudget);
         if(options.unregisterDelay !== undefined) env.UNREGISTER_DELAY = String(options.unregisterDelay);
         await this.fork(path.join(__dirname, 'server.cjs'), env, port, true);
         const {Client} = require('zation-client');

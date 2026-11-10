@@ -8,7 +8,8 @@ Copyright(c) Ing. Luca Gian Scaringella
 A server of the soak run, started as its own process.
 The data lives in a JSON file that the run writes before it lets a server emit the change.
   PORT, NAME, DB (file), JOIN (cluster), BROKER_PROXIES ({"brokerPort": proxyPort}),
-  UNREGISTER_DELAY, HISTORY_LENGTH, CLOCK_SKEW_MS (the clock of this server runs ahead or behind)
+  UNREGISTER_DELAY, HISTORY_LENGTH, HISTORY_BUDGET (databoxHistoryBudget of the server),
+  CLOCK_SKEW_MS (the clock of this server runs ahead or behind)
 */
 
 const skew = Number(process.env.CLOCK_SKEW_MS || 0);
@@ -135,7 +136,8 @@ Config.serverConfig({
     path: '/zation',
     panel: {active: false},
     logLevel: 0,
-    ...(process.env.JOIN ? {join: process.env.JOIN} : {})
+    ...(process.env.JOIN ? {join: process.env.JOIN} : {}),
+    ...(process.env.HISTORY_BUDGET ? {databoxHistoryBudget: Number(process.env.HISTORY_BUDGET)} : {})
 }).register();
 Config.appConfig({appName: 'Soak'}).register();
 

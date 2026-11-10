@@ -226,6 +226,38 @@ describe('Resume tests (protocol version 1)', function () {
             }
             finally {await short.stop();}
         });
+
+        it('Should load the data of a member whose history the budget of the server dropped.', async () => {
+            //a room transaction with a topic of 400 characters takes about 490 characters of JSON
+            const small = await Cluster.start({S: {historyBudget: 2200}}, START(), {basePort: 4895});
+            try {
+                const c = await client(small, 'S');
+                const roomA = c.instance.databox('room'), roomB = c.instance.databox('room');
+                await Promise.all([roomA.connect('a'), roomB.connect('b')]);
+                await c.away(async () => {
+                    await small.change('S', 'room', [['update', ['topic'], 'a'.repeat(400)]], 'a');
+                    //b goes over the budget: the history of a was used longest ago
+                    for(let i = 0; i < 4; i++) await small.change('S', 'room', [['update', ['topic'], String(i).repeat(400)]], 'b');
+                });
+                await shows(roomA, () => small.data.rooms.a);
+                await shows(roomB, () => small.data.rooms.b);
+                const responses = c.responses.connects;
+                const data = responses.find(response => response.r === DATA);
+                const transactions = responses.find(response => response.r === TRANSACTIONS);
+                assert.ok(data && same(data.f.d, small.data.rooms.a), JSON.stringify(responses.map(one => one.r)));
+                assert.strictEqual(transactions?.tx.length, 4);
+                assert.strictEqual(c.responses.fetches, 0);
+
+                //live changes go on, and the next resume of a replays again
+                await small.change('S', 'room', [['update', ['count'], 1]], 'a');
+                await shows(roomA, () => small.data.rooms.a);
+                await c.away(() => small.change('S', 'room', [['update', ['count'], 2]], 'a'));
+                await shows(roomA, () => small.data.rooms.a);
+                assert.ok(c.responses.connects.some(response => response.r === TRANSACTIONS && response.tx.length === 1));
+                c.close();
+            }
+            finally {await small.stop();}
+        });
     });
 
     describe('Cluster with broker', () => {
@@ -285,6 +317,36 @@ describe('Resume tests (protocol version 1)', function () {
             }, 'B');
             await shows(box, () => cluster.data.box);
             assert.strictEqual(lastConnect(c.responses).r, DATA);
+            c.close();
+        });
+    });
+
+    describe('Cluster with a small history budget', () => {
+        let cluster: Cluster;
+        before(async () => {
+            cluster = await Cluster.start({A: {historyBudget: 300}, B: {}}, START(), {cluster: true, basePort: 4860});
+        });
+        after(async () => cluster?.stop());
+
+        it('Should take the data on another server when it dropped the history with a forced reload.', async () => {
+            const c = await client(cluster, 'B');
+            const box = c.instance.databox('box');
+            await box.connect();
+            await c.away(async () => {
+                cluster.data.box.level = 104;
+                cluster.write();
+                await cluster.emit('A', {box: 'box', reload: true});
+                //over the budget of A: it drops the history of the box with the reload
+                await cluster.change('A', 'room', [['update', ['topic'], 'x'.repeat(400)]], 'a');
+            }, 'A');
+            await shows(box, () => cluster.data.box);
+            assert.strictEqual(lastConnect(c.responses).r, DATA);
+
+            //at the newest position of the dropped history: unchanged
+            await c.away();
+            await waitUntil(() => box.isConnected());
+            assert.strictEqual(lastConnect(c.responses).r, UNCHANGED);
+            await shows(box, () => cluster.data.box);
             c.close();
         });
     });

@@ -10,7 +10,7 @@ Invariant: after a quiet phase every client shows the source; the data that seve
 on every client, and the source after one more sync of it.
 
   npx ts-node soak/run.ts [--seeds 1-1000] [--brokers 1] [--clients 4] [--no-faults] [--keep-going] [--port 5100]
-      [--skew C=3000,B=-1500] (clock skew of servers in ms)
+      [--skew C=3000,B=-1500] (clock skew of servers in ms) [--budget 2000] (databoxHistoryBudget of the servers)
 
 A failing seed repeats with --seeds <seed> (the changes and faults; the timing of the processes varies).
 */
@@ -44,6 +44,7 @@ async function main() {
     const cluster = await SoakCluster.start({
         brokers: Number(arg('brokers') || 1),
         basePort: Number(arg('port') || 5100),
+        historyBudget: arg('budget') ? Number(arg('budget')) : undefined,
         skew
     });
     const results: {seed: number, ok: boolean, ms: number, settleMs: number}[] = [];

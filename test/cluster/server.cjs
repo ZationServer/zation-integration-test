@@ -8,7 +8,7 @@ Copyright(c) Ing. Luca Gian Scaringella
 A server of the resume tests, started as its own process.
 The data lives in a JSON file that the test writes before it lets a server emit the change.
   PORT, NAME, DB (file), JOIN (cluster), SERVER_MODULE (zation-server or zation-server-v0),
-  HISTORY_LENGTH, UNREGISTER_DELAY
+  HISTORY_LENGTH, HISTORY_BUDGET (databoxHistoryBudget of the server), UNREGISTER_DELAY
 */
 
 const fs = require('fs');
@@ -115,7 +115,8 @@ Config.serverConfig({
     path: '/zation',
     panel: {active: false},
     logLevel: 0,
-    ...(process.env.JOIN ? {join: process.env.JOIN} : {})
+    ...(process.env.JOIN ? {join: process.env.JOIN} : {}),
+    ...(process.env.HISTORY_BUDGET ? {databoxHistoryBudget: Number(process.env.HISTORY_BUDGET)} : {})
 }).register();
 Config.appConfig({appName: 'Resume'}).register();
 

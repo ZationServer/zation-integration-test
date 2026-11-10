@@ -207,6 +207,10 @@ export interface SoakOptions {
     basePort?: number,
     historyLength?: number,
     /**
+     * databoxHistoryBudget of the servers.
+     */
+    historyBudget?: number,
+    /**
      * zation-client by default.
      */
     clientModule?: string,
@@ -295,6 +299,7 @@ export class SoakCluster {
             const env: Record<string, string> = {PORT: String(port), NAME: name, DB: this.file, JOIN: join,
                 BROKER_PROXIES: JSON.stringify(proxies)};
             if(this.options.historyLength !== undefined) env.HISTORY_LENGTH = String(this.options.historyLength);
+            if(this.options.historyBudget !== undefined) env.HISTORY_BUDGET = String(this.options.historyBudget);
             if(this.options.skew?.[name]) env.CLOCK_SKEW_MS = String(this.options.skew[name]);
             this.serverProcs[name] = new Proc(path.join(__dirname, 'server.cjs'), env, port, true);
         }
