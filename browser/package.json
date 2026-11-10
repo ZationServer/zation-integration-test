@@ -1,0 +1,15 @@
+{
+  "name": "zation-integration-test-browser",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A Vite app that loads the zation client in a headless browser (without a plugin and without a define).",
+  "type": "module",
+  "scripts": {
+    "start": "node run.js"
+  },
+  "devDependencies": {
+    "playwright-core": "1.64.1",
+    "vite": "8.2.2",
+    "zation-client": "3.0.0-beta.4"
+  }
+}

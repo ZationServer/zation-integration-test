@@ -29,8 +29,10 @@ import "../api/receivers/publishNews";
 import "../api/receivers/updateUserAge";
 import "../api/receivers/deleteProduct";
 import "../api/receivers/addProduct";
+import "../api/receivers/countUp";
 import "../api/databoxes/userProfile";
 import "../api/databoxes/products";
+import "../api/databoxes/counter";
 import "../api/controllers/streams/uploadStream";
 import "../api/controllers/streams/downloadStream";
 
