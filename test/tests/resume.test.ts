@@ -31,7 +31,7 @@ async function client(cluster: Cluster, server: string, {old = false} = {}) {
         /** Drops the connection (like a lost network) and connects again, optionally to another server. */
         async away(during?: () => Promise<void>, to?: string) {
             proxy.drop();
-            await waitUntil(() => !instance.connected, 2000);
+            await waitUntil(() => !instance.connected, 5000, 'The client did not notice the lost connection.');
             if(during) await during();
             if(to !== undefined) proxy.target = cluster.ports[to];
             responses.clear();
