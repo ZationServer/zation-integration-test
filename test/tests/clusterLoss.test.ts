@@ -20,7 +20,7 @@ describe('Cluster loss tests', function () {
     const timestamp = () => clock = Math.max(clock + 1, Date.now());
 
     before(async () => {
-        cluster = await SoakCluster.start({basePort: 5400});
+        cluster = await SoakCluster.start({basePort: 5700});
         client = await cluster.addClient('B');
     });
     after(async () => cluster?.stop());
