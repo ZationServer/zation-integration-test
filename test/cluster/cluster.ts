@@ -23,7 +23,26 @@ export async function waitUntil(condition: () => boolean, timeout = 5000, messag
 }
 
 export const plain = (value: any) => value === undefined ? undefined : JSON.parse(JSON.stringify(value));
-export const same = (a: any, b: any) => isDeepStrictEqual(plain(a), plain(b));
+export const same = (a: any, b: any) => isDeepStrictEqual(held(plain(a)), held(plain(b)));
+
+/**
+ * A value as a client holds it: a key array as the list of its values (a key twice: its first place, its last value).
+ */
+export function held(value: any): any {
+    if(Array.isArray(value)) return value.map(held);
+    if(value === null || typeof value !== 'object') return value;
+    if(Array.isArray(value.___ka___)) {
+        const pairs = typeof value.k !== 'string', separate = pairs || typeof value.v === 'string';
+        const keyKey = pairs ? 0 : value.k, valueKey = pairs ? 1 : value.v;
+        const items = new Map<string, any>();
+        for(const item of value.___ka___) if(item !== null && typeof item === 'object' && item[keyKey] != null)
+            items.set(String(item[keyKey]), held(separate ? item[valueKey] : item));
+        return [...items.values()];
+    }
+    const result: Record<string, any> = {};
+    for(const key in value) result[key] = held(value[key]);
+    return result;
+}
 
 export interface ServerOptions {
     /**
@@ -184,7 +203,7 @@ export class Cluster {
             const client = new Client({hostname: '127.0.0.1', port: this.ports[name], path: '/zation', autoReconnect: {active: false}});
             await client.connect();
             const databoxes: Record<string, any> = {};
-            for(const key of ['box', 'syncBox', 'filtered']) await (databoxes[key] = client.databox(key)).connect();
+            for(const key of ['box', 'syncBox', 'filtered', 'listBox']) if(key in this.data) await (databoxes[key] = client.databox(key)).connect();
             for(const member in this.data.rooms) await (databoxes['rooms.' + member] = client.databox('room')).connect(member);
             this.watchers[name] = databoxes;
             this.processes.push({kill: () => client.disconnect()} as any);

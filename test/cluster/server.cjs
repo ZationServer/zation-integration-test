@@ -44,6 +44,12 @@ SyncBox.prototype.singleFetch = fetchFrom('syncBox');
 StaticDatabox.Config(dbConfig)(SyncBox);
 API('syncBox')(SyncBox);
 
+/* A key array, changed by content().sync. */
+class ListBox extends StaticDatabox {}
+ListBox.prototype.singleFetch = fetchFrom('listBox');
+StaticDatabox.Config(dbConfig)(ListBox);
+API('listBox')(ListBox);
+
 /* Transactions pass a middleware: missed ones can not be replayed per socket. */
 class Filtered extends StaticDatabox {
     transactionMiddleware() {}
@@ -62,7 +68,7 @@ Room.prototype.singleFetch = async function (request, connection) {
 Databox.Config(dbConfig)(Room);
 API('room')(Room);
 
-const databoxes = {box: Box, syncBox: SyncBox, filtered: Filtered, room: Room};
+const databoxes = {box: Box, syncBox: SyncBox, listBox: ListBox, filtered: Filtered, room: Room};
 
 /*
 Emits a change after the test wrote it to the file.
@@ -107,7 +113,7 @@ API('control')(Control);
 for(const name in databoxes) databoxes[name].prototype.initialize = function () {Emit.instances[name] = this;};
 
 const root = new Router();
-for(const component of [Box, SyncBox, Filtered, Room, Emit, Control]) root.use(component);
+for(const component of [Box, SyncBox, ListBox, Filtered, Room, Emit, Control]) root.use(component);
 root.register();
 
 Config.serverConfig({

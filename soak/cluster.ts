@@ -11,10 +11,11 @@ import * as net from "net";
 import * as os from "os";
 import * as path from "path";
 import {isDeepStrictEqual} from "util";
+import {held} from "../test/cluster/cluster";
 
 export const sleep = (ms: number) => new Promise<void>(resolve => setTimeout(resolve, ms));
 export const plain = (value: any) => value === undefined ? undefined : JSON.parse(JSON.stringify(value));
-export const same = (a: any, b: any) => isDeepStrictEqual(plain(a), plain(b));
+export const same = (a: any, b: any) => isDeepStrictEqual(held(plain(a)), held(plain(b)));
 
 export async function waitUntil(condition: () => boolean | Promise<boolean>, timeout = 5000, message = 'Condition not reached in time.') {
     const start = Date.now();
