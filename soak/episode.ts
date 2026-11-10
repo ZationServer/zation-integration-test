@@ -64,7 +64,8 @@ export async function runEpisode(cluster: SoakCluster, seed: number, options: Ep
 
     db.items[member] = {};
     for(let i = 0; i < 4; i++) if(rnd() < 0.6) db.items[member]['k' + i] = ++counter;
-    db.synced[member] = {mode: 'a', level: 0, list: ['x'], cfg: {a: 0, b: {c: 0}}};
+    db.synced[member] = {mode: 'a', level: 0, list: ['x'], cfg: {a: 0, b: {c: 0}},
+        devices: {___ka___: [{id: 'd0', n: 0}, {id: 'd1', n: 0}], k: 'id'}};
     cluster.write();
 
     await Promise.all(cluster.clients.map(client => Promise.all([
@@ -145,6 +146,15 @@ export async function runEpisode(cluster: SoakCluster, seed: number, options: Ep
                 if(rnd() < 0.2) {
                     if(value.extra === undefined) value.extra = {n: counter};
                     else delete value.extra;
+                }
+                //a key array: items change, come at the end, go, move or come before others
+                if(rnd() < 0.5) {
+                    const devices: any[] = value.devices.___ka___, index = int(0, devices.length - 1), kind = rnd();
+                    if(kind < 0.5 && devices.length > 0) devices[index] = {...devices[index], n: counter};
+                    else if(kind < 0.75) devices.push({id: 'd' + counter, n: counter});
+                    else if(kind < 0.88 && devices.length > 1) devices.splice(index, 1);
+                    else if(kind < 0.94 && devices.length > 1) devices.unshift(devices.splice(index, 1)[0]);
+                    else devices.splice(index, 0, {id: 'd' + counter, n: counter});
                 }
                 db.synced[member] = value;
                 cluster.write();
