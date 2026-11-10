@@ -16,6 +16,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "test": "mocha --exit -r ts-node/register 'test/**/*.{ts,js}'",
+    "soak": "ts-node soak/run.ts",
     "check": "npm run build && START_MODE=2 node dist/index.js",
     "prestart": "npm run build",
     "build": "gulp compile",
