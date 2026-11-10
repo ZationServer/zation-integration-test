@@ -36,6 +36,10 @@
     "typescript": "^4.3.5",
     "gulp": "4.0.0",
     "gulp-typescript": "5.0.1",
-    "zation-assured": "3.0.0-beta.1"
+    "zation-assured": "3.0.0-beta.1",
+    "zation-state": "8.0.0-beta.1",
+    "zation-broker": "8.0.0-beta.1",
+    "zation-server-v0": "npm:zation-server@3.0.0-beta.2",
+    "zation-client-v0": "npm:zation-client@3.0.0-beta.1"
   }
 }
