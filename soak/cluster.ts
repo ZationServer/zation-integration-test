@@ -210,6 +210,10 @@ export interface SoakOptions {
      * zation-client by default.
      */
     clientModule?: string,
+    /**
+     * Clock skew in ms per server.
+     */
+    skew?: Record<string, number>,
 }
 
 /**
@@ -235,6 +239,10 @@ export class SoakCluster {
     readonly brokerProcs: Proc[] = [];
     readonly links: Record<string, Link[]> = {};
     readonly clients: SoakClient[] = [];
+    /**
+     * How far the fastest clock of a server runs ahead: timestamps of the run follow it.
+     */
+    readonly clockLead: number;
     private stateProc: Proc;
     private readonly controls: Record<string, any> = {};
     private readonly probes: Record<string, any> = {};
@@ -243,6 +251,7 @@ export class SoakCluster {
 
     private constructor(private readonly options: SoakOptions) {
         this.servers = options.servers || ['A', 'B', 'C'];
+        this.clockLead = Math.max(0, ...Object.values(options.skew || {}));
         this.nextPort = options.basePort || 5100;
         this.file = path.join(os.tmpdir(), `zation-soak-${process.pid}-${this.nextPort}.json`);
         this.write();
@@ -286,6 +295,7 @@ export class SoakCluster {
             const env: Record<string, string> = {PORT: String(port), NAME: name, DB: this.file, JOIN: join,
                 BROKER_PROXIES: JSON.stringify(proxies)};
             if(this.options.historyLength !== undefined) env.HISTORY_LENGTH = String(this.options.historyLength);
+            if(this.options.skew?.[name]) env.CLOCK_SKEW_MS = String(this.options.skew[name]);
             this.serverProcs[name] = new Proc(path.join(__dirname, 'server.cjs'), env, port, true);
         }
         await Promise.all(this.servers.map(name => this.serverProcs[name].start()));
@@ -336,7 +346,7 @@ export class SoakCluster {
                 this.db.probe[key] = value;
                 this.write();
                 try {
-                    await this.emit(name, {box: 'probe', ops: [['set', key, value]], timestamp: Date.now()});
+                    await this.emit(name, {box: 'probe', ops: [['set', key, value]], timestamp: Date.now() + this.clockLead});
                     await waitUntil(() => this.servers.every(other => same(this.probes[other].data, this.db.probe)), 400);
                     break;
                 }

@@ -6,9 +6,11 @@ Copyright(c) Ing. Luca Gian Scaringella
 
 /*
 Soak run of a cluster (state server, brokers, servers, clients) with faults.
-Invariant: after a quiet phase every client shows the source.
+Invariant: after a quiet phase every client shows the source; the data that several servers sync is the same
+on every client, and the source after one more sync of it.
 
-  npx ts-node soak/run.ts [--seeds 1-1000] [--brokers 1] [--clients 4] [--no-faults] [--keep-going]
+  npx ts-node soak/run.ts [--seeds 1-1000] [--brokers 1] [--clients 4] [--no-faults] [--keep-going] [--port 5100]
+      [--skew C=3000,B=-1500] (clock skew of servers in ms)
 
 A failing seed repeats with --seeds <seed> (the changes and faults; the timing of the processes varies).
 */
@@ -34,9 +36,15 @@ function seedList(spec: string): number[] {
 async function main() {
     const seeds = seedList(arg('seeds') || '1-20');
     const keepGoing = process.argv.includes('--keep-going');
+    const skew: Record<string, number> = {};
+    for(const part of (arg('skew') || '').split(',').filter(Boolean)) {
+        const [name, ms] = part.split('=');
+        skew[name] = Number(ms);
+    }
     const cluster = await SoakCluster.start({
         brokers: Number(arg('brokers') || 1),
-        basePort: Number(arg('port') || 5100)
+        basePort: Number(arg('port') || 5100),
+        skew
     });
     const results: {seed: number, ok: boolean, ms: number, settleMs: number}[] = [];
     const totals: Record<string, number> = {};
@@ -68,7 +76,8 @@ async function main() {
         seeds: results.length, failed, totalSeconds: Math.round((Date.now() - started) / 1000),
         episodeMs: {median: at(ms, 0.5), p95: at(ms, 0.95), max: at(ms, 1)},
         settleMs: {median: at(settle, 0.5), p95: at(settle, 0.95), max: at(settle, 1)},
-        actions: totals
+        actions: totals,
+        skew
     }, null, 1));
     process.exit(exitCode);
 }

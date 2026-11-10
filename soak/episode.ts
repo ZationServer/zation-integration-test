@@ -42,8 +42,8 @@ export interface EpisodeResult {
 }
 
 let clock = 0;
-/** Timestamps in the order of the source (strictly increasing). */
-const nextTimestamp = () => clock = Math.max(clock + 1, Date.now());
+/** Timestamps in the order of the source (strictly increasing), not behind the clock of any server. */
+const nextTimestamp = (lead: number) => clock = Math.max(clock + 1, Date.now() + lead);
 
 /**
  * One episode: fresh members, random changes from random servers (some at the same time),
@@ -64,7 +64,7 @@ export async function runEpisode(cluster: SoakCluster, seed: number, options: Ep
 
     db.items[member] = {};
     for(let i = 0; i < 4; i++) if(rnd() < 0.6) db.items[member]['k' + i] = ++counter;
-    db.synced[member] = {mode: 'a', level: 0, list: ['x']};
+    db.synced[member] = {mode: 'a', level: 0, list: ['x'], cfg: {a: 0, b: {c: 0}}};
     cluster.write();
 
     await Promise.all(cluster.clients.map(client => Promise.all([
@@ -118,7 +118,7 @@ export async function runEpisode(cluster: SoakCluster, seed: number, options: Ep
             //changes of the same member from several servers at the same time
             const parallel = int(1, 3), emits: Promise<any>[] = [];
             for(let i = 0; i < parallel; i++) {
-                const server = pick(up), ops = keyOps('items', db.items[member], 'k', 6), timestamp = nextTimestamp();
+                const server = pick(up), ops = keyOps('items', db.items[member], 'k', 6), timestamp = nextTimestamp(cluster.clockLead);
                 cluster.write();
                 log(`${server} items ${JSON.stringify(ops)}`);
                 count('items');
@@ -127,22 +127,48 @@ export async function runEpisode(cluster: SoakCluster, seed: number, options: Ep
             await Promise.all(emits);
         }
         else if(action < 0.5) {
-            const server = pick(up), ops = keyOps('board', db.board, 'b', 5), timestamp = nextTimestamp();
+            const server = pick(up), ops = keyOps('board', db.board, 'b', 5), timestamp = nextTimestamp(cluster.clockLead);
             cluster.write();
             log(`${server} board ${JSON.stringify(ops)}`);
             count('board');
             await emit(server, {box: 'board', ops, timestamp});
         }
         else if(action < 0.62) {
-            const server = pick(up), value = plain(db.synced[member]);
-            value.level = ++counter;
-            if(rnd() < 0.4) value.list = rnd() < 0.5 ? [...value.list, 'i' + counter] : value.list.slice(0, 1);
-            if(rnd() < 0.2) value.mode = value.mode === 'a' ? 'b' : 'a';
-            db.synced[member] = value;
-            cluster.write();
-            log(`${server} sync ${JSON.stringify(value)}`);
+            //each server reads the source when it syncs; several servers at once or one after the other without waiting
+            const change = () => {
+                const value = plain(db.synced[member]);
+                value.level = ++counter;
+                if(rnd() < 0.4) value.list = rnd() < 0.5 ? [...value.list, 'i' + counter] : value.list.slice(0, 1);
+                if(rnd() < 0.2) value.mode = value.mode === 'a' ? 'b' : 'a';
+                if(rnd() < 0.3) value.cfg.a = counter;
+                if(rnd() < 0.2) value.cfg.b = rnd() < 0.8 ? {c: counter} : {c: counter, d: 'd' + counter};
+                if(rnd() < 0.2) {
+                    if(value.extra === undefined) value.extra = {n: counter};
+                    else delete value.extra;
+                }
+                db.synced[member] = value;
+                cluster.write();
+                return value;
+            };
+            const kind = rnd(), emits: Promise<any>[] = [];
+            if(kind < 0.5) {
+                const server = pick(up), value = change();
+                log(`${server} sync ${JSON.stringify(value)}`);
+                emits.push(emit(server, {box: 'synced', member, sync: true}));
+            }
+            else if(kind < 0.75) {
+                const value = change(), servers = up.filter(() => rnd() < 0.7);
+                if(servers.length === 0) servers.push(pick(up));
+                log(`${servers.join('+')} sync at once ${JSON.stringify(value)}`);
+                for(const server of servers) emits.push(emit(server, {box: 'synced', member, sync: true}));
+            }
+            else for(let i = 0, len = int(2, 3); i < len; i++) {
+                const server = pick(up), value = change();
+                log(`${server} sync without waiting ${JSON.stringify(value)}`);
+                emits.push(emit(server, {box: 'synced', member, sync: true}));
+            }
             count('sync');
-            await emit(server, {box: 'synced', member, sync: value});
+            await Promise.all(emits);
         }
         else if(action < 0.65) {
             //a change of unknown content
@@ -225,13 +251,20 @@ export async function runEpisode(cluster: SoakCluster, seed: number, options: Ep
     const healed = Date.now();
     log('healed');
 
-    const mismatches = () => {
+    /*
+    items and board show the source (their timestamps follow it). The synced data of several writers shows
+    the same on every client; after one more sync of the source it is the source.
+    */
+    const mismatches = (syncedToSource: boolean) => {
         const list: string[] = [];
+        const first = plain(cluster.clients[0].databoxes.synced?.data);
         for(const client of cluster.clients) {
-            const expected: Record<string, any> = {items: db.items[member], synced: db.synced[member], board: db.board};
+            const expected: Record<string, any> = {items: db.items[member], board: db.board,
+                synced: syncedToSource ? db.synced[member] : first};
             for(const key in expected) {
                 const data = client.databoxes[key]?.data;
-                if(!same(data, expected[key])) list.push(`${client.server}/${key}: shows ${JSON.stringify(plain(data))}, source ${JSON.stringify(expected[key])}`);
+                if(!same(data, expected[key])) list.push(`${client.server}/${key}: shows ${JSON.stringify(plain(data))}, ` +
+                    (key === 'synced' && !syncedToSource ? `first client ${JSON.stringify(first)}` : `source ${JSON.stringify(expected[key])}`));
             }
         }
         return list;
@@ -239,10 +272,17 @@ export async function runEpisode(cluster: SoakCluster, seed: number, options: Ep
     let settleMs = 0;
     if(!failure) {
         try {
-            await waitUntil(() => mismatches().length === 0, options.quietTimeout ?? 15000);
+            await waitUntil(() => mismatches(false).length === 0, options.quietTimeout ?? 15000);
             settleMs = Date.now() - healed;
         }
-        catch (_) {failure = mismatches().join('\n');}
+        catch (_) {failure = 'Not the same on every client: ' + mismatches(false).join('\n');}
+    }
+    if(!failure) {
+        const server = pick(upServers());
+        log(`${server} sync of the source`);
+        await emit(server, {box: 'synced', member, sync: true});
+        try {await waitUntil(() => mismatches(true).length === 0, options.quietTimeout ?? 15000);}
+        catch (_) {failure = 'After the sync of the source: ' + mismatches(true).join('\n');}
     }
 
     await Promise.all(cluster.clients.map(client =>

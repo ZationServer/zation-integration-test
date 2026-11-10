@@ -8,8 +8,14 @@ Copyright(c) Ing. Luca Gian Scaringella
 A server of the soak run, started as its own process.
 The data lives in a JSON file that the run writes before it lets a server emit the change.
   PORT, NAME, DB (file), JOIN (cluster), BROKER_PROXIES ({"brokerPort": proxyPort}),
-  UNREGISTER_DELAY, HISTORY_LENGTH
+  UNREGISTER_DELAY, HISTORY_LENGTH, CLOCK_SKEW_MS (the clock of this server runs ahead or behind)
 */
+
+const skew = Number(process.env.CLOCK_SKEW_MS || 0);
+if(skew !== 0) {
+    const now = Date.now;
+    Date.now = () => now() + skew;
+}
 
 const fs = require('fs');
 const path = require('path');
@@ -57,7 +63,7 @@ Items.prototype.singleFetch = function (_request, connection) {
 Databox.Config(dbConfig)(Items);
 API('items')(Items);
 
-/* Changed by content().sync only. */
+/* Changed by content().sync only, from several servers. */
 class Synced extends Databox {}
 Synced.prototype.singleFetch = function (_request, connection) {
     return delayed(read().synced[connection.member] || {});
@@ -88,7 +94,7 @@ for(const name in databoxes) databoxes[name].prototype.initialize = function () 
 /*
 Emits a change after the run wrote it to the file.
 ops: [type, key, value] with type set or delete, all with the timestamp;
-sync: the new value for content().sync; reload: forceReload; unknown: anyContentChange.
+sync: the new value for content().sync (read from the file when true); reload: forceReload; unknown: anyContentChange.
 */
 class Emit extends Controller {
     handle(_socket, {box, member, ops, timestamp, sync, reload, unknown}) {
@@ -102,7 +108,7 @@ class Emit extends Controller {
             }
             transaction.commit({timestamp});
         }
-        if(sync !== undefined) databox.content(...args).sync(sync);
+        if(sync !== undefined) databox.content(...args).sync(sync === true ? read()[box][member] : sync);
         if(reload) databox.forceReload(...args);
         if(unknown) databox.anyContentChange(...args);
         return true;
