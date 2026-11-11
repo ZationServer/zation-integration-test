@@ -185,9 +185,12 @@ export async function runEpisode(cluster: SoakCluster, seed: number, options: Ep
             const server = pick(up);
             db.items[member].k0 = ++counter;
             cluster.write();
-            log(`${server} unknown k0=${counter}`);
+            //it counts at the time of the server: while the timestamps of the run are not behind that,
+            //it takes one of them (like an app with a clock of its own), otherwise an earlier change can win over it
+            const timestamp = cluster.clockLead > 0 || clock >= Date.now() ? nextTimestamp(cluster.clockLead) : undefined;
+            log(`${server} unknown k0=${counter}${timestamp !== undefined ? ` t=${timestamp - start}` : ''}`);
             count('unknown');
-            await emit(server, {box: 'items', member, unknown: true});
+            await emit(server, {box: 'items', member, unknown: true, timestamp});
         }
         else if(action < 0.67) {
             const server = pick(up);

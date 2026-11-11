@@ -95,7 +95,8 @@ for(const name in databoxes) databoxes[name].prototype.initialize = function () 
 /*
 Emits a change after the run wrote it to the file.
 ops: [type, key, value] with type set or delete, all with the timestamp;
-sync: the new value for content().sync (read from the file when true); reload: forceReload; unknown: anyContentChange.
+sync: the new value for content().sync (read from the file when true); reload: forceReload;
+unknown: anyContentChange (with the timestamp when given).
 */
 class Emit extends Controller {
     handle(_socket, {box, member, ops, timestamp, sync, reload, unknown}) {
@@ -111,7 +112,7 @@ class Emit extends Controller {
         }
         if(sync !== undefined) databox.content(...args).sync(sync === true ? read()[box][member] : sync);
         if(reload) databox.forceReload(...args);
-        if(unknown) databox.anyContentChange(...args);
+        if(unknown) databox.anyContentChange(...args, timestamp !== undefined ? {timestamp} : {});
         return true;
     }
 }
