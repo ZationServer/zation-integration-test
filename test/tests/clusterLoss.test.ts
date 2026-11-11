@@ -114,4 +114,22 @@ describe('Cluster loss tests', function () {
         for(const link of cluster.links.A) link.delay(0);
         await shows(name);
     });
+
+    it('Should keep the reloaded data when a transaction it holds comes during the reload with the timestamp of the fetch.', async () => {
+        const name = await open('A');
+        //A gets the set of B before the fetch of its client, the client gets it during the reload
+        for(const link of cluster.links.B) link.delay(100);
+        client.link.delay(150);
+        cluster.db.items[name].k = 1;
+        cluster.write();
+        //ahead of every clock: the fetch of A takes this timestamp
+        await cluster.emit('B', {box: 'items', member: name, ops: [['set', 'k', 1]], timestamp: Date.now() + 2000});
+        cluster.db.items[name].k = 2;
+        cluster.write();
+        await cluster.emit('A', {box: 'items', member: name, unknown: true});
+        await sleep(700);
+        for(const link of cluster.links.B) link.delay(0);
+        client.link.delay(0);
+        await shows(name, 3000);
+    });
 });
