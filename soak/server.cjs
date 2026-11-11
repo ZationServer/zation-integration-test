@@ -118,9 +118,31 @@ class Emit extends Controller {
 Controller.Config({access: 'all', input: 'any'})(Emit);
 API('emit')(Emit);
 
+/* How a databox (member) stands: its link to the other servers, last transaction and history. */
+const memberState = (sockets, last, history, link, served) => ({
+    sockets: sockets.size,
+    last: last && {id: last.id, timestamp: last.timestamp},
+    history: history && {id: history.id, seq: history.seq},
+    link: link && {chains: [...link.chains], newest: link.newest, unsure: link.unsure, needsReset: link.needsReset},
+    served
+});
+const databoxState = (databox) => {
+    if(!databox._regMembers)
+        return memberState(databox._regSockets, databox._lastTransactionData, databox._history, databox._link, databox._served);
+    const members = {};
+    for(const [memberStr, mem] of databox._regMembers)
+        members[memberStr] = memberState(mem.sockets, mem.lastTransactionData, mem.history, mem.link, mem.served);
+    return members;
+};
+
 class Control extends Controller {
     handle(_socket, input) {
         if(input && input.fetchDelay !== undefined) fetchDelay = input.fetchDelay;
+        if(input && input.state) {
+            const state = {};
+            for(const name of ['items', 'synced', 'board']) if(instances[name]) state[name] = databoxState(instances[name]);
+            return {name: process.env.NAME, now: Date.now(), state};
+        }
         return {name: process.env.NAME};
     }
 }

@@ -194,6 +194,14 @@ class Proc {
     }
 }
 
+/** The timestamps of the data of a client: of the head, and of the start and keys of a top object. */
+const timestampsOf = (dbsHead: any) => dbsHead && {head: dbsHead.timestamp,
+    start: dbsHead.componentValue?.startDataTimestamp, keys: dbsHead.componentValue?.timestampMap};
+
+/** JSON with maps and sets as lists. */
+export const stateJson = (value: any) => JSON.stringify(value, (_key, item) =>
+    item instanceof Map || item instanceof Set ? [...item] : item);
+
 function isListening(port: number): Promise<boolean> {
     return new Promise(resolve => {
         const socket = net.connect(port, '127.0.0.1');
@@ -342,6 +350,15 @@ export class SoakCluster {
     }
 
     /**
+     * How the databoxes of a server stand (for the trace of a failed episode).
+     */
+    async serverState(server: string): Promise<string> {
+        if(!this.up(server)) return 'down';
+        try {return stateJson(await this.controls[server].request('control', {state: true}, {responseTimeout: 2000, sendTimeout: 2000}));}
+        catch (err) {return 'unknown: ' + (err as Error).message;}
+    }
+
+    /**
      * Until a change of each server reaches every server (for the probe channel).
      */
     async waitLinked(timeout = 20000) {
@@ -418,6 +435,23 @@ export class SoakClient {
         const databox = this.instance.databox(identifier);
         this.databoxes[key] = databox;
         await databox.connect(member);
+    }
+
+    /**
+     * How the client and its databoxes stand (for the trace of a failed episode).
+     */
+    state(): string {
+        const databoxes: Record<string, any> = {};
+        for(const key in this.databoxes) {
+            const databox = this.databoxes[key];
+            databoxes[key] = {connected: databox.connected, historyId: databox.historyId,
+                historyPosition: databox.historyPosition, chains: databox.chains, transactionId: databox.transactionId,
+                transactionTimestamp: databox.transactionTimestamp, serverSideTransactionId: databox.serverSideTransactionId,
+                pendingReloads: databox.pendingReloads, reloadFailed: databox.reloadFailed, resync: databox.resync,
+                held: databox.heldOutputPackages?.length, collectors: databox.activeTransactionsCollector?.length,
+                timestamps: timestampsOf(databox.mainDbStorage?.dbsHead)};
+        }
+        return stateJson({connected: this.instance.connected, databoxes});
     }
 
     async closeDatabox(key: string) {

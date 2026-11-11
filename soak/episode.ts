@@ -121,7 +121,7 @@ export async function runEpisode(cluster: SoakCluster, seed: number, options: Ep
             for(let i = 0; i < parallel; i++) {
                 const server = pick(up), ops = keyOps('items', db.items[member], 'k', 6), timestamp = nextTimestamp(cluster.clockLead);
                 cluster.write();
-                log(`${server} items ${JSON.stringify(ops)}`);
+                log(`${server} items ${JSON.stringify(ops)} t=${timestamp - start}`);
                 count('items');
                 emits.push(emit(server, {box: 'items', member, ops, timestamp}));
             }
@@ -130,7 +130,7 @@ export async function runEpisode(cluster: SoakCluster, seed: number, options: Ep
         else if(action < 0.5) {
             const server = pick(up), ops = keyOps('board', db.board, 'b', 5), timestamp = nextTimestamp(cluster.clockLead);
             cluster.write();
-            log(`${server} board ${JSON.stringify(ops)}`);
+            log(`${server} board ${JSON.stringify(ops)} t=${timestamp - start}`);
             count('board');
             await emit(server, {box: 'board', ops, timestamp});
         }
@@ -293,6 +293,12 @@ export async function runEpisode(cluster: SoakCluster, seed: number, options: Ep
         await emit(server, {box: 'synced', member, sync: true});
         try {await waitUntil(() => mismatches(true).length === 0, options.quietTimeout ?? 15000);}
         catch (_) {failure = 'After the sync of the source: ' + mismatches(true).join('\n');}
+    }
+    if(failure) {
+        //how the servers and clients stand, to find what a client missed
+        log(`state (timestamps since ${start})`);
+        for(const server of cluster.servers) log(`state ${server} ${await cluster.serverState(server)}`);
+        for(const client of cluster.clients) log(`state client on ${client.server} ${client.state()}`);
     }
 
     await Promise.all(cluster.clients.map(client =>
