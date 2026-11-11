@@ -8,7 +8,8 @@ Copyright(c) Ing. Luca Gian Scaringella
  * Loads the app (index.html, main.js) in a headless browser, without a vite config,
  * so without a plugin and without a define: once from the dev server (dependency optimizer)
  * and once from a production build. The zation server must run on the port of the first argument.
- * On the dev server, reconnect.html shows how the events of the browser bring a reconnect forward.
+ * On the dev server, reconnect.html shows how the events of the browser bring a reconnect forward
+ * and resume.html that many clients come back at random times.
  * Prints the result of each way as JSON.
  */
 
@@ -85,6 +86,40 @@ async function reconnect(browser, url) {
     finally {await context.close();}
 }
 
+/**
+ * Loads resume.html (many clients on one page), drops their connections and lets the network come back:
+ * plans is in how many ms each client tries after the online event (null: at once),
+ * afterOnline how long each one took to connect.
+ * Then the app calls reconnectNow: how long the client took to connect and its plan right after the call
+ * (null, the attempt goes at once).
+ */
+async function resume(browser, url) {
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    const errors = [];
+    page.on('pageerror', err => errors.push(String(err && err.stack || err)));
+    page.on('console', msg => {if(msg.type() === 'error') errors.push(msg.text());});
+    const lose = async () => {
+        await page.evaluate(() => window.zation.drop());
+        await page.waitForFunction(() => window.zation.planned(), null, {timeout: 5000});
+    };
+    try {
+        await page.goto(`${url}resume.html?port=${serverPort}`);
+        await page.waitForFunction(() => window.zation !== undefined && window.zation.connected(), null, {timeout: 20000});
+        await lose();
+        await context.setOffline(true);
+        await context.setOffline(false);
+        await page.waitForFunction(() => window.zation.connected(), null, {timeout: 5000});
+        const result = {errors, plans: await page.evaluate(() => window.zation.plans()),
+            afterOnline: await page.evaluate(() => window.zation.afterOnline())};
+        await lose();
+        result.reconnectNow = await page.evaluate(() => window.zation.reconnectNow());
+        return result;
+    }
+    catch (err) {return {error: String(err && err.message || err), errors};}
+    finally {await context.close();}
+}
+
 async function viaDevServer(browser) {
     // A new cache, so that the dependency optimizer bundles the installed client.
     const cacheDir = fs.mkdtempSync(path.join(os.tmpdir(), 'zation-vite-cache-'));
@@ -92,7 +127,7 @@ async function viaDevServer(browser) {
     try {
         await server.listen();
         const url = server.resolvedUrls.local[0];
-        return {dev: await load(browser, url, 'dev'), reconnect: await reconnect(browser, url)};
+        return {dev: await load(browser, url, 'dev'), reconnect: await reconnect(browser, url), resume: await resume(browser, url)};
     }
     finally {
         await server.close();
@@ -113,8 +148,8 @@ async function viaBuild(browser) {
 
 const browser = await chromium.launch({headless: true});
 try {
-    const {dev, reconnect: reconnected} = await viaDevServer(browser);
+    const {dev, reconnect: reconnected, resume: resumed} = await viaDevServer(browser);
     const built = await viaBuild(browser);
-    console.log(JSON.stringify({dev, build: built, reconnect: reconnected}));
+    console.log(JSON.stringify({dev, build: built, reconnect: reconnected, resume: resumed}));
 }
 finally {await browser.close();}

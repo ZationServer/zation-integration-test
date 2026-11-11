@@ -22,7 +22,7 @@ function installBrowserApp() {
         execFileSync('npm', ['ci', '--no-audit', '--no-fund'], {cwd: BROWSER_APP, stdio: 'ignore'});
 }
 
-function runBrowserApp(): Promise<Record<'dev' | 'build' | 'reconnect', any>> {
+function runBrowserApp(): Promise<Record<'dev' | 'build' | 'reconnect' | 'resume', any>> {
     return new Promise((resolve, reject) => {
         execFile('node', ['run.js', String(clientConfig.port)], {cwd: BROWSER_APP, timeout: 150000},
             (err, stdout, stderr) => {
@@ -36,7 +36,7 @@ function runBrowserApp(): Promise<Record<'dev' | 'build' | 'reconnect', any>> {
 describe('Browser tests', function() {
     this.timeout(240000);
 
-    let results: Record<'dev' | 'build' | 'reconnect', any>;
+    let results: Record<'dev' | 'build' | 'reconnect' | 'resume', any>;
 
     before(async () => {
         assert.ok(!fs.readdirSync(BROWSER_APP).some(file => file.startsWith('vite.config')),
@@ -55,7 +55,7 @@ describe('Browser tests', function() {
         });
     }
 
-    it('Should reconnect at once when the network comes back, the page becomes visible or is shown again.', () => {
+    it('Should bring the reconnect forward when the network comes back, the page becomes visible or is shown again.', () => {
         const result = results.reconnect;
         assert.strictEqual(result.error, undefined, [result.error, ...result.errors].join('\n'));
         //without an event, the client would wait a minute
@@ -65,6 +65,20 @@ describe('Browser tests', function() {
         assert.strictEqual(result.hidden, null, 'A hidden page reconnected.');
         assert.ok(result.visible !== null, 'No reconnect when the page became visible.');
         assert.ok(result.pageshow !== null, 'No reconnect on pageshow.');
+        assert.deepStrictEqual(result.errors, []);
+    });
+
+    it('Should let many clients come back at random times when the network comes back, but reconnectNow of the app at once.', () => {
+        const result = results.resume;
+        assert.strictEqual(result.error, undefined, [result.error, ...result.errors].join('\n'));
+        //each one waits a random time up to 500 ms (resumeRandomness)
+        const plans: (number | null)[] = result.plans;
+        assert.ok(plans.every(plan => plan !== null && plan >= 0 && plan <= 500), `Planned in ${plans.join(', ')} ms.`);
+        assert.ok(Math.max(...plans as number[]) - Math.min(...plans as number[]) >= 100, `Planned in ${plans.join(', ')} ms.`);
+        const delays: number[] = result.afterOnline;
+        assert.ok(delays.every(delay => delay >= 0 && delay <= 1500), `Connected after ${delays.map(Math.round).join(', ')} ms.`);
+        assert.strictEqual(result.reconnectNow.planned, null, 'reconnectNow of the app did not try at once.');
+        assert.ok(result.reconnectNow.ms < 1000, `reconnectNow took ${result.reconnectNow.ms} ms.`);
         assert.deepStrictEqual(result.errors, []);
     });
 });
