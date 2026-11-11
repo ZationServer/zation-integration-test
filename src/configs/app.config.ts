@@ -30,6 +30,7 @@ import "../api/receivers/updateUserAge";
 import "../api/receivers/deleteProduct";
 import "../api/receivers/addProduct";
 import "../api/receivers/countUp";
+import "../api/receivers/dropConnection";
 import "../api/databoxes/userProfile";
 import "../api/databoxes/products";
 import "../api/databoxes/counter";

@@ -22,7 +22,7 @@ function installBrowserApp() {
         execFileSync('npm', ['ci', '--no-audit', '--no-fund'], {cwd: BROWSER_APP, stdio: 'ignore'});
 }
 
-function runBrowserApp(): Promise<Record<'dev' | 'build', any>> {
+function runBrowserApp(): Promise<Record<'dev' | 'build' | 'reconnect', any>> {
     return new Promise((resolve, reject) => {
         execFile('node', ['run.js', String(clientConfig.port)], {cwd: BROWSER_APP, timeout: 150000},
             (err, stdout, stderr) => {
@@ -36,7 +36,7 @@ function runBrowserApp(): Promise<Record<'dev' | 'build', any>> {
 describe('Browser tests', function() {
     this.timeout(240000);
 
-    let results: Record<'dev' | 'build', any>;
+    let results: Record<'dev' | 'build' | 'reconnect', any>;
 
     before(async () => {
         assert.ok(!fs.readdirSync(BROWSER_APP).some(file => file.startsWith('vite.config')),
@@ -54,4 +54,17 @@ describe('Browser tests', function() {
             assert.deepStrictEqual(result.errors, []);
         });
     }
+
+    it('Should reconnect at once when the network comes back, the page becomes visible or is shown again.', () => {
+        const result = results.reconnect;
+        assert.strictEqual(result.error, undefined, [result.error, ...result.errors].join('\n'));
+        //without an event, the client would wait a minute
+        assert.ok(result.planned > 50000, `Planned in ${result.planned} ms.`);
+        assert.strictEqual(result.offline, null);
+        assert.ok(result.online !== null, 'No reconnect when the network came back (online).');
+        assert.strictEqual(result.hidden, null, 'A hidden page reconnected.');
+        assert.ok(result.visible !== null, 'No reconnect when the page became visible.');
+        assert.ok(result.pageshow !== null, 'No reconnect on pageshow.');
+        assert.deepStrictEqual(result.errors, []);
+    });
 });
