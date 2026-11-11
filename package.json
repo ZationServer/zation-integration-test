@@ -27,7 +27,7 @@
     "!.DS_Store"
   ],
   "dependencies": {
-    "zation-server": "3.0.0-beta.5"
+    "zation-server": "3.0.0-beta.6"
   },
   "devDependencies": {
     "@types/node": "^16.4.13",
@@ -37,9 +37,9 @@
     "typescript": "^4.3.5",
     "gulp": "4.0.0",
     "gulp-typescript": "5.0.1",
-    "zation-assured": "3.0.0-beta.5",
-    "zation-state": "8.0.0-beta.3",
-    "zation-broker": "8.0.0-beta.3",
+    "zation-assured": "3.0.0-beta.6",
+    "zation-state": "8.0.0-beta.4",
+    "zation-broker": "8.0.0-beta.4",
     "zation-server-v0": "npm:zation-server@3.0.0-beta.2",
     "zation-client-v0": "npm:zation-client@3.0.0-beta.1"
   }
