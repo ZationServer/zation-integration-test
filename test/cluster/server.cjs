@@ -110,10 +110,23 @@ class Control extends Controller {
 Controller.Config({access: 'all', input: 'any'})(Control);
 API('control')(Control);
 
+/* Closes the connection of the caller normally (1000) and ends the process: a server that closes normally on a restart. */
+class Goodbye extends Controller {
+    handle(socket) {
+        setTimeout(() => {
+            socket.disconnect();
+            setTimeout(() => process.exit(0), 50);
+        }, 10);
+        return true;
+    }
+}
+Controller.Config({access: 'all'})(Goodbye);
+API('goodbye')(Goodbye);
+
 for(const name in databoxes) databoxes[name].prototype.initialize = function () {Emit.instances[name] = this;};
 
 const root = new Router();
-for(const component of [Box, SyncBox, ListBox, Filtered, Room, Emit, Control]) root.use(component);
+for(const component of [Box, SyncBox, ListBox, Filtered, Room, Emit, Control, Goodbye]) root.use(component);
 root.register();
 
 Config.serverConfig({
